@@ -3,42 +3,56 @@ package com.typokign.fps;
 /**
  * Created by Typo Kign on 1/21/2017.
  */
-public class Main {
+public class Game {
 
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
     public static final String TITLE = "Spring Final";
 
-    public Main() {
+    private boolean isRunning;
 
+    public Game() {
+        isRunning = false;
     }
 
     public void start() {
+        if (isRunning) return;
+
         run();
     }
 
     public void stop() {
+        if (!isRunning) return;
 
+        isRunning = false;
     }
 
-    public void run() {
-        while (!Window.isCloseRequested()) {
+    private void run() {
+        isRunning = true;
+
+        while (isRunning) {
+            if (Window.isCloseRequested()) {
+                stop();
+            }
+
             render();
         }
+
+        cleanUp();
     }
 
-    public void render() {
+    private void render() {
         Window.render();
     }
 
-    public void cleanUp() {
-
+    private void cleanUp() {
+        Window.dispose();
     }
 
     public static void main(String[] args) {
         Window.createWindow(WIDTH, HEIGHT, TITLE);
 
-        Main game = new Main();
+        Game game = new Game();
         game.start();
     }
 }
