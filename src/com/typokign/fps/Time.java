@@ -4,6 +4,7 @@ package com.typokign.fps;
  * Created by Typo Kign on 1/21/2017.
  */
 public class Time {
+    public static final long SECOND = 1000000000L; // number of nanoseconds in 1 second
 
     private static double delta;
 
