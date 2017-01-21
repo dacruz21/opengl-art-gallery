@@ -15,18 +15,21 @@ public class Game {
         isRunning = false;
     }
 
+    // Initialization code
     public void start() {
         if (isRunning) return;
 
         run();
     }
 
+    // Controlling the isRunning boolean
     public void stop() {
         if (!isRunning) return;
 
         isRunning = false;
     }
 
+    // Game loop
     private void run() {
         isRunning = true;
 
@@ -41,10 +44,12 @@ public class Game {
         cleanUp();
     }
 
+    // Display updating
     private void render() {
         Window.render();
     }
 
+    // Garbage collection
     private void cleanUp() {
         Window.dispose();
     }
