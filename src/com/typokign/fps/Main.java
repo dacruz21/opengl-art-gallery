@@ -9,9 +9,36 @@ public class Main {
     public static final int HEIGHT = 600;
     public static final String TITLE = "Spring Final";
 
-    public static void main(String[] args) {
-        System.out.println("Hello World!");
+    public Main() {
 
+    }
+
+    public void start() {
+        run();
+    }
+
+    public void stop() {
+
+    }
+
+    public void run() {
+        while (!Window.isCloseRequested()) {
+            render();
+        }
+    }
+
+    public void render() {
+        Window.render();
+    }
+
+    public void cleanUp() {
+
+    }
+
+    public static void main(String[] args) {
         Window.createWindow(WIDTH, HEIGHT, TITLE);
+
+        Main game = new Main();
+        game.start();
     }
 }
