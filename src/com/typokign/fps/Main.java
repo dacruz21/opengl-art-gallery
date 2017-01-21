@@ -11,9 +11,11 @@ public class Main {
     public static final double FRAME_CAP = 5000.0;
 
     private boolean isRunning;
+    private Game game;
 
     public Main() {
         isRunning = false;
+        game = new Game();
     }
 
     // Initialization code
@@ -64,6 +66,11 @@ public class Main {
                     stop();
                 }
 
+                Time.setDelta(frameTime);
+
+                game.input();
+                game.update();
+
                 // FPS counter
                 if (frameCounter >= Time.SECOND) {
                     System.out.println(frames);
@@ -89,6 +96,7 @@ public class Main {
 
     // Display updating
     private void render() {
+        game.render();
         Window.render();
     }
 
