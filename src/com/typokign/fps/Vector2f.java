@@ -19,7 +19,7 @@ public class Vector2f {
 
     // Dot product
     public float dot(Vector2f other) {
-        return x * other.x + y * other.y;
+        return x * other.getX() + y * other.getY();
     }
 
     // Normalize, or set length to 1 while maintaining proportions
