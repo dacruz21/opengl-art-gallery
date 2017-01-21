@@ -14,6 +14,7 @@ public class Main {
     private Game game;
 
     public Main() {
+        RenderUtil.initGraphics();
         isRunning = false;
         game = new Game();
     }
@@ -97,6 +98,7 @@ public class Main {
 
     // Display updating
     private void render() {
+        RenderUtil.clearScreen();
         game.render();
         Window.render();
     }
