@@ -14,6 +14,7 @@ public class Main {
     private Game game;
 
     public Main() {
+        System.out.println("OpenGL Version: " + RenderUtil.getOpenGLVersion());
         RenderUtil.initGraphics();
         isRunning = false;
         game = new Game();

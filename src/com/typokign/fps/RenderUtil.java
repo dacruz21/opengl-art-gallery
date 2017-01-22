@@ -28,4 +28,8 @@ public class RenderUtil {
         // auto-gamma correction to the SRGB space
         glEnable(GL_FRAMEBUFFER_SRGB);
     }
+
+    public static String getOpenGLVersion() {
+        return glGetString(GL_VERSION);
+    }
 }
