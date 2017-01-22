@@ -6,8 +6,17 @@ import org.lwjgl.input.Keyboard;
  * Created by Typo Kign on 1/21/2017.
  */
 public class Game {
-    public Game() {
 
+    private Mesh mesh;
+
+    public Game() {
+        mesh = new Mesh();
+
+        Vertex[] data = new Vertex[] {new Vertex(new Vector3f(-0.9f, -0.9f, 0)),
+                                      new Vertex(new Vector3f(0, 0.9f, 0)),
+                                      new Vertex(new Vector3f(0.9f, -0.9f, 0))};
+
+        mesh.addVertices(data);
     }
 
     public void input() {
@@ -33,6 +42,6 @@ public class Game {
     }
 
     public void render() {
-
+        mesh.draw();
     }
 }
