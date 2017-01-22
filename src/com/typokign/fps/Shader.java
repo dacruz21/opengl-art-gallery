@@ -39,13 +39,13 @@ public class Shader {
     public void compileShader() {
         glLinkProgram(program);
 
-        if (glGetShaderi(program, GL_LINK_STATUS) == 0) {
+        if (glGetProgrami(program, GL_LINK_STATUS) == 0) {
             System.err.println(glGetShaderInfoLog(program, 1024));
             System.exit(1);
         }
 
         glValidateProgram(program);
-        if (glGetShaderi(program, GL_VALIDATE_STATUS) == 0) {
+        if (glGetProgrami(program, GL_VALIDATE_STATUS) == 0) {
             System.err.println(glGetShaderInfoLog(program, 1024));
             System.exit(1);
         }
