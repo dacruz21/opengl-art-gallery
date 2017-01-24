@@ -76,7 +76,7 @@ public class Main {
 
                 // FPS counter
                 if (frameCounter >= Time.SECOND) {
-                    System.out.println(frames);
+                    System.out.println(frames + " FPS");
                     frames = 0;
                     frameCounter = 0;
                 }

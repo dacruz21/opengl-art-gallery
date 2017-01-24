@@ -97,6 +97,6 @@ public class Vector2f {
     }
 
     public String toString() {
-        return "<" + x + ", " + y + ">";
+        return "(" + x + ", " + y + ")";
     }
 }

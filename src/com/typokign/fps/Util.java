@@ -9,6 +9,9 @@ import java.nio.FloatBuffer;
  */
 public class Util {
 
+    // FloatBuffer operations
+    // OpenGL has a really weird way of storing arrays, so we need to create a flipped floatbuffer for most operations
+
     public static FloatBuffer createFloatBuffer(int size) {
         return BufferUtils.createFloatBuffer(size);
     }
@@ -24,6 +27,19 @@ public class Util {
 
         buffer.flip();
 
+        return buffer;
+    }
+
+    public static FloatBuffer createFlippedBuffer(Matrix4f value) {
+        FloatBuffer buffer = createFloatBuffer(4 * 4);
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                buffer.put(value.get(i, j));
+            }
+        }
+
+        buffer.flip();
         return buffer;
     }
 }
