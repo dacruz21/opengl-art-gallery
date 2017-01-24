@@ -34,6 +34,39 @@ public class Matrix4f {
         return this;
     }
 
+    public Matrix4f initRotation(float x, float y, float z) {
+        Matrix4f rotX = new Matrix4f();
+        Matrix4f rotY = new Matrix4f();
+        Matrix4f rotZ = new Matrix4f();
+
+        x = (float) Math.toRadians(x);
+        y = (float) Math.toRadians(y);
+        z = (float) Math.toRadians(z);
+
+        // Perform rotations in each 2D plane
+        rotX.m[0][0] = 1;                       rotX.m[0][1] = 0;                       rotX.m[0][2] = 0;                       rotX.m[0][3]  = 0;
+        rotX.m[1][0] = 0;                       rotX.m[1][1] = (float) Math.cos(x);     rotX.m[1][2] = (float) -Math.sin(x);    rotX.m[1][3]  = 0;
+        rotX.m[2][0] = 0;                       rotX.m[2][1] = (float) Math.sin(x);     rotX.m[2][2] = (float) Math.cos(x);     rotX.m[2][3]  = 0;
+        rotX.m[3][0] = 0;                       rotX.m[3][1] = 0;                       rotX.m[3][2] = 0;                       rotX.m[3][3]  = 1;
+
+        rotY.m[0][0] = (float) Math.cos(y);     rotY.m[0][1] = 0;                       rotY.m[0][2] = (float) -Math.sin(y);    rotY.m[0][3]  = 0;
+        rotY.m[1][0] = 0;                       rotY.m[1][1] = 1;                       rotY.m[1][2] = 0;                       rotY.m[1][3]  = 0;
+        rotY.m[2][0] = (float) Math.sin(y);     rotY.m[2][1] = 0;                       rotY.m[2][2] = (float) Math.cos(y);     rotY.m[2][3]  = 0;
+        rotY.m[3][0] = 0;                       rotY.m[3][1] = 0;                       rotY.m[3][2] = 0;                       rotY.m[3][3]  = 1;
+
+
+        rotZ.m[0][0] = (float) Math.cos(z);     rotZ.m[0][1] = (float) -Math.sin(z);    rotZ.m[0][2] = 0;                       rotZ.m[0][3]  = 0;
+        rotZ.m[1][0] = (float) Math.sin(z);     rotZ.m[1][1] = (float) Math.cos(z);     rotZ.m[1][2] = 0;                       rotZ.m[1][3]  = 0;
+        rotZ.m[2][0] = 0;                       rotZ.m[2][1] = 0;                       rotZ.m[2][2] = 1;                       rotZ.m[2][3]  = 0;
+        rotZ.m[3][0] = 0;                       rotZ.m[3][1] = 0;                       rotZ.m[3][2] = 0;                       rotZ.m[3][3]  = 1;
+
+        // Multiply them together
+        m = rotZ.mul(rotY.mul(rotX)).getM();
+
+        return this;
+    }
+
+
     public Matrix4f mul(Matrix4f other) {
         Matrix4f result = new Matrix4f();
 
