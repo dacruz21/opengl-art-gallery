@@ -9,40 +9,40 @@ import static org.lwjgl.opengl.GL20.*;
  */
 public class Mesh {
 
-    // vbo = pointer, size = size in bytes
-    // pointers in java :D
-    private int vbo;
-    private int ibo;
-    private int size;
+	// vbo = pointer, size = size in bytes
+	// pointers in java :D
+	private int vbo;
+	private int ibo;
+	private int size;
 
-    public Mesh() {
-        this.vbo = glGenBuffers();
-        this.ibo = glGenBuffers();
-        this.size = 0;
-    }
+	public Mesh() {
+		this.vbo = glGenBuffers();
+		this.ibo = glGenBuffers();
+		this.size = 0;
+	}
 
-    public void addVertices(Vertex[] vertices, int[] indices) {
-        size = indices.length; // the size constant in Vertex is the number of bytes each object takes in memory, all Vertices have the same SIZE regardless of pos value
+	public void addVertices(Vertex[] vertices, int[] indices) {
+		size = indices.length; // the size constant in Vertex is the number of bytes each object takes in memory, all Vertices have the same SIZE regardless of pos value
 
-        // treat vbo as a buffer
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		// treat vbo as a buffer
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-        // buffer all of our vertices, but we need to do some wacky stuff to flip the buffer
-        glBufferData(GL_ARRAY_BUFFER, Util.createFlippedBuffer(vertices), GL_STATIC_DRAW);
+		// buffer all of our vertices, but we need to do some wacky stuff to flip the buffer
+		glBufferData(GL_ARRAY_BUFFER, Util.createFlippedBuffer(vertices), GL_STATIC_DRAW);
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, Util.createFlippedBuffer(indices), GL_STATIC_DRAW);
-    }
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, Util.createFlippedBuffer(indices), GL_STATIC_DRAW);
+	}
 
-    public void draw() {
-        glEnableVertexAttribArray(0);
+	public void draw() {
+		glEnableVertexAttribArray(0);
 
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, Vertex.SIZE * 4, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glVertexAttribPointer(0, 3, GL_FLOAT, false, Vertex.SIZE * 4, 0);
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-        glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+		glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
 
-        glDisableVertexAttribArray(0);
-    }
+		glDisableVertexAttribArray(0);
+	}
 }
