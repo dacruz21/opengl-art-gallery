@@ -4,6 +4,7 @@ import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 
 /**
  * Created by Typo Kign on 1/21/2017.
@@ -54,5 +55,27 @@ public class Util {
 
         buffer.flip();
         return buffer;
+    }
+
+    public static String[] removeEmptyStrings(String[] data) {
+        ArrayList<String> result = new ArrayList<String>();
+
+        for (String datum : data) {
+            if (!datum.equals("")) {
+                result.add(datum);
+            }
+        }
+
+        return result.toArray(new String[result.size()]);
+    }
+
+    public static int[] toIntArray(Integer[] integers) {
+        int[] result = new int[integers.length];
+
+        for (int i = 0; i < integers.length; i++) {
+            result[i] = integers[i].intValue();
+        }
+
+        return result;
     }
 }
