@@ -1,3 +1,3 @@
 # Spring Final
 
-By David Cruz and Daniel Martinez
+## By David Cruz and Daniel Martinez
