@@ -9,6 +9,7 @@ public class Transform {
 	private static float width; // screen width
 	private static float height; // screen height
 	private static float fov; // field of view
+    private static Camera camera;
 
 	// dx, dy, dz of the translation
 	private Vector3f translation;
@@ -43,8 +44,10 @@ public class Transform {
 	public Matrix4f getProjectedTransformation() {
 		Matrix4f transformationMatrix = getTransformation();
 		Matrix4f projectionMatrix = new Matrix4f().initProjection(fov, width, height, zNear, zFar);
+		Matrix4f cameraRotation = new Matrix4f().initCamera(camera.getForward(), camera.getUp());
+		Matrix4f cameraTranslation = new Matrix4f().initTranslation(-camera.getPosition().getX(), -camera.getPosition().getY(), - camera.getPosition().getZ()); // camera never actually moves, move the world opposite the direction of camera for effect
 
-		return projectionMatrix.mul(transformationMatrix);
+		return projectionMatrix.mul(cameraRotation.mul(cameraTranslation.mul(transformationMatrix)));
 	}
 
 	public Vector3f getTranslation() {
@@ -89,5 +92,13 @@ public class Transform {
 
 	public void setScale(float x, float y, float z) {
 		this.scale = new Vector3f(x, y, z);
+	}
+
+	public static Camera getCamera() {
+		return camera;
+	}
+
+	public static void setCamera(Camera camera) {
+		Transform.camera = camera;
 	}
 }

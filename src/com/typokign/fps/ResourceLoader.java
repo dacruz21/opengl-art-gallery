@@ -57,9 +57,15 @@ public class ResourceLoader {
 														 Float.valueOf(tokens[2]),
 														 Float.valueOf(tokens[3])))); // quite the complicated nest, but really just create a vertex with the x,y,z separated by spaces
 				} else if (tokens[0].equals("f")) { // face
-					indices.add(Integer.parseInt(tokens[1]) - 1); // obj indices are 1-indexed, our system is 0-indexed, so subtract 1
-					indices.add(Integer.parseInt(tokens[2]) - 1); // obj indices are 1-indexed, our system is 0-indexed, so subtract 1
-					indices.add(Integer.parseInt(tokens[3]) - 1); // obj indices are 1-indexed, our system is 0-indexed, so subtract 1
+					indices.add(Integer.parseInt(tokens[1].split("/")[0]) - 1); // obj indices are 1-indexed, our system is 0-indexed, so subtract 1
+					indices.add(Integer.parseInt(tokens[2].split("/")[0]) - 1); // obj indices are 1-indexed, our system is 0-indexed, so subtract 1
+					indices.add(Integer.parseInt(tokens[3].split("/")[0]) - 1); // obj indices are 1-indexed, our system is 0-indexed, so subtract 1
+
+                    if (tokens.length > 4) {
+                        indices.add(Integer.parseInt(tokens[1].split("/")[0]) - 1); // triangulate quadrilaterals
+                        indices.add(Integer.parseInt(tokens[3].split("/")[0]) - 1);
+                        indices.add(Integer.parseInt(tokens[4].split("/")[0]) - 1);
+                    }
 				}
 			}
 
