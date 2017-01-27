@@ -1,6 +1,10 @@
 package com.typokign.fps;
 
+import org.newdawn.slick.opengl.TextureLoader;
+
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.util.ArrayList;
 
@@ -8,6 +12,23 @@ import java.util.ArrayList;
  * Created by Typo Kign on 1/21/2017.
  */
 public class ResourceLoader {
+
+	public static Texture loadTexture(String filename) {
+
+		String[] splitArray = filename.split("\\.");
+		String fileExtension = splitArray[splitArray.length - 1];
+
+		try {
+			int id = TextureLoader.getTexture(fileExtension, new FileInputStream(new File("./res/textures/" + filename))).getTextureID();
+
+			return new Texture(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		return null;
+	}
 
 	public static String loadShader(String fileName) {
 		StringBuilder shaderSource = new StringBuilder();
