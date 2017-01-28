@@ -9,15 +9,15 @@ public class Game {
 
 	private Mesh mesh;
 	private Shader shader;
+	private Material material;
 	private Transform transform;
-	private Texture texture;
 	private Camera camera;
 
 	public Game() {
 		mesh = new Mesh();//ResourceLoader.loadMesh("cube.obj");
-		shader = new Shader();
 		camera = new Camera();
-		texture = ResourceLoader.loadTexture("test.png");
+		material = new Material(ResourceLoader.loadTexture("test.png"), new Vector3f(0,1,1));
+		shader = BasicShader.getInstance();
 
         Vertex[] vertices = new Vertex[] {new Vertex(new Vector3f(-0.9f, -0.9f, 0), new Vector2f(0,0)),
                                       new Vertex(new Vector3f(0, 0.9f, 0), new Vector2f(0.5f, 0)),
@@ -34,12 +34,6 @@ public class Game {
 		Transform.setProjection(70, Main.WIDTH, Main.HEIGHT, 0.1f, 1000);
 		Transform.setCamera(camera);
 		transform = new Transform();
-
-		shader.addVertexShader(ResourceLoader.loadShader("basicVertex.vs"));
-		shader.addFragmentShader(ResourceLoader.loadShader("basicFragment.fs"));
-		shader.compileShader();
-
-		shader.addUniform("transform");
 	}
 
 	public void input() {
@@ -77,8 +71,7 @@ public class Game {
 	public void render() {
 		RenderUtil.setClearColor(Transform.getCamera().getPosition().div(2048f).abs());
 		shader.bind();
-		shader.setUniform("transform", transform.getProjectedTransformation());
-		texture.bind();
+		shader.updateUniforms(transform.getTransformation(), transform.getProjectedTransformation(), material);
 		mesh.draw();
 	}
 }

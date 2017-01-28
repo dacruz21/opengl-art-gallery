@@ -30,7 +30,7 @@ public class Camera {
 	Vector2f centerPosition = new Vector2f(Window.getWidth() / 2, Window.getHeight() / 2);
 
 	public void input() {
-		float sensitivity = 0.5f;
+		float sensitivity = 0.25f;
 		float movAmt = (float) (10 * Time.getDelta());
 		//float rotAmt = (float) (100 * Time.getDelta());
 
