@@ -35,14 +35,8 @@ public class Vector3f {
 	}
 
 	// Normalize, or set length to 1 while maintaining proportions
-	public Vector3f normalize() {
-		float length = length();
-
-		x /= length;
-		y /= length;
-		z /= length;
-
-		return this;
+	public Vector3f normalized() {
+		return new Vector3f(x / length(), y / length(), z / length());
 	}
 
 	public Vector3f rotate(float angle, Vector3f axis) {
@@ -59,11 +53,7 @@ public class Vector3f {
 
 		Quaternion w = rotation.mul(this).mul(conjugate);
 
-		x = w.getX();
-		y = w.getY();
-		z = w.getZ();
-
-		return this;
+		return new Vector3f(w.getX(), w.getY(), w.getZ());
 	}
 
 	// Add subtract multiply divide methods

@@ -21,12 +21,9 @@ public class Camera {
 
 	public Camera(Vector3f position, Vector3f forward, Vector3f up) {
 		this.position = position;
-		this.forward = forward;
-		this.up = up;
+		this.forward = forward.normalized();
+		this.up = up.normalized();
 		mouseLocked = false;
-
-		up.normalize();
-		forward.normalize();
 	}
 
 	boolean mouseLocked = false;
@@ -96,37 +93,29 @@ public class Camera {
 	}
 
 	public void rotateX(float angle) {
-		Vector3f hAxis = yAxis.crossProduct(forward);
-		hAxis.normalize();
+		Vector3f hAxis = yAxis.crossProduct(forward).normalized();
 
-		forward.rotate(angle, hAxis);
-		forward.normalize();
+		forward = forward.rotate(angle, hAxis).normalized();
 
-		up = forward.crossProduct(hAxis);
-		up.normalize();
+		up = forward.crossProduct(hAxis).normalized();
 	}
 
 	public void rotateY(float angle) {
-		Vector3f hAxis = yAxis.crossProduct(forward);
-		hAxis.normalize();
+		Vector3f hAxis = yAxis.crossProduct(forward).normalized();
 
-		forward.rotate(angle, yAxis);
-		forward.normalize();
+		forward = forward.rotate(angle, yAxis).normalized();
 
-		up = forward.crossProduct(hAxis);
-		up.normalize();
+		up = forward.crossProduct(hAxis).normalized();
 	}
 
 	public Vector3f getLeft() {
-		Vector3f left = forward.crossProduct(up); // remember right-hand rule
-		left.normalize();
+		Vector3f left = forward.crossProduct(up).normalized(); // remember right-hand rule
 
 		return left;
 	}
 
 	public Vector3f getRight() {
-		Vector3f right = up.crossProduct(forward);
-		right.normalize();
+		Vector3f right = up.crossProduct(forward).normalized();
 
 		return right;
 	}

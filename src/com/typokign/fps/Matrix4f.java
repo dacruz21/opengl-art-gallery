@@ -89,12 +89,9 @@ public class Matrix4f {
 	}
 
 	public Matrix4f initCamera(Vector3f forward, Vector3f up) {
-		Vector3f f = forward;
-		f.normalize();
+		Vector3f f = forward.normalized();
 
-		Vector3f r = up; // right vector
-		r.normalize();
-		r = r.crossProduct(f);
+		Vector3f r = up.normalized().crossProduct(f); // right vector
 
 		Vector3f u = f.crossProduct(r); // re-calculate the up vector
 
@@ -124,7 +121,13 @@ public class Matrix4f {
 	// Getters and setters
 
 	public float[][] getM() {
-		return m;
+		float[][] result = new float[4][4];
+
+		for (int i = 0; i < 4; i++)
+			for (int j = 0; j < 4; j++)
+				result[i][j] = m[i][j];
+
+		return result;
 	}
 
 	public float get(int x, int y) {

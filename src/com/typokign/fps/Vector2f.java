@@ -23,13 +23,8 @@ public class Vector2f {
 	}
 
 	// Normalize, or set length to 1 while maintaining proportions
-	public Vector2f normalize() {
-		float length = length();
-
-		x /= length;
-		y /= length;
-
-		return this;
+	public Vector2f normalized() {
+		return new Vector2f(x / length(), y / length());
 	}
 
 	public Vector2f rotate(float angle) {
