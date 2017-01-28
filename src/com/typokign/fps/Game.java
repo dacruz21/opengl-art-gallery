@@ -75,6 +75,7 @@ public class Game {
 	}
 
 	public void render() {
+		RenderUtil.setClearColor(Transform.getCamera().getPosition().div(2048f).normalize());
 		shader.bind();
 		shader.setUniform("transform", transform.getProjectedTransformation());
 		texture.bind();

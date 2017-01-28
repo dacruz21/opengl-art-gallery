@@ -69,10 +69,10 @@ public class Main {
 				}
 
 				Time.setDelta(frameTime);
-				Input.update();
 
 				game.input();
 				game.update();
+				Input.update();
 
 				// FPS counter
 				if (frameCounter >= Time.SECOND) {

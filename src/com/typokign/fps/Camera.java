@@ -1,17 +1,19 @@
 package com.typokign.fps;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
 
 /**
  * Created by Typo Kign on 1/25/2017.
  */
 public class Camera {
 
-	public static final Vector3f yAxis = new Vector3f(0,1,0); // world-up
+	public static final Vector3f yAxis = new Vector3f(0,1,0); // world-up3
 
 	private Vector3f position;
 	private Vector3f forward; // cam-forward
 	private Vector3f up; // cam-up
+
 
 	public Camera() {
 		this(new Vector3f(0,0,0), new Vector3f(0,0,1), new Vector3f(0,1,0));
@@ -21,14 +23,30 @@ public class Camera {
 		this.position = position;
 		this.forward = forward;
 		this.up = up;
+		mouseLocked = false;
 
 		up.normalize();
 		forward.normalize();
 	}
 
+	boolean mouseLocked = false;
+	Vector2f centerPosition = new Vector2f(Window.getWidth() / 2, Window.getHeight() / 2);
+
 	public void input() {
+		float sensitivity = 0.5f;
 		float movAmt = (float) (10 * Time.getDelta());
-		float rotAmt = (float) (100 * Time.getDelta());
+		//float rotAmt = (float) (100 * Time.getDelta());
+
+		if (Input.getKey(Keyboard.KEY_ESCAPE)) {
+			Input.setCursor(true);
+			mouseLocked = false;
+		}
+
+		if (Input.getMouseDown(0)) {
+			Input.setMousePosition(centerPosition);
+			Input.setCursor(false);
+			mouseLocked = true;
+		}
 
 		if (Input.getKey(Keyboard.KEY_W)) {
 			move(getForward(), movAmt);
@@ -43,18 +61,33 @@ public class Camera {
 			move(getRight(), movAmt);
 		}
 
-		if (Input.getKey(Keyboard.KEY_UP)) {
-			rotateX(-rotAmt);
+		if (mouseLocked) {
+			Vector2f deltaPos = Input.getMousePosition().sub(centerPosition);
+
+			boolean rotY = deltaPos.getX() != 0;
+			boolean rotX = deltaPos.getY() != 0;
+
+			if (rotY)
+				rotateY(deltaPos.getX() * sensitivity);
+			if (rotX)
+				rotateX(-deltaPos.getY() * sensitivity);
+
+			if (rotY || rotX)
+				Input.setMousePosition(new Vector2f(Window.getWidth() / 2, Window.getHeight() / 2));
 		}
-		if (Input.getKey(Keyboard.KEY_DOWN)) {
-			rotateX(rotAmt);
-		}
-		if (Input.getKey(Keyboard.KEY_LEFT)) {
-			rotateY(-rotAmt);
-		}
-		if (Input.getKey(Keyboard.KEY_RIGHT)) {
-			rotateY(rotAmt);
-		}
+
+//		if (Input.getKey(Keyboard.KEY_UP)) {
+//			rotateX(-rotAmt);
+//		}
+//		if (Input.getKey(Keyboard.KEY_DOWN)) {
+//			rotateX(rotAmt);
+//		}
+//		if (Input.getKey(Keyboard.KEY_LEFT)) {
+//			rotateY(-rotAmt);
+//		}
+//		if (Input.getKey(Keyboard.KEY_RIGHT)) {
+//			rotateY(rotAmt);
+//		}
 
 	}
 

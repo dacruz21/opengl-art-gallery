@@ -19,6 +19,10 @@ public class RenderUtil {
 			glDisable(GL_TEXTURE_2D);
 	}
 
+	public static void setClearColor(Vector3f color) {
+		glClearColor(color.getX(), color.getY(), color.getZ(), 1.0f);
+	}
+
 	public static void initGraphics() {
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
