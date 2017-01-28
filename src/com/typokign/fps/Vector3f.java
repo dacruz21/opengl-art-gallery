@@ -103,6 +103,10 @@ public class Vector3f {
 		return new Vector3f(x / r, y / r, z / r);
 	}
 
+	public Vector3f abs() {
+		return new Vector3f(Math.abs(x), Math.abs(y), Math.abs(z));
+	}
+
 	// Getters and setters
 
 	public float getX() {
