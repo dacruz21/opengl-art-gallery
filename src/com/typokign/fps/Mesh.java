@@ -22,6 +22,15 @@ public class Mesh {
 	}
 
 	public void addVertices(Vertex[] vertices, int[] indices) {
+		addVertices(vertices, indices, false);
+	}
+
+	public void addVertices(Vertex[] vertices, int[] indices, boolean calcNormals) {
+
+		if (calcNormals) {
+			calcNormals(vertices, indices);
+		}
+
 		size = indices.length; // the size constant in Vertex is the number of bytes each object takes in memory, all Vertices have the same SIZE regardless of pos value
 
 		// treat vbo as a buffer
@@ -37,15 +46,39 @@ public class Mesh {
 	public void draw() {
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
 
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, Vertex.SIZE * 4, 0);
 		glVertexAttribPointer(1, 2, GL_FLOAT, false, Vertex.SIZE * 4, 12); // 4 bytes per float * 3 floats for position = 12 bytes offset to get texture
+		glVertexAttribPointer(2, 3, GL_FLOAT, false, Vertex.SIZE * 4, 20); // 4 bytes per float * 2 floats for texCoord = 8 more byte offset
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 		glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
+	}
+
+	private void calcNormals(Vertex[] vertices, int[] indices) {
+		for (int i = 0; i < indices.length; i+= 3) { // count by triangles
+			int i0 = indices[i];
+			int i1 = indices[i+1]; // ^ v vertices for triangles
+			int i2 = indices[i+2];
+
+			Vector3f v1 = vertices[i1].getPos().sub(vertices[i0].getPos()); // first face
+			Vector3f v2 = vertices[i2].getPos().sub(vertices[i0].getPos()); // second face
+
+			Vector3f normal = v1.crossProduct(v2).normalized();
+
+			vertices[i0].setNormal(vertices[i0].getNormal().add(normal)); // add the normal to every vertex
+			vertices[i1].setNormal(vertices[i1].getNormal().add(normal)); // add the normal to every vertex
+			vertices[i2].setNormal(vertices[i2].getNormal().add(normal)); // add the normal to every vertex
+		}
+
+		for (int i = 0; i < vertices.length; i++) {
+			vertices[i].setNormal(vertices[i].getNormal().normalized()); // normalize each vector
+		}
 	}
 }
