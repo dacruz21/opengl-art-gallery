@@ -20,10 +20,10 @@ public class Game {
 		shader = PhongShader.getInstance();
 		transform = new Transform();
 
-		Vertex[] vertices = new Vertex[] { new Vertex( new Vector3f(-1.0f, -1.0f, 0.5773f),	new Vector2f(0.0f, 0.0f)),
-				new Vertex( new Vector3f(0.0f, -1.0f, -1.15475f),		new Vector2f(0.5f, 0.0f)),
-				new Vertex( new Vector3f(1.0f, -1.0f, 0.5773f),		new Vector2f(1.0f, 0.0f)),
-				new Vertex( new Vector3f(0.0f, 1.0f, 0.0f),      new Vector2f(0.5f, 1.0f)) };
+		Vertex[] vertices = new Vertex[] { new Vertex( new Vector3f(-1.0f, -1.0f, 0.5773f),	 new Vector2f(0.0f, 0.0f)),
+										   new Vertex( new Vector3f(0.0f, -1.0f, -1.15475f),	new Vector2f(0.5f, 0.0f)),
+										   new Vertex( new Vector3f(1.0f, -1.0f, 0.5773f),		new Vector2f(1.0f, 0.0f)),
+										   new Vertex( new Vector3f(0.0f, 1.0f, 0.0f),			new Vector2f(0.5f, 1.0f)) };
 
 		int indices[] = { 0, 3, 1,
 				1, 3, 2,
@@ -37,6 +37,11 @@ public class Game {
 
 		PhongShader.setAmbientLight(new Vector3f(0.1f,0.1f,0.1f));
 		PhongShader.setDirectionalLight(new DirectionalLight(new BaseLight(new Vector3f(1,1,1), 0.8f), new Vector3f(1,1,1)));
+
+		PointLight pLight1 = new PointLight(new BaseLight(new Vector3f(1,0.5f,0), 0.8f), Attenuation.ACCURATE, new Vector3f(-2, 0, 3));
+		PointLight pLight2 = new PointLight(new BaseLight(new Vector3f(0,0.5f,1), 0.8f), Attenuation.ACCURATE, new Vector3f(2, 0, 7));
+
+		PhongShader.setPointLights(new PointLight[] {pLight1, pLight2});
 	}
 
 	public void input() {

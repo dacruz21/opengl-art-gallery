@@ -38,9 +38,9 @@ public class RenderUtil {
 		// don't render a face if it is behind another face
 		glEnable(GL_DEPTH_TEST);
 
+		// fixes issues if a camera is right on the border of a face
 		glEnable(GL_DEPTH_CLAMP);
 
-		// auto-gamma correction to the SRGB space
 		glEnable(GL_TEXTURE_2D);
 		//glEnable(GL_FRAMEBUFFER_SRGB);
 	}
