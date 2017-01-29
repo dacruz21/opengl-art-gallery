@@ -28,6 +28,10 @@ public class PhongShader extends Shader {
 		addUniform("baseColor");
 		addUniform("ambientLight");
 
+		addUniform("specularIntensity");
+		addUniform("specularExponent");
+		addUniform("cameraPos");
+
 		addUniform("directionalLight.base.color"); // directionalLight is a struct, and Java doesn't have structs. thus we access the components of the struct as separate uniforms
 		addUniform("directionalLight.base.intensity");
 		addUniform("directionalLight.direction");
@@ -44,8 +48,14 @@ public class PhongShader extends Shader {
 		setUniform("transformProjected", projectedMatrix);
 		setUniform("transform", worldMatrix);
 		setUniform("baseColor", material.getColor());
+
 		setUniform("ambientLight", ambientLight);
 		setUniform("directionalLight", directionalLight); // this uses the overloaded methods below, because structs are a huge pain
+
+		setUniformf("specularIntensity", material.getSpecularIntensity());
+		setUniformf("specularExponent", material.getSpecularExponent());
+
+		setUniform("cameraPos", Transform.getCamera().getPosition());
 	}
 
 	public static Vector3f getAmbientLight() {
