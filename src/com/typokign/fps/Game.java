@@ -38,8 +38,8 @@ public class Game {
 		PhongShader.setAmbientLight(new Vector3f(0.1f,0.1f,0.1f));
 		PhongShader.setDirectionalLight(new DirectionalLight(new BaseLight(new Vector3f(1,1,1), 0.8f), new Vector3f(1,1,1)));
 
-		PointLight pLight1 = new PointLight(new BaseLight(new Vector3f(1,0.5f,0), 0.8f), Attenuation.ACCURATE, new Vector3f(-2, 0, 3));
-		PointLight pLight2 = new PointLight(new BaseLight(new Vector3f(0,0.5f,1), 0.8f), Attenuation.ACCURATE, new Vector3f(2, 0, 7));
+		PointLight pLight1 = new PointLight(new BaseLight(new Vector3f(1,0.5f,0), 0.8f), Attenuation.ACCURATE, new Vector3f(-2, 0, 3), 6);
+		PointLight pLight2 = new PointLight(new BaseLight(new Vector3f(0,0.5f,1), 0.8f), Attenuation.ACCURATE, new Vector3f(2, 0, 7), 6);
 
 		PhongShader.setPointLights(new PointLight[] {pLight1, pLight2});
 	}

@@ -36,6 +36,7 @@ struct PointLight {
 	BaseLight base;
 	Attenuation atten;
 	vec3 position;
+	float range;
 };
 
 uniform DirectionalLight directionalLight; // max 1
@@ -71,6 +72,11 @@ vec4 calcDirectionalLight(DirectionalLight directionalLight, vec3 normal) {
 vec4 calcPointLight(PointLight pointLight, vec3 normal) {
 	vec3 lightDirection = worldPosition0 - pointLight.position;
 	float distanceToPoint = length(lightDirection); // put this in a var so we can normalize direction
+
+	if (distanceToPoint > pointLight.range) {
+		return vec4(0,0,0,0);
+	}
+
 	lightDirection = normalize(lightDirection);
 
 	// standard light calculation for a light, direction, and normal
@@ -100,7 +106,9 @@ void main() {
 	totalLight += calcDirectionalLight(directionalLight, normal);
 
 	for (int i = 0; i < MAX_POINT_LIGHTS; i++) {
-		totalLight += calcPointLight(pointLights[i], normal); // remember pointLights is an array, so we need to loop thru it
+		if (pointLights[i].base.intensity > 0) {
+			totalLight += calcPointLight(pointLights[i], normal); // remember pointLights is an array, so we need to loop thru it
+		}
 	}
 
 	fragColor = color * totalLight;
