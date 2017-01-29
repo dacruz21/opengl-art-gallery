@@ -8,7 +8,7 @@ import org.lwjgl.input.Keyboard;
 public class Game {
 
 	private Mesh mesh;
-	private Shader shader;
+	private PhongShader shader;
 	private Material material;
 	private Transform transform;
 	private Camera camera;
@@ -16,8 +16,9 @@ public class Game {
 	public Game() {
 		mesh = new Mesh();//ResourceLoader.loadMesh("cube.obj");
 		camera = new Camera();
-		material = new Material(ResourceLoader.loadTexture("test.png"), new Vector3f(0,1,1));
-		shader = BasicShader.getInstance();
+		material = new Material(ResourceLoader.loadTexture("test.png"), new Vector3f(1,1,1));
+		shader = PhongShader.getInstance();
+		transform = new Transform();
 
         Vertex[] vertices = new Vertex[] {new Vertex(new Vector3f(-0.9f, -0.9f, 0), new Vector2f(0,0)),
                                       new Vertex(new Vector3f(0, 0.9f, 0), new Vector2f(0.5f, 0)),
@@ -33,7 +34,8 @@ public class Game {
 
 		Transform.setProjection(70, Main.WIDTH, Main.HEIGHT, 0.1f, 1000);
 		Transform.setCamera(camera);
-		transform = new Transform();
+
+		PhongShader.setAmbientLight(new Vector3f(0.1f,0.1f,0.1f));
 	}
 
 	public void input() {
