@@ -1,7 +1,7 @@
 package com.typokign.fps;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL32.*;
 
 /**
  * Created by Typo Kign on 1/21/2017.
@@ -38,11 +38,11 @@ public class RenderUtil {
 		// don't render a face if it is behind another face
 		glEnable(GL_DEPTH_TEST);
 
-		//TODO: depth clamping
+		glEnable(GL_DEPTH_CLAMP);
 
 		// auto-gamma correction to the SRGB space
 		glEnable(GL_TEXTURE_2D);
-		glEnable(GL_FRAMEBUFFER_SRGB);
+		//glEnable(GL_FRAMEBUFFER_SRGB);
 	}
 
 	public static String getOpenGLVersion() {
