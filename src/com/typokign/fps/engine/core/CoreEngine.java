@@ -7,27 +7,36 @@ import com.typokign.fps.engine.rendering.Window;
 /**
  * Created by Typo Kign on 1/21/2017.
  */
-public class Main {
-
-	public static final int WIDTH = 800;
-	public static final int HEIGHT = 600;
-	public static final String TITLE = "Spring Final";
-	public static final double FRAME_CAP = 5000.0;
-
+public class CoreEngine {
 	private boolean isRunning;
 	private Game game;
+	private int width;
+	private int height;
+	private double frameTime; // not framerate, but the amount of time allowed to each frame
 
-	public Main() {
+	public CoreEngine(int width, int height, double framerate, Game game) {
+		this.isRunning = false;
+		this.game = game;
+		this.width = width;
+		this.height = height;
+		this.frameTime = 1 / framerate;
+	}
+
+	private void initializeRenderingSystem() {
 		System.out.println("OpenGL Version: " + RenderUtil.getOpenGLVersion());
 		RenderUtil.initGraphics();
-		isRunning = false;
-		game = new Game();
+	}
+
+	public void createWindow(String title) {
+		Window.createWindow(width, height, title);
+		initializeRenderingSystem();
 	}
 
 	// Initialization code
 	public void start() {
 		if (isRunning) return;
 
+		game.init();
 		run();
 	}
 
@@ -38,15 +47,12 @@ public class Main {
 		isRunning = false;
 	}
 
-	// Main loop
+	// CoreEngine loop
 	private void run() {
 		isRunning = true;
 
 		int frames = 0;
 		long frameCounter = 0;
-
-		// The length of one frame, frequency (frame cap)^-1
-		final double frameTime = 1.0 / FRAME_CAP;
 
 		long lastTime = Time.getTime();
 		double unprocessedTime = 0;
@@ -111,12 +117,5 @@ public class Main {
 	// Garbage collection
 	private void cleanUp() {
 		Window.dispose();
-	}
-
-	public static void main(String[] args) {
-		Window.createWindow(WIDTH, HEIGHT, TITLE);
-
-		Main main = new Main();
-		main.start();
 	}
 }
