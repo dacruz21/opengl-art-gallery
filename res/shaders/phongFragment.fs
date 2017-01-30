@@ -1,6 +1,7 @@
 #version 330
 
 const int MAX_POINT_LIGHTS = 4; // max point lights PER PIXEL, not per level. this is REALLY expensive to increase
+const int MAX_SPOT_LIGHTS = 4; // same as above
 
 in vec2 texCoord0;
 in vec3 normal0;
@@ -39,8 +40,15 @@ struct PointLight {
 	float range;
 };
 
+struct SpotLight {
+	PointLight pointLight;
+	vec3 direction;
+	float cutoff;
+};
+
 uniform DirectionalLight directionalLight; // max 1
 uniform PointLight pointLights[MAX_POINT_LIGHTS]; // array of max point lights
+uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 
 vec4 calcLight(BaseLight base, vec3 direction, vec3 normal) {
 	float diffuseFactor = dot(normal, -direction);
@@ -91,6 +99,20 @@ vec4 calcPointLight(PointLight pointLight, vec3 normal) {
 	return color / attenuation;
 }
 
+vec4 calcSpotLight(SpotLight spotLight, vec3 normal) {
+	vec3 lightDirection = normalize(worldPosition0 - spotLight.pointLight.position);
+	float spotFactor = dot(lightDirection, spotLight.direction);
+
+	vec4 color = vec4(0,0,0,0);
+
+	if (spotFactor > spotLight.cutoff) {
+		color = calcPointLight(spotLight.pointLight, normal) *
+				(1.0 - (1.0 - spotFactor) / (1.0 - spotLight.cutoff));
+	}
+
+	return color;
+}
+
 void main() {
 	vec4 totalLight = vec4(ambientLight, 1);
 	vec4 color = vec4(baseColor, 1);
@@ -110,6 +132,12 @@ void main() {
 			totalLight += calcPointLight(pointLights[i], normal); // remember pointLights is an array, so we need to loop thru it
 		}
 	}
+
+	for (int i = 0; i < MAX_SPOT_LIGHTS; i++) {
+    	if (spotLights[i].pointLight.base.intensity > 0) {
+    		totalLight += calcSpotLight(spotLights[i], normal); // remember pointLights is an array, so we need to loop thru it
+    	}
+    }
 
 	fragColor = color * totalLight;
 }

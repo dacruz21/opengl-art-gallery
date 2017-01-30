@@ -13,6 +13,9 @@ public class Game {
 	private Transform transform;
 	private Camera camera;
 
+	SpotLight sLight1 = new SpotLight(new PointLight(new BaseLight(new Vector3f(0,1,1), 0.8f), Attenuation.ACCURATE, new Vector3f(-2, 0, 3), 6), new Vector3f(1, 1, 1), 0.7f);
+
+
 	public Game() {
 		mesh = new Mesh();//ResourceLoader.loadMesh("cube.obj");
 		camera = new Camera();
@@ -42,6 +45,8 @@ public class Game {
 		PointLight pLight2 = new PointLight(new BaseLight(new Vector3f(0,0.5f,1), 0.8f), Attenuation.ACCURATE, new Vector3f(2, 0, 7), 6);
 
 		PhongShader.setPointLights(new PointLight[] {pLight1, pLight2});
+
+		PhongShader.setSpotLights(new SpotLight[] {sLight1});
 	}
 
 	public void input() {
@@ -74,6 +79,9 @@ public class Game {
 		transform.setTranslation((float) sinTemp, 0, 5);
 		transform.setRotation(0, sinTemp * 180, 0);
 		transform.setScale(1, 1, 1);
+
+		sLight1.getPointLight().setPosition(camera.getPosition());
+		sLight1.setDirection(camera.getForward());
 	}
 
 	public void render() {
