@@ -11,8 +11,11 @@ import static org.lwjgl.opengl.GL11.*;
  * Created by Typo Kign on 1/26/2017.
  */
 public class Texture {
-
 	private int id;
+
+	public Texture(String filename) {
+		this(loadTexture(filename));
+	}
 
 	public Texture(int id) {
 		this.id = id;
@@ -26,7 +29,7 @@ public class Texture {
 		return id;
 	}
 
-	public static Texture loadTexture(String filename) {
+	private static int loadTexture(String filename) {
 
 		String[] splitArray = filename.split("\\.");
 		String fileExtension = splitArray[splitArray.length - 1];
@@ -34,12 +37,12 @@ public class Texture {
 		try {
 			int id = TextureLoader.getTexture(fileExtension, new FileInputStream(new File("./res/textures/" + filename))).getTextureID();
 
-			return new Texture(id);
+			return id;
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
 
-		return null;
+		return 0;
 	}
 }

@@ -17,9 +17,8 @@ public class Game {
 
 
 	public Game() {
-		mesh = new Mesh();//Mesh.loadMesh("cube.obj");
 		camera = new Camera();
-		material = new Material(Texture.loadTexture("test.png"), new Vector3f(1,1,1));
+		material = new Material(new Texture("test.png"), new Vector3f(1,1,1));
 		shader = PhongShader.getInstance();
 		transform = new Transform();
 
@@ -33,7 +32,7 @@ public class Game {
 				2, 3, 0,
 				1, 2, 0 };
 
-        mesh.addVertices(vertices, indices, true);
+        mesh = new Mesh(vertices, indices, true);
 
 		Transform.setProjection(70, Main.WIDTH, Main.HEIGHT, 0.1f, 1000);
 		Transform.setCamera(camera);

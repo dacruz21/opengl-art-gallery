@@ -19,17 +19,27 @@ public class Mesh {
 	private int ibo;
 	private int size;
 
-	public Mesh() {
-		this.vbo = glGenBuffers();
-		this.ibo = glGenBuffers();
-		this.size = 0;
+	public Mesh(String filename) {
+		initMeshData();
+		loadMesh(filename);
 	}
 
-	public void addVertices(Vertex[] vertices, int[] indices) {
-		addVertices(vertices, indices, false);
+	public Mesh(Vertex[] vertices, int[] indices) {
+		this(vertices, indices, false);
 	}
 
-	public void addVertices(Vertex[] vertices, int[] indices, boolean calcNormals) {
+	public Mesh(Vertex[] vertices, int[] indices, boolean calcNormals) {
+		initMeshData();
+		addVertices(vertices, indices, calcNormals);
+	}
+
+	private void initMeshData() {
+		vbo = glGenBuffers();
+		ibo = glGenBuffers();
+		size = 0;
+	}
+
+	private void addVertices(Vertex[] vertices, int[] indices, boolean calcNormals) {
 
 		if (calcNormals) {
 			calcNormals(vertices, indices);
@@ -86,7 +96,7 @@ public class Mesh {
 		}
 	}
 
-	public static Mesh loadMesh(String fileName) {
+	private Mesh loadMesh(String fileName) {
 		String[] splitArray = fileName.split("\\."); // get the file extension via regex splitting
 		String fileExtension = splitArray[splitArray.length - 1]; // last element will be extension
 
@@ -127,16 +137,19 @@ public class Mesh {
 			}
 
 			meshReader.close();
+
+			Vertex[] vertexData = vertices.toArray(new Vertex[vertices.size()]);
+			vertices.toArray(vertexData);
+
+			Integer[] indexData = indices.toArray(new Integer[indices.size()]);
+			indices.toArray(indexData);
+
+			addVertices(vertexData, Util.toIntArray(indexData), true);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
 
-		Mesh result = new Mesh();
-		Vertex[] vertexData = vertices.toArray(new Vertex[vertices.size()]);
-		Integer[] indexData = indices.toArray(new Integer[indices.size()]);
-		result.addVertices(vertexData, Util.toIntArray(indexData));
-
-		return result;
+		return null;
 	}
 }
