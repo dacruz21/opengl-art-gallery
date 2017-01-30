@@ -1,5 +1,7 @@
 package com.typokign.fps;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL20.*;
@@ -108,5 +110,25 @@ public class Shader {
 		}
 
 		glAttachShader(program, shader);
+	}
+
+	public static String loadShader(String fileName) {
+		StringBuilder shaderSource = new StringBuilder();
+
+		try {
+			BufferedReader shaderReader = new BufferedReader(new FileReader("./res/shaders/" + fileName));
+
+			String line;
+			while ((line  = shaderReader.readLine()) != null) {
+				shaderSource.append(line).append("\n");
+			}
+
+			shaderReader.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		return shaderSource.toString();
 	}
 }

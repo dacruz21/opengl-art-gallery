@@ -17,9 +17,9 @@ public class Game {
 
 
 	public Game() {
-		mesh = new Mesh();//ResourceLoader.loadMesh("cube.obj");
+		mesh = new Mesh();//Mesh.loadMesh("cube.obj");
 		camera = new Camera();
-		material = new Material(ResourceLoader.loadTexture("test.png"), new Vector3f(1,1,1));
+		material = new Material(Texture.loadTexture("test.png"), new Vector3f(1,1,1));
 		shader = PhongShader.getInstance();
 		transform = new Transform();
 
