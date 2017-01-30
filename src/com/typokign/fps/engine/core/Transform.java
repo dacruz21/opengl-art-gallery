@@ -1,4 +1,6 @@
-package com.typokign.fps;
+package com.typokign.fps.engine.core;
+
+import com.typokign.fps.engine.rendering.Camera;
 
 /**
  * Created by Typo Kign on 1/23/2017.

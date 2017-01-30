@@ -1,4 +1,4 @@
-package com.typokign.fps;
+package com.typokign.fps.engine.rendering;
 
 /**
  * Created by Typo Kign on 1/29/2017.

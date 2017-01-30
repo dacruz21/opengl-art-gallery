@@ -1,7 +1,10 @@
-package com.typokign.fps;
+package com.typokign.fps.engine.rendering;
 
+import com.typokign.fps.engine.core.Input;
+import com.typokign.fps.engine.core.Time;
+import com.typokign.fps.engine.core.Vector2f;
+import com.typokign.fps.engine.core.Vector3f;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
 
 /**
  * Created by Typo Kign on 1/25/2017.

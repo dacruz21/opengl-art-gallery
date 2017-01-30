@@ -1,4 +1,8 @@
-package com.typokign.fps;
+package com.typokign.fps.engine.rendering;
+
+import com.typokign.fps.engine.core.Util;
+import com.typokign.fps.engine.core.Vector3f;
+import org.lwjgl.opengl.GL15;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -51,7 +55,7 @@ public class Mesh {
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 		// buffer all of our vertices, but we need to do some wacky stuff to flip the buffer
-		glBufferData(GL_ARRAY_BUFFER, Util.createFlippedBuffer(vertices), GL_STATIC_DRAW);
+		GL15.glBufferData(GL_ARRAY_BUFFER, Util.createFlippedBuffer(vertices), GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, Util.createFlippedBuffer(indices), GL_STATIC_DRAW);

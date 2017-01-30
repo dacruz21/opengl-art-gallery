@@ -1,6 +1,7 @@
 package com.typokign.fps;
 
-import org.lwjgl.input.Keyboard;
+import com.typokign.fps.engine.core.*;
+import com.typokign.fps.engine.rendering.*;
 
 /**
  * Created by Typo Kign on 1/21/2017.
@@ -32,7 +33,7 @@ public class Game {
 				2, 3, 0,
 				1, 2, 0 };
 
-        mesh = new Mesh(vertices, indices, true);
+        mesh = new Mesh(vertices, indices, true); // new Mesh("cube.obj");
 
 		Transform.setProjection(70, Main.WIDTH, Main.HEIGHT, 0.1f, 1000);
 		Transform.setCamera(camera);
@@ -49,22 +50,6 @@ public class Game {
 	}
 
 	public void input() {
-//		if (Input.getKeyDown(Keyboard.KEY_UP)) {
-//			System.out.println("Up pressed!");
-//		}
-//
-//		if (Input.getKeyUp(Keyboard.KEY_UP)) {
-//			System.out.println("Up released!");
-//		}
-//
-//		if (Input.getMouseDown(1)) {
-//			System.out.println("Right clicked at " + Input.getMousePosition() + "!");
-//		}
-//
-//		if (Input.getMouseUp(1)) {
-//			System.out.println("Right released!");
-//		}
-
 		camera.input();
 	}
 

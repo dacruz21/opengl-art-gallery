@@ -1,4 +1,7 @@
-package com.typokign.fps;
+package com.typokign.fps.engine.rendering;
+
+import com.typokign.fps.engine.core.Vector2f;
+import com.typokign.fps.engine.core.Vector3f;
 
 /**
  * Created by Typo Kign on 1/21/2017.

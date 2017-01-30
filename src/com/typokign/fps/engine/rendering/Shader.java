@@ -1,4 +1,8 @@
-package com.typokign.fps;
+package com.typokign.fps.engine.rendering;
+
+import com.typokign.fps.engine.core.Matrix4f;
+import com.typokign.fps.engine.core.Util;
+import com.typokign.fps.engine.core.Vector3f;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

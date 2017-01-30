@@ -1,4 +1,8 @@
-package com.typokign.fps;
+package com.typokign.fps.engine.core;
+
+import com.typokign.fps.Game;
+import com.typokign.fps.engine.rendering.RenderUtil;
+import com.typokign.fps.engine.rendering.Window;
 
 /**
  * Created by Typo Kign on 1/21/2017.

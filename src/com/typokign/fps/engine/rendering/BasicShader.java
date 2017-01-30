@@ -1,4 +1,6 @@
-package com.typokign.fps;
+package com.typokign.fps.engine.rendering;
+
+import com.typokign.fps.engine.core.Matrix4f;
 
 /**
  * Created by Typo Kign on 1/28/2017.

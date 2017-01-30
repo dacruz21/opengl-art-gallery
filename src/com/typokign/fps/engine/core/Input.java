@@ -1,9 +1,7 @@
-package com.typokign.fps;
+package com.typokign.fps.engine.core;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-
-import java.util.ArrayList;
 
 /**
  * Created by Typo Kign on 1/21/2017.

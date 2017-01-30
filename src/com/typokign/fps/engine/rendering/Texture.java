@@ -1,4 +1,4 @@
-package com.typokign.fps;
+package com.typokign.fps.engine.rendering;
 
 import org.newdawn.slick.opengl.TextureLoader;
 
