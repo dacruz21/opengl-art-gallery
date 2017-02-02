@@ -21,7 +21,9 @@ public class Transform {
 	public Transform() {
 		translation = new Vector3f(0,0,0);
 		rotation = new Vector3f(0, 0, 0);
-		scale = new Vector3f(0, 0, 0);
+
+		// note to self; don't set this default to 0,0,0. 48 hours of debugging for this
+		scale = new Vector3f(1, 1, 1);
 	}
 
 	public Transform(Vector3f translation, Vector3f rotation, Vector3f scale) {

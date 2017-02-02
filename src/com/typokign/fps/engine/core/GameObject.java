@@ -44,11 +44,13 @@ public class GameObject {
 	}
 
 	public void render() {
-		for (GameComponent component : components)
+		for (GameComponent component : components) {
 			component.render(transform);
+		}
 
-		for (GameObject child : children)
+		for (GameObject child : children) {
 			child.render();
+		}
 	}
 
 	public Transform getTransform() {

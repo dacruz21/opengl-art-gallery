@@ -54,6 +54,8 @@ public class CoreEngine {
 		int frames = 0;
 		long frameCounter = 0;
 
+		game.init();
+
 		long lastTime = Time.getTime();
 		double unprocessedTime = 0;
 
@@ -81,8 +83,9 @@ public class CoreEngine {
 				Time.setDelta(frameTime);
 
 				game.input();
-				game.update();
 				Input.update();
+
+				game.update();
 
 				// FPS counter
 				if (frameCounter >= Time.SECOND) {
@@ -94,6 +97,7 @@ public class CoreEngine {
 
 			if (render) {
 				render();
+				game.render();
 				frames++;
 			} else {
 				try {
