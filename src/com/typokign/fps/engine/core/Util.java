@@ -1,5 +1,6 @@
 package com.typokign.fps.engine.core;
 
+import com.typokign.fps.engine.math.Matrix4f;
 import com.typokign.fps.engine.rendering.Vertex;
 import org.lwjgl.BufferUtils;
 

@@ -2,8 +2,8 @@ package com.typokign.fps.engine.rendering;
 
 import com.typokign.fps.engine.core.Input;
 import com.typokign.fps.engine.core.Time;
-import com.typokign.fps.engine.core.Vector2f;
-import com.typokign.fps.engine.core.Vector3f;
+import com.typokign.fps.engine.math.Vector2f;
+import com.typokign.fps.engine.math.Vector3f;
 import org.lwjgl.input.Keyboard;
 
 /**

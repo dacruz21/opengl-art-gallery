@@ -1,5 +1,7 @@
 package com.typokign.fps.engine.core;
 
+import com.typokign.fps.engine.math.Matrix4f;
+import com.typokign.fps.engine.math.Vector3f;
 import com.typokign.fps.engine.rendering.Camera;
 
 /**

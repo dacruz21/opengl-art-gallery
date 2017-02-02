@@ -1,5 +1,6 @@
 package com.typokign.fps.engine.core;
 
+import com.typokign.fps.engine.math.Vector2f;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 

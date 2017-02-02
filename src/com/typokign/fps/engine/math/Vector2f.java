@@ -1,4 +1,4 @@
-package com.typokign.fps.engine.core;
+package com.typokign.fps.engine.math;
 
 /**
  * Created by Typo Kign on 1/21/2017.

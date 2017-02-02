@@ -1,6 +1,8 @@
 package com.typokign.fps;
 
 import com.typokign.fps.engine.core.*;
+import com.typokign.fps.engine.math.Vector2f;
+import com.typokign.fps.engine.math.Vector3f;
 import com.typokign.fps.engine.rendering.*;
 
 /**

@@ -1,8 +1,8 @@
 package com.typokign.fps.engine.rendering;
 
-import com.typokign.fps.engine.core.Matrix4f;
+import com.typokign.fps.engine.math.Matrix4f;
 import com.typokign.fps.engine.core.Transform;
-import com.typokign.fps.engine.core.Vector3f;
+import com.typokign.fps.engine.math.Vector3f;
 
 /**
  * Created by Typo Kign on 1/28/2017.

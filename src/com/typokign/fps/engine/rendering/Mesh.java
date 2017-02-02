@@ -1,7 +1,7 @@
 package com.typokign.fps.engine.rendering;
 
 import com.typokign.fps.engine.core.Util;
-import com.typokign.fps.engine.core.Vector3f;
+import com.typokign.fps.engine.math.Vector3f;
 import org.lwjgl.opengl.GL15;
 
 import java.io.BufferedReader;
