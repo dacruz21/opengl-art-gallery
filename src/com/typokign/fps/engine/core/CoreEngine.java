@@ -1,7 +1,5 @@
 package com.typokign.fps.engine.core;
 
-import com.typokign.fps.Game;
-import com.typokign.fps.engine.rendering.RenderUtil;
 import com.typokign.fps.engine.rendering.Window;
 
 /**
@@ -10,6 +8,7 @@ import com.typokign.fps.engine.rendering.Window;
 public class CoreEngine {
 	private boolean isRunning;
 	private Game game;
+	private RenderingEngine renderingEngine;
 	private int width;
 	private int height;
 	private double frameTime; // not framerate, but the amount of time allowed to each frame
@@ -22,14 +21,9 @@ public class CoreEngine {
 		this.frameTime = 1 / framerate;
 	}
 
-	private void initializeRenderingSystem() {
-		System.out.println("OpenGL Version: " + RenderUtil.getOpenGLVersion());
-		RenderUtil.initGraphics();
-	}
-
 	public void createWindow(String title) {
 		Window.createWindow(width, height, title);
-		initializeRenderingSystem();
+		this.renderingEngine = new RenderingEngine();
 	}
 
 	// Initialization code
@@ -96,8 +90,8 @@ public class CoreEngine {
 			}
 
 			if (render) {
-				render();
-				game.render();
+				renderingEngine.render(game.getRootObject());
+				Window.render();
 				frames++;
 			} else {
 				try {
@@ -109,13 +103,6 @@ public class CoreEngine {
 		}
 
 		cleanUp();
-	}
-
-	// Display updating
-	private void render() {
-		RenderUtil.clearScreen();
-		game.render();
-		Window.render();
 	}
 
 	// Garbage collection

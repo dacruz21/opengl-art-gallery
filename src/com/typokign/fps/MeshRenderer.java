@@ -2,7 +2,6 @@ package com.typokign.fps;
 
 import com.typokign.fps.engine.core.GameComponent;
 import com.typokign.fps.engine.core.Transform;
-import com.typokign.fps.engine.rendering.BasicShader;
 import com.typokign.fps.engine.rendering.Material;
 import com.typokign.fps.engine.rendering.Mesh;
 import com.typokign.fps.engine.rendering.Shader;
@@ -31,9 +30,7 @@ public class MeshRenderer implements GameComponent {
 	}
 
 	@Override
-	public void render(Transform transform) {
-		Shader shader = BasicShader.getInstance();
-
+	public void render(Transform transform, Shader shader) {
 		shader.bind();
 		shader.updateUniforms(transform.getTransformation(), transform.getProjectedTransformation(), material);
 		mesh.draw();
