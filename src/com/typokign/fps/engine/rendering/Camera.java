@@ -53,17 +53,24 @@ public class Camera {
 			mouseLocked = true;
 		}
 
+		int factor = 1;
+
+		if (Input.getKey(Keyboard.KEY_LSHIFT) || Input.getKey(Keyboard.KEY_RSHIFT))
+			factor = 2;
+		else
+			factor = 1;
+
 		if (Input.getKey(Keyboard.KEY_W)) {
-			move(getForward(), movAmt);
+			move(getForward(), movAmt * factor);
 		}
 		if (Input.getKey(Keyboard.KEY_S)) {
-			move(getForward(), -movAmt);
+			move(getForward(), -movAmt * factor);
 		}
 		if (Input.getKey(Keyboard.KEY_A)) {
-			move(getLeft(), movAmt);
+			move(getLeft(), movAmt * factor);
 		}
 		if (Input.getKey(Keyboard.KEY_D)) {
-			move(getRight(), movAmt);
+			move(getRight(), movAmt * factor);
 		}
 
 		if (mouseLocked) {

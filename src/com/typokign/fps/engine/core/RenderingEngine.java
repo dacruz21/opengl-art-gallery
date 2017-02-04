@@ -12,6 +12,8 @@ import static org.lwjgl.opengl.GL32.*;
 public class RenderingEngine {
 	private Camera mainCamera;
 	private Vector3f ambientLight;
+	private DirectionalLight directionalLight;
+	private DirectionalLight directionalLight2;
 
 	public RenderingEngine() {
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -32,10 +34,16 @@ public class RenderingEngine {
 		mainCamera = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f, 1000.0f);
 
 		ambientLight = new Vector3f(0.2f, 0.2f, 0.2f);
+		directionalLight = new DirectionalLight(new BaseLight(new Vector3f(0,0,1), 0.4f), new Vector3f(1,1,1));
+		directionalLight2 = new DirectionalLight(new BaseLight(new Vector3f(1,0,0), 0.4f), new Vector3f(-1,1,-1));
 	}
 
 	public Vector3f getAmbientLight() {
 		return ambientLight;
+	}
+
+	public DirectionalLight getDirectionalLight() {
+		return directionalLight;
 	}
 
 	public void input(float delta) {
@@ -46,14 +54,32 @@ public class RenderingEngine {
 		clearScreen();
 
 		Shader forwardAmbient = ForwardAmbient.getInstance();
+		Shader forwardDirectional = ForwardDirectional.getInstance();
 		forwardAmbient.setRenderingEngine(this);
+		forwardDirectional.setRenderingEngine(this);
 
 		object.render(forwardAmbient);
 
-//		Shader shader = BasicShader.getInstance();
-//		shader.setRenderingEngine(this);
-//
-//		object.render(shader);
+		glEnable(GL_BLEND); // prepare to blend multiple colors on each pass
+		glBlendFunc(GL_ONE, GL_ONE); // coefficients of a(existing color) * b(new color), we just want the colors multiplied together so a and b should be one
+		glDepthMask(false); // ignore depth buffer while blending
+		glDepthFunc(GL_EQUAL);
+
+		object.render(forwardDirectional);
+
+		DirectionalLight swap = directionalLight;
+		directionalLight = directionalLight2;
+		directionalLight2 = swap;
+
+		object.render(forwardDirectional);
+
+		swap = directionalLight;
+		directionalLight = directionalLight2;
+		directionalLight2 = swap;
+
+		glDepthFunc(GL_LESS); // revert changes above
+		glDepthMask(true);
+		glDisable(GL_BLEND);
 	}
 
 	private static void clearScreen() {
