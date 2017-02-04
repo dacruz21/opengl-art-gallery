@@ -11,13 +11,4 @@ public class Time {
 	public static double getTime() {
 		return System.nanoTime() / (double) SECOND;
 	}
-
-	// Time since last frame
-	public static double getDelta() {
-		return delta;
-	}
-
-	public static void setDelta(double delta) {
-		Time.delta = delta;
-	}
 }

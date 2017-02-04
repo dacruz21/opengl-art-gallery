@@ -74,14 +74,12 @@ public class CoreEngine {
 					stop();
 				}
 
-				Time.setDelta(frameTime);
-
-				game.input();
+				game.input((float) frameTime);
 				// TODO: temp
-				renderingEngine.input();
+				renderingEngine.input((float) frameTime);
 				Input.update();
 
-				game.update();
+				game.update((float) frameTime);
 
 				// FPS counter
 				if (frameCounter >= 1) {
