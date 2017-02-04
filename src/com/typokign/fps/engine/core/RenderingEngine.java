@@ -1,10 +1,7 @@
 package com.typokign.fps.engine.core;
 
 import com.typokign.fps.engine.math.Vector3f;
-import com.typokign.fps.engine.rendering.BasicShader;
-import com.typokign.fps.engine.rendering.Camera;
-import com.typokign.fps.engine.rendering.Shader;
-import com.typokign.fps.engine.rendering.Window;
+import com.typokign.fps.engine.rendering.*;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL32.*;
@@ -14,6 +11,7 @@ import static org.lwjgl.opengl.GL32.*;
  */
 public class RenderingEngine {
 	private Camera mainCamera;
+	private Vector3f ambientLight;
 
 	public RenderingEngine() {
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -32,6 +30,12 @@ public class RenderingEngine {
 		glEnable(GL_TEXTURE_2D);
 
 		mainCamera = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f, 1000.0f);
+
+		ambientLight = new Vector3f(0.2f, 0.2f, 0.2f);
+	}
+
+	public Vector3f getAmbientLight() {
+		return ambientLight;
 	}
 
 	public void input(float delta) {
@@ -41,10 +45,15 @@ public class RenderingEngine {
 	public void render(GameObject object) {
 		clearScreen();
 
-		Shader shader = BasicShader.getInstance();
-		shader.setRenderingEngine(this);
+		Shader forwardAmbient = ForwardAmbient.getInstance();
+		forwardAmbient.setRenderingEngine(this);
 
-		object.render(shader);
+		object.render(forwardAmbient);
+
+//		Shader shader = BasicShader.getInstance();
+//		shader.setRenderingEngine(this);
+//
+//		object.render(shader);
 	}
 
 	private static void clearScreen() {
