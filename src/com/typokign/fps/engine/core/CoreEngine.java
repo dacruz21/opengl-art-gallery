@@ -46,23 +46,23 @@ public class CoreEngine {
 		isRunning = true;
 
 		int frames = 0;
-		long frameCounter = 0;
+		double frameCounter = 0;
 
 		game.init();
 
-		long lastTime = Time.getTime();
+		double lastTime = Time.getTime();
 		double unprocessedTime = 0;
 
 		while (isRunning) {
 			boolean render = false;
 
 			// Calculate the time between each frame
-			long startTime = Time.getTime();
-			long passedTime = startTime - lastTime;
+			double startTime = Time.getTime();
+			double passedTime = startTime - lastTime;
 			lastTime = startTime;
 
 			// Calculate how often to tick the game engine
-			unprocessedTime += passedTime / (double) Time.SECOND;
+			unprocessedTime += passedTime;
 			frameCounter+=passedTime;
 
 			while (unprocessedTime > frameTime) {
@@ -84,7 +84,7 @@ public class CoreEngine {
 				game.update();
 
 				// FPS counter
-				if (frameCounter >= Time.SECOND) {
+				if (frameCounter >= 1) {
 					System.out.println(frames + " FPS");
 					frames = 0;
 					frameCounter = 0;
