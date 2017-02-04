@@ -1,5 +1,7 @@
 package com.typokign.fps.engine.rendering;
 
+import com.typokign.fps.engine.core.RenderingEngine;
+import com.typokign.fps.engine.core.Transform;
 import com.typokign.fps.engine.math.Matrix4f;
 import com.typokign.fps.engine.core.Util;
 import com.typokign.fps.engine.math.Vector3f;
@@ -16,6 +18,7 @@ import static org.lwjgl.opengl.GL32.*;
  */
 public class Shader {
 
+	private RenderingEngine renderingEngine;
 	// pointer
 	private int program;
 
@@ -37,7 +40,7 @@ public class Shader {
 		glUseProgram(program);
 	}
 
-	public void updateUniforms(Matrix4f worldMatrix, Matrix4f projectedMatrix, Material material) {}
+	public void updateUniforms(Transform transform, Material material) {}
 
 	public void addUniform(String uniform) {
 		int uniformLocation = glGetUniformLocation(program, uniform);
@@ -145,5 +148,13 @@ public class Shader {
 		}
 
 		return shaderSource.toString();
+	}
+
+	public void setRenderingEngine(RenderingEngine renderingEngine) {
+		this.renderingEngine = renderingEngine;
+	}
+
+	public RenderingEngine getRenderingEngine() {
+		return renderingEngine;
 	}
 }

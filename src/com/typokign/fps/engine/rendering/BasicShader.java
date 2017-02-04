@@ -1,6 +1,7 @@
 package com.typokign.fps.engine.rendering;
 
 import com.typokign.fps.engine.core.RenderingEngine;
+import com.typokign.fps.engine.core.Transform;
 import com.typokign.fps.engine.math.Matrix4f;
 
 /**
@@ -28,7 +29,10 @@ public class BasicShader extends Shader {
 	}
 
 	@Override
-	public void updateUniforms(Matrix4f worldMatrix, Matrix4f projectedMatrix, Material material) {
+	public void updateUniforms(Transform transform, Material material) {
+		Matrix4f worldMatrix = transform.getTransformation();
+		Matrix4f projectedMatrix = getRenderingEngine().getMainCamera().getViewProjection().mul(worldMatrix);
+
 		material.getTexture().bind();
 
 		setUniform("transform", projectedMatrix);

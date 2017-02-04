@@ -2,6 +2,7 @@ package com.typokign.fps.engine.rendering;
 
 import com.typokign.fps.engine.core.Input;
 import com.typokign.fps.engine.core.Time;
+import com.typokign.fps.engine.math.Matrix4f;
 import com.typokign.fps.engine.math.Vector2f;
 import com.typokign.fps.engine.math.Vector3f;
 import org.lwjgl.input.Keyboard;
@@ -16,20 +17,24 @@ public class Camera {
 	private Vector3f position;
 	private Vector3f forward; // cam-forward
 	private Vector3f up; // cam-up
+	private Matrix4f projection;
+	boolean mouseLocked;
 
-
-	public Camera() {
-		this(new Vector3f(0,0,0), new Vector3f(0,0,1), new Vector3f(0,1,0));
-	}
-
-	public Camera(Vector3f position, Vector3f forward, Vector3f up) {
-		this.position = position;
-		this.forward = forward.normalized();
-		this.up = up.normalized();
+	public Camera(float fov, float aspect, float zNear, float zFar) {
+		this.position = new Vector3f(0, 0, 0);
+		this.forward = new Vector3f(0, 0, 1).normalized();
+		this.up = new Vector3f(0, 1, 0).normalized();
+		this.projection = new Matrix4f().initPerspective(fov, aspect, zNear, zFar);
 		mouseLocked = false;
 	}
 
-	boolean mouseLocked = false;
+	public Matrix4f getViewProjection() {
+		Matrix4f cameraRotation = new Matrix4f().initRotation(forward, up);
+		Matrix4f cameraTranslation = new Matrix4f().initTranslation(-position.getX(), -position.getY(), - position.getZ()); // camera never actually moves, move the world opposite the direction of camera for effect
+
+		return projection.mul(cameraRotation.mul(cameraTranslation));
+	}
+
 	Vector2f centerPosition = new Vector2f(Window.getWidth() / 2, Window.getHeight() / 2);
 
 	public void input() {
@@ -75,20 +80,6 @@ public class Camera {
 			if (rotY || rotX)
 				Input.setMousePosition(new Vector2f(Window.getWidth() / 2, Window.getHeight() / 2));
 		}
-
-//		if (Input.getKey(Keyboard.KEY_UP)) {
-//			rotateX(-rotAmt);
-//		}
-//		if (Input.getKey(Keyboard.KEY_DOWN)) {
-//			rotateX(rotAmt);
-//		}
-//		if (Input.getKey(Keyboard.KEY_LEFT)) {
-//			rotateY(-rotAmt);
-//		}
-//		if (Input.getKey(Keyboard.KEY_RIGHT)) {
-//			rotateY(rotAmt);
-//		}
-
 	}
 
 	public void move(Vector3f direction, float magnitude) {

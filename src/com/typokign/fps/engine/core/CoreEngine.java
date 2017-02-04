@@ -77,6 +77,8 @@ public class CoreEngine {
 				Time.setDelta(frameTime);
 
 				game.input();
+				// TODO: temp
+				renderingEngine.input();
 				Input.update();
 
 				game.update();
