@@ -27,6 +27,10 @@ public class Vector2f {
 		return new Vector2f(x / length(), y / length());
 	}
 
+	public float crossProduct(Vector2f other) {
+		return x * other.getY() - y * other.getX();
+	}
+
 	public Vector2f rotate(float angle) {
 
 		double rad = Math.toRadians(angle);
