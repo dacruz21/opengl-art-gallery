@@ -56,6 +56,12 @@ public class Vector3f {
 		return new Vector3f(w.getX(), w.getY(), w.getZ());
 	}
 
+	// Linear extrapolation
+
+	public Vector3f lerp(Vector3f destination, float lerpFactor) {
+		return destination.sub(this).mul(lerpFactor).add(this);
+	}
+
 	// Add subtract multiply divide methods
 	// Takes either another Vector or a float
 	// If vector, operate on x's of both vectors and y's of both vectors

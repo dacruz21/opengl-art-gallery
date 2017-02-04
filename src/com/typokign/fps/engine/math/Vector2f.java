@@ -36,6 +36,12 @@ public class Vector2f {
 		return new Vector2f((float) (x * cos - y * sin), (float) (x * sin + y * cos));
 	}
 
+	// Linear extrapolation
+
+	public Vector2f lerp(Vector2f destination, float lerpFactor) {
+		return destination.sub(this).mul(lerpFactor).add(this);
+	}
+
 	// Add subtract multiply divide methods
 	// Takes either another Vector or a float
 	// If vector, operate on x's of both vectors and y's of both vectors
