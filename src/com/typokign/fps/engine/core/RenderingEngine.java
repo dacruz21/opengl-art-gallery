@@ -13,7 +13,9 @@ public class RenderingEngine {
 	private Camera mainCamera;
 	private Vector3f ambientLight;
 	private DirectionalLight directionalLight;
-	private DirectionalLight directionalLight2;
+	private PointLight pointLight;
+
+	private PointLight[] pointLightList;
 
 	public RenderingEngine() {
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -34,8 +36,28 @@ public class RenderingEngine {
 		mainCamera = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f, 1000.0f);
 
 		ambientLight = new Vector3f(0.2f, 0.2f, 0.2f);
-		directionalLight = new DirectionalLight(new BaseLight(new Vector3f(0,0,1), 0.4f), new Vector3f(1,1,1));
-		directionalLight2 = new DirectionalLight(new BaseLight(new Vector3f(1,0,0), 0.4f), new Vector3f(-1,1,-1));
+		directionalLight = new DirectionalLight(new BaseLight(new Vector3f(0.988f,0.953f,0.851f), 0.4f), new Vector3f(1,1,1));
+
+		int lightFieldWidth = 5;
+		int lightFieldDepth = 5;
+
+		float lightFieldStartX = 0;
+		float lightFieldStartY = 0;
+		float lightFieldStepX = 7;
+		float lightFieldStepY = 7;
+
+		pointLightList = new PointLight[lightFieldWidth * lightFieldDepth];
+
+		for (int i = 0; i < lightFieldWidth; i++) {
+			for (int j = 0; j < lightFieldDepth; j++) {
+				pointLightList[i * lightFieldWidth + j] = new PointLight(new BaseLight(new Vector3f(0, 1, 0), 0.4f),
+						Attenuation.ACCURATE,
+						new Vector3f(lightFieldStartX + lightFieldStepX * i, 0, lightFieldStartY + lightFieldStepY * j),
+						100);
+			}
+		}
+
+		pointLight = pointLightList[0];
 	}
 
 	public Vector3f getAmbientLight() {
@@ -44,6 +66,10 @@ public class RenderingEngine {
 
 	public DirectionalLight getDirectionalLight() {
 		return directionalLight;
+	}
+
+	public PointLight getPointLight() {
+		return pointLight;
 	}
 
 	public void input(float delta) {
@@ -55,8 +81,10 @@ public class RenderingEngine {
 
 		Shader forwardAmbient = ForwardAmbient.getInstance();
 		Shader forwardDirectional = ForwardDirectional.getInstance();
+		Shader forwardPoint = ForwardPoint.getInstance();
 		forwardAmbient.setRenderingEngine(this);
 		forwardDirectional.setRenderingEngine(this);
+		forwardPoint.setRenderingEngine(this);
 
 		object.render(forwardAmbient);
 
@@ -67,15 +95,10 @@ public class RenderingEngine {
 
 		object.render(forwardDirectional);
 
-		DirectionalLight swap = directionalLight;
-		directionalLight = directionalLight2;
-		directionalLight2 = swap;
-
-		object.render(forwardDirectional);
-
-		swap = directionalLight;
-		directionalLight = directionalLight2;
-		directionalLight2 = swap;
+		for (int i = 0; i < pointLightList.length; i++) {
+			pointLight = pointLightList[i];
+			object.render(forwardPoint);
+		}
 
 		glDepthFunc(GL_LESS); // revert changes above
 		glDepthMask(true);
