@@ -10,27 +10,27 @@ import com.typokign.fps.engine.rendering.Camera;
 public class Transform {
 
 	// dx, dy, dz of the translation
-	private Vector3f translation;
+	private Vector3f position;
 	private Vector3f rotation;
 	private Vector3f scale;
 
 	public Transform() {
-		translation = new Vector3f(0,0,0);
+		position = new Vector3f(0,0,0);
 		rotation = new Vector3f(0, 0, 0);
 
 		// note to self; don't set this default to 0,0,0. 48 hours of debugging for this
 		scale = new Vector3f(1, 1, 1);
 	}
 
-	public Transform(Vector3f translation, Vector3f rotation, Vector3f scale) {
-		this.translation = translation;
+	public Transform(Vector3f position, Vector3f rotation, Vector3f scale) {
+		this.position = position;
 		this.rotation = rotation;
 		this.scale = scale;
 	}
 
 	// combine all 3 transformations into a single matrix4f
 	public Matrix4f getTransformation() {
-		Matrix4f transMatrix = new Matrix4f().initTranslation(translation.getX(), translation.getY(), translation.getZ());
+		Matrix4f transMatrix = new Matrix4f().initTranslation(position.getX(), position.getY(), position.getZ());
 		Matrix4f rotMatrix = new Matrix4f().initRotation(rotation.getX(), rotation.getY(), rotation.getZ());
 		Matrix4f scaleMatrix = new Matrix4f().initScale(scale.getX(), scale.getY(), scale.getZ());
 
@@ -46,15 +46,15 @@ public class Transform {
 	}
 
 	public Vector3f getTranslation() {
-		return translation;
+		return position;
 	}
 
-	public void setTranslation(Vector3f translation) {
-		this.translation = translation;
+	public void setTranslation(Vector3f position) {
+		this.position = position;
 	}
 
 	public void setTranslation(float x, float y, float z) {
-		this.translation = new Vector3f(x, y, z);
+		this.position = new Vector3f(x, y, z);
 	}
 
 	public Vector3f getRotation() {
