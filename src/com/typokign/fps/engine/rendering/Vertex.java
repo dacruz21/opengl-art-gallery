@@ -10,30 +10,30 @@ public class Vertex {
 	// PLEASE: if you add fields to this class, update SIZE and update createFlippedBuffer in Util.java
 	public static final int SIZE = 8;
 
-	private Vector3f pos;
+	private Vector3f position;
 	private Vector2f texCoord;
 	private Vector3f normal;
 
-	public Vertex(Vector3f pos) {
-		this(pos, new Vector2f(0, 0));
+	public Vertex(Vector3f position) {
+		this(position, new Vector2f(0, 0));
 	}
 
-	public Vertex(Vector3f pos, Vector2f texCoord) {
-		this(pos, texCoord, new Vector3f(0,0,0));
+	public Vertex(Vector3f position, Vector2f texCoord) {
+		this(position, texCoord, new Vector3f(0,0,0));
 	}
 
-	public Vertex(Vector3f pos, Vector2f texCoord, Vector3f normal) {
-		this.pos = pos;
+	public Vertex(Vector3f position, Vector2f texCoord, Vector3f normal) {
+		this.position = position;
 		this.texCoord = texCoord;
 		this.normal = normal;
 	}
 
 	public Vector3f getPos() {
-		return pos;
+		return position;
 	}
 
-	public void setPos(Vector3f pos) {
-		this.pos = pos;
+	public void setPos(Vector3f position) {
+		this.position = position;
 	}
 
 	public Vector2f getTexCoord() {

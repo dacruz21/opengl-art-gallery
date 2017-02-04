@@ -10,7 +10,7 @@ in vec3 worldPosition0;
 out vec4 fragColor;
 
 uniform vec3 baseColor;
-uniform vec3 cameraPos;
+uniform vec3 cameraPosition;
 uniform vec3 ambientLight;
 uniform sampler2D sampler;
 
@@ -59,7 +59,7 @@ vec4 calcLight(BaseLight base, vec3 direction, vec3 normal) {
 	if (diffuseFactor > 0) {
 		diffuseColor = vec4(base.color, 1.0) * base.intensity * diffuseFactor;
 
-		vec3 directionToCamera = normalize(cameraPos - worldPosition0);
+		vec3 directionToCamera = normalize(cameraPosition - worldPosition0);
 		vec3 reflectDirection = normalize(reflect(direction, normal));
 
 		float specularFactor = dot(directionToCamera, reflectDirection);
