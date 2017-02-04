@@ -3,6 +3,8 @@ package com.typokign.fps.engine.core;
 import com.typokign.fps.engine.math.Vector3f;
 import com.typokign.fps.engine.rendering.*;
 
+import java.util.Random;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL32.*;
 
@@ -14,6 +16,7 @@ public class RenderingEngine {
 	private Vector3f ambientLight;
 	private DirectionalLight directionalLight;
 	private PointLight pointLight;
+	private SpotLight spotLight;
 
 	private PointLight[] pointLightList;
 
@@ -37,9 +40,11 @@ public class RenderingEngine {
 
 		ambientLight = new Vector3f(0.2f, 0.2f, 0.2f);
 		directionalLight = new DirectionalLight(new BaseLight(new Vector3f(0.988f,0.953f,0.851f), 0.4f), new Vector3f(1,1,1));
+		spotLight = new SpotLight(new PointLight(new BaseLight(new Vector3f(0, 1, 1), 1.2f), new Attenuation(0, 0, 0.5f), new Vector3f(-2, 0, 5), 50), new Vector3f(1, 1, 1), 0.7f);
 
-		int lightFieldWidth = 5;
-		int lightFieldDepth = 5;
+
+		int lightFieldWidth = 6;
+		int lightFieldDepth = 6;
 
 		float lightFieldStartX = 0;
 		float lightFieldStartY = 0;
@@ -48,9 +53,11 @@ public class RenderingEngine {
 
 		pointLightList = new PointLight[lightFieldWidth * lightFieldDepth];
 
+		Random random = new Random();
+
 		for (int i = 0; i < lightFieldWidth; i++) {
 			for (int j = 0; j < lightFieldDepth; j++) {
-				pointLightList[i * lightFieldWidth + j] = new PointLight(new BaseLight(new Vector3f(0, 1, 0), 0.4f),
+				pointLightList[i * lightFieldWidth + j] = new PointLight(new BaseLight(new Vector3f(random.nextFloat(), random.nextFloat(), random.nextFloat()), 2.0f),
 						Attenuation.ACCURATE,
 						new Vector3f(lightFieldStartX + lightFieldStepX * i, 0, lightFieldStartY + lightFieldStepY * j),
 						100);
@@ -72,8 +79,14 @@ public class RenderingEngine {
 		return pointLight;
 	}
 
+	public SpotLight getSpotLight() {
+		return spotLight;
+	}
+
 	public void input(float delta) {
 		mainCamera.input(delta);
+		spotLight.getPointLight().setPosition(getMainCamera().getPosition());
+		spotLight.setDirection(getMainCamera().getForward());
 	}
 
 	public void render(GameObject object) {
@@ -82,9 +95,11 @@ public class RenderingEngine {
 		Shader forwardAmbient = ForwardAmbient.getInstance();
 		Shader forwardDirectional = ForwardDirectional.getInstance();
 		Shader forwardPoint = ForwardPoint.getInstance();
+		Shader forwardSpot = ForwardSpot.getInstance();
 		forwardAmbient.setRenderingEngine(this);
 		forwardDirectional.setRenderingEngine(this);
 		forwardPoint.setRenderingEngine(this);
+		forwardSpot.setRenderingEngine(this);
 
 		object.render(forwardAmbient);
 
@@ -99,6 +114,8 @@ public class RenderingEngine {
 			pointLight = pointLightList[i];
 			object.render(forwardPoint);
 		}
+
+		object.render(forwardSpot);
 
 		glDepthFunc(GL_LESS); // revert changes above
 		glDepthMask(true);
