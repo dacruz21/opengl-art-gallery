@@ -97,6 +97,32 @@ public class Vector3f {
 		return new Vector3f(Math.abs(x), Math.abs(y), Math.abs(z));
 	}
 
+	// Swizzling
+
+	public Vector2f getXY() {
+		return new Vector2f(x, y);
+	}
+
+	public Vector2f getYZ() {
+		return new Vector2f(y, z);
+	}
+
+	public Vector2f ZX() {
+		return new Vector2f(z, x);
+	}
+
+	public Vector2f getYX() {
+		return new Vector2f(y, x);
+	}
+
+	public Vector2f getZY() {
+		return new Vector2f(z, y);
+	}
+
+	public Vector2f XZ() {
+		return new Vector2f(x, z);
+	}
+
 	// Getters and setters
 
 	public float getX() {
