@@ -104,4 +104,8 @@ public class Vector2f {
 	public String toString() {
 		return "(" + x + ", " + y + ")";
 	}
+
+	public boolean equals(Vector2f other) {
+		return x == other.getX() && y == other.getY();
+	}
 }

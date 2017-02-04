@@ -158,4 +158,8 @@ public class Vector3f {
 	public String toString() {
 		return "(" + x + ", " + y + ", " + z + ")";
 	}
+
+	public boolean equals(Vector3f other) {
+		return x == other.getX() && y == other.getY() && z == other.getZ();
+	}
 }
