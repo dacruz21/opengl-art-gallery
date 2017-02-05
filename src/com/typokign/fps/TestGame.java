@@ -1,8 +1,7 @@
 package com.typokign.fps;
 
-import com.typokign.fps.engine.components.DirectionalLight;
-import com.typokign.fps.engine.components.MeshRenderer;
-import com.typokign.fps.engine.components.PointLight;
+import com.typokign.fps.components.Flashlight;
+import com.typokign.fps.engine.components.*;
 import com.typokign.fps.engine.core.*;
 import com.typokign.fps.engine.math.Vector2f;
 import com.typokign.fps.engine.math.Vector3f;
@@ -14,8 +13,6 @@ import java.util.Random;
  * Created by Typo Kign on 1/29/2017.
  */
 public class TestGame extends Game {
-//	private Camera camera;
-
 	public TestGame() {}
 
 	Random random = new Random(); // omg RNG game is unbalanced plz fix
@@ -43,7 +40,7 @@ public class TestGame extends Game {
 		planeObject.getTransform().setTranslation(0, -1, 5);
 
 		GameObject sun = new GameObject();
-		DirectionalLight sunnyDLight = new DirectionalLight(new BaseLight(new Vector3f(0.988f,0.953f,0.851f), 0.4f), new Vector3f(1,1,1)); // http://promo.sunnyd.com/slider_images/bottles/smooth.png
+		DirectionalLight sunnyDLight = new DirectionalLight(new Vector3f(0.988f,0.953f,0.851f), 0.2f, new Vector3f(1,1,1)); // http://promo.sunnyd.com/slider_images/bottles/smooth.png
 		sun.addComponent(sunnyDLight);
 
 		GameObject danceFloor = new GameObject();
@@ -58,16 +55,20 @@ public class TestGame extends Game {
 
 		for (int i = 0; i < danceFloorWidth; i++) {
 			for (int j = 0; j < danceFloorDepth; j++) {
-				danceFloor.addComponent(new PointLight(new BaseLight(new Vector3f(random.nextFloat(), random.nextFloat(), random.nextFloat()), 2.0f),
-										Attenuation.ACCURATE,
+				danceFloor.addComponent(new PointLight(new Vector3f(random.nextFloat(), random.nextFloat(), random.nextFloat()), 2.0f,
+										1, 0, 0,
 										new Vector3f(danceFloorStartX + danceFloorStepX * i, 0, danceFloorStartY + danceFloorStepY * j),
 										100));
 			}
 		}
 
+		GameObject flashlightObj = new GameObject();
+		flashlightObj.addComponent(new Flashlight(new Vector3f(1, 1, 0.902f), 1.0f, 100, 0.7f));
+
 		getRootObject().addChild(planeObject);
 		getRootObject().addChild(sun);
 		getRootObject().addChild(danceFloor);
+		getRootObject().addChild(flashlightObj);
 	}
 
 }

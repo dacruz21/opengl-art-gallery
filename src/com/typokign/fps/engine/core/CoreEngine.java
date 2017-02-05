@@ -1,5 +1,6 @@
 package com.typokign.fps.engine.core;
 
+import com.typokign.fps.engine.rendering.RenderingEngine;
 import com.typokign.fps.engine.rendering.Window;
 
 /**

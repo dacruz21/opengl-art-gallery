@@ -1,5 +1,6 @@
 package com.typokign.fps.engine.components;
 
+import com.typokign.fps.engine.rendering.RenderingEngine;
 import com.typokign.fps.engine.core.Transform;
 import com.typokign.fps.engine.rendering.Material;
 import com.typokign.fps.engine.rendering.Mesh;
@@ -34,4 +35,7 @@ public class MeshRenderer extends GameComponent {
 		shader.updateUniforms(transform, material);
 		mesh.draw();
 	}
+
+	@Override
+	public void addToRenderingEngine(RenderingEngine renderingEngine) {}
 }

@@ -1,6 +1,5 @@
 package com.typokign.fps.engine.rendering;
 
-import com.typokign.fps.engine.core.RenderingEngine;
 import com.typokign.fps.engine.core.Transform;
 import com.typokign.fps.engine.math.Matrix4f;
 import com.typokign.fps.engine.core.Util;

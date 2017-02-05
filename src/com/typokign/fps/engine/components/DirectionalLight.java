@@ -1,32 +1,19 @@
 package com.typokign.fps.engine.components;
 
-import com.typokign.fps.engine.core.RenderingEngine;
 import com.typokign.fps.engine.math.Vector3f;
-import com.typokign.fps.engine.rendering.BaseLight;
+import com.typokign.fps.engine.rendering.ForwardDirectional;
 
 /**
  * Created by Typo Kign on 1/28/2017.
  */
-public class DirectionalLight extends GameComponent {
-	private BaseLight base;
+public class DirectionalLight extends BaseLight {
 	private Vector3f direction;
 
-	public DirectionalLight(BaseLight base, Vector3f direction) {
-		this.base = base;
+	public DirectionalLight(Vector3f color, float intensity, Vector3f direction) {
+		super(color, intensity);
 		this.direction = direction.normalized();
-	}
 
-	@Override
-	public void addToRenderingEngine(RenderingEngine renderingEngine) {
-		renderingEngine.addDirectionalLight(this);
-	}
-
-	public BaseLight getBase() {
-		return base;
-	}
-
-	public void setBase(BaseLight base) {
-		this.base = base;
+		setShader(ForwardDirectional.getInstance());
 	}
 
 	public Vector3f getDirection() {
