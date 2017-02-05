@@ -1,5 +1,6 @@
 package com.typokign.fps.engine.components;
 
+import com.typokign.fps.engine.rendering.Color;
 import com.typokign.fps.engine.rendering.RenderingEngine;
 import com.typokign.fps.engine.core.Transform;
 import com.typokign.fps.engine.math.Vector3f;
@@ -9,11 +10,11 @@ import com.typokign.fps.engine.rendering.Shader;
  * Created by Typo Kign on 1/28/2017.
  */
 public class BaseLight extends GameComponent {
-	private Vector3f color;
+	private Color color;
 	private float intensity;
 	private Shader shader;
 
-	public BaseLight(Vector3f color, float intensity) {
+	public BaseLight(Color color, float intensity) {
 		this.color = color;
 		this.intensity = intensity;
 	}
@@ -26,11 +27,11 @@ public class BaseLight extends GameComponent {
 		return shader;
 	}
 
-	public Vector3f getColor() {
+	public Color getColor() {
 		return color;
 	}
 
-	public void setColor(Vector3f color) {
+	public void setColor(Color color) {
 		this.color = color;
 	}
 
@@ -41,15 +42,6 @@ public class BaseLight extends GameComponent {
 	public void setIntensity(float intensity) {
 		this.intensity = intensity;
 	}
-
-	@Override
-	public void input(Transform transform, float delta) {}
-
-	@Override
-	public void update(Transform transform, float delta) {}
-
-	@Override
-	public void render(Transform transform, Shader shader) {}
 
 	@Override
 	public void addToRenderingEngine(RenderingEngine renderingEngine) {

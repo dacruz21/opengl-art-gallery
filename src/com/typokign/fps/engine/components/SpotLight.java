@@ -1,5 +1,7 @@
 package com.typokign.fps.engine.components;
 
+import com.typokign.fps.engine.rendering.Attenuation;
+import com.typokign.fps.engine.rendering.Color;
 import com.typokign.fps.engine.rendering.RenderingEngine;
 import com.typokign.fps.engine.math.Vector3f;
 import com.typokign.fps.engine.rendering.ForwardSpot;
@@ -11,8 +13,8 @@ public class SpotLight extends PointLight {
 	private Vector3f direction;
 	private float cutoff;
 
-	public SpotLight(Vector3f color, float intensity, float exponent, float linear, float constant, Vector3f position, float range, Vector3f direction, float cutoff) {
-		super(color, intensity, exponent, linear, constant, position, range);
+	public SpotLight(Color color, float intensity, Attenuation attenuation, Vector3f direction, float cutoff) {
+		super(color, intensity, attenuation);
 		this.direction = direction.normalized();
 		this.cutoff = cutoff;
 		setShader(ForwardSpot.getInstance());
@@ -28,7 +30,7 @@ public class SpotLight extends PointLight {
 	}
 
 	public void setDirection(Vector3f direction) {
-		this.direction = direction.normalized();
+		this.direction = direction;
 	}
 
 	public float getCutoff() {

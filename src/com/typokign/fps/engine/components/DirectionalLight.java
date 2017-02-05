@@ -1,6 +1,7 @@
 package com.typokign.fps.engine.components;
 
 import com.typokign.fps.engine.math.Vector3f;
+import com.typokign.fps.engine.rendering.Color;
 import com.typokign.fps.engine.rendering.ForwardDirectional;
 
 /**
@@ -9,7 +10,7 @@ import com.typokign.fps.engine.rendering.ForwardDirectional;
 public class DirectionalLight extends BaseLight {
 	private Vector3f direction;
 
-	public DirectionalLight(Vector3f color, float intensity, Vector3f direction) {
+	public DirectionalLight(Color color, float intensity, Vector3f direction) {
 		super(color, intensity);
 		this.direction = direction.normalized();
 

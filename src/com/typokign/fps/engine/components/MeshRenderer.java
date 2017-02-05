@@ -10,7 +10,6 @@ import com.typokign.fps.engine.rendering.Shader;
  * Created by Typo Kign on 1/29/2017.
  */
 public class MeshRenderer extends GameComponent {
-
 	private Mesh mesh;
 	private Material material;
 
@@ -20,22 +19,9 @@ public class MeshRenderer extends GameComponent {
 	}
 
 	@Override
-	public void input(Transform transform, float delta) {
-
-	}
-
-	@Override
-	public void update(Transform transform, float delta) {
-
-	}
-
-	@Override
-	public void render(Transform transform, Shader shader) {
+	public void render(Shader shader) {
 		shader.bind();
-		shader.updateUniforms(transform, material);
+		shader.updateUniforms(getTransform(), material);
 		mesh.draw();
 	}
-
-	@Override
-	public void addToRenderingEngine(RenderingEngine renderingEngine) {}
 }

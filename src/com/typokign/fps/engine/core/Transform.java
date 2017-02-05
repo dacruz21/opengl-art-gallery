@@ -45,15 +45,15 @@ public class Transform {
 		return camera.getViewProjection().mul(getTransformation());
 	}
 
-	public Vector3f getTranslation() {
+	public Vector3f getPosition() {
 		return position;
 	}
 
-	public void setTranslation(Vector3f position) {
+	public void setPosition(Vector3f position) {
 		this.position = position;
 	}
 
-	public void setTranslation(float x, float y, float z) {
+	public void setPosition(float x, float y, float z) {
 		this.position = new Vector3f(x, y, z);
 	}
 

@@ -22,6 +22,10 @@ public class Vector2f {
 		return x * other.getX() + y * other.getY();
 	}
 
+	public float max() {
+		return Math.max(x, y);
+	}
+
 	// Normalize, or set length to 1 while maintaining proportions
 	public Vector2f normalized() {
 		return new Vector2f(x / length(), y / length());

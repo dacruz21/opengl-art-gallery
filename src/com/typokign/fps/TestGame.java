@@ -29,16 +29,16 @@ public class TestGame extends Game {
 				2, 1, 3};
 
 		Material material = new Material(new Texture("test.png"), new Vector3f(1,1,1), 1, 8);
-		Mesh mesh = new Mesh(vertices, indices, true); // new Mesh("cube.obj");
+		Mesh mesh = new Mesh(vertices, indices, true);  //new Mesh("cube.obj");
 
 		MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
 
 		GameObject planeObject = new GameObject();
 		planeObject.addComponent(meshRenderer);
-		planeObject.getTransform().setTranslation(0, -1, 5);
+		planeObject.getTransform().setPosition(0, -1, 5);
 
 		GameObject sun = new GameObject();
-		DirectionalLight sunnyDLight = new DirectionalLight(new Vector3f(0.988f,0.953f,0.851f), 0.2f, new Vector3f(1,1,1)); // http://promo.sunnyd.com/slider_images/bottles/smooth.png
+		DirectionalLight sunnyDLight = new DirectionalLight(new Color(0.988f,0.953f,0.851f), 0.2f, new Vector3f(1,1,1)); // http://promo.sunnyd.com/slider_images/bottles/smooth.png
 		sun.addComponent(sunnyDLight);
 
 		GameObject danceFloor = new GameObject();
@@ -47,21 +47,23 @@ public class TestGame extends Game {
 		int danceFloorDepth = 6;
 
 		float danceFloorStartX = 0;
-		float danceFloorStartY = 0;
+		float danceFloorStartZ = 0;
 		float danceFloorStepX = 7;
-		float danceFloorStepY = 7;
+		float danceFloorStepZ = 7;
 
 		for (int i = 0; i < danceFloorWidth; i++) {
 			for (int j = 0; j < danceFloorDepth; j++) {
-				danceFloor.addComponent(new PointLight(new Vector3f(random.nextFloat(), random.nextFloat(), random.nextFloat()), 2.0f,
-										1, 0, 0,
-										new Vector3f(danceFloorStartX + danceFloorStepX * i, 0, danceFloorStartY + danceFloorStepY * j),
-										100));
+				GameObject lightObject = new GameObject();
+				lightObject.addComponent(new PointLight(new Color(random.nextFloat(), random.nextFloat(), random.nextFloat()), 2.0f, Attenuation.ACCURATE));
+				lightObject.getTransform().setPosition(danceFloorStartX + danceFloorStepX * i, 0, danceFloorStartZ + danceFloorStepZ * j);
+				danceFloor.addChild(lightObject);
 			}
 		}
 
+		GameComponent flashlight = new Flashlight(new Color(1f, 1f, 0.902f), 1.0f, 100, 0.7f);
 		GameObject flashlightObj = new GameObject();
-		flashlightObj.addComponent(new Flashlight(new Vector3f(1, 1, 0.902f), 1.0f, 100, 0.7f));
+		flashlightObj.addComponent(flashlight);
+		flashlightObj.getTransform().setPosition(0, 0, 0);
 
 		getRootObject().addChild(planeObject);
 		getRootObject().addChild(sun);

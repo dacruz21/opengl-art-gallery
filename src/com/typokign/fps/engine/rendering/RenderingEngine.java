@@ -3,7 +3,6 @@ package com.typokign.fps.engine.rendering;
 import com.typokign.fps.engine.components.BaseLight;
 import com.typokign.fps.engine.core.GameObject;
 import com.typokign.fps.engine.math.Vector3f;
-import com.typokign.fps.engine.rendering.*;
 
 import java.util.ArrayList;
 
