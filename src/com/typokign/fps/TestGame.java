@@ -35,7 +35,7 @@ public class TestGame extends Game {
 
 		GameObject planeObject = new GameObject();
 		planeObject.addComponent(meshRenderer);
-		planeObject.getTransform().setPosition(0, -1, 5);
+		planeObject.getTransform().getPosition().set(0, -1, 5);
 
 		GameObject sun = new GameObject();
 		DirectionalLight sunnyDLight = new DirectionalLight(new Color(0.988f,0.953f,0.851f), 0.2f, new Vector3f(1,1,1)); // http://promo.sunnyd.com/slider_images/bottles/smooth.png
@@ -55,7 +55,7 @@ public class TestGame extends Game {
 			for (int j = 0; j < danceFloorDepth; j++) {
 				GameObject lightObject = new GameObject();
 				lightObject.addComponent(new PointLight(new Color(random.nextFloat(), random.nextFloat(), random.nextFloat()), 2.0f, Attenuation.ACCURATE));
-				lightObject.getTransform().setPosition(danceFloorStartX + danceFloorStepX * i, 0, danceFloorStartZ + danceFloorStepZ * j);
+				lightObject.getTransform().getPosition().set(danceFloorStartX + danceFloorStepX * i, 0, danceFloorStartZ + danceFloorStepZ * j);
 				danceFloor.addChild(lightObject);
 			}
 		}
@@ -63,7 +63,7 @@ public class TestGame extends Game {
 		GameComponent flashlight = new Flashlight(new Color(1f, 1f, 0.902f), 1.0f, 100, 0.7f);
 		GameObject flashlightObj = new GameObject();
 		flashlightObj.addComponent(flashlight);
-		flashlightObj.getTransform().setPosition(0, 0, 0);
+		flashlightObj.getTransform().getPosition().set(0, 0, 0);
 
 		getRootObject().addChild(planeObject);
 		getRootObject().addChild(sun);

@@ -3,7 +3,10 @@ package com.typokign.fps.components;
 import com.typokign.fps.engine.components.GameComponent;
 import com.typokign.fps.engine.components.SpotLight;
 import com.typokign.fps.engine.core.Input;
+import com.typokign.fps.engine.math.Matrix4f;
+import com.typokign.fps.engine.math.Quaternion;
 import com.typokign.fps.engine.rendering.Attenuation;
+import com.typokign.fps.engine.rendering.Camera;
 import com.typokign.fps.engine.rendering.Color;
 import com.typokign.fps.engine.rendering.RenderingEngine;
 import com.typokign.fps.engine.math.Vector3f;
@@ -20,7 +23,7 @@ public class Flashlight extends GameComponent {
 	private float onIntensity;
 
 	public Flashlight(Color color, float onIntensity, float range, float cutoff) {
-		this.spotLight = new SpotLight(color, onIntensity, Attenuation.ACCURATE, new Vector3f(0, 0, 0), cutoff);
+		this.spotLight = new SpotLight(color, onIntensity, Attenuation.ACCURATE, cutoff);
 		this.onIntensity = onIntensity;
 		on = false;
 	}
@@ -37,8 +40,10 @@ public class Flashlight extends GameComponent {
 		if (spotLight.getParent() == null)
 			spotLight.setParent(getParent());
 		if (renderingEngine != null) {
-			spotLight.getTransform().setPosition(renderingEngine.getMainCamera().getPosition());
-			spotLight.setDirection(renderingEngine.getMainCamera().getForward());
+//			Camera camera = renderingEngine.getMainCamera();
+			spotLight.getTransform().setPosition(renderingEngine.getMainCamera().getPosition()); // TODO: fix all of this rotation
+			spotLight.getTransform().setRotation(new Quaternion().initRotation(new Vector3f(0, 1, 0), (float) Math.toRadians(90.0f)));
+//			spotLight.getTransform().setRotation(renderingEngine.getMainCamera().getForward());
 		}
 
 		spotLight.setIntensity(on ? onIntensity : 0.0f);

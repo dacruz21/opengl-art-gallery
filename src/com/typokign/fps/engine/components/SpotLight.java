@@ -10,12 +10,10 @@ import com.typokign.fps.engine.rendering.ForwardSpot;
  * Created by Typo Kign on 1/29/2017.
  */
 public class SpotLight extends PointLight {
-	private Vector3f direction;
 	private float cutoff;
 
-	public SpotLight(Color color, float intensity, Attenuation attenuation, Vector3f direction, float cutoff) {
+	public SpotLight(Color color, float intensity, Attenuation attenuation, float cutoff) {
 		super(color, intensity, attenuation);
-		this.direction = direction.normalized();
 		this.cutoff = cutoff;
 		setShader(ForwardSpot.getInstance());
 	}
@@ -26,11 +24,7 @@ public class SpotLight extends PointLight {
 	}
 
 	public Vector3f getDirection() {
-		return direction;
-	}
-
-	public void setDirection(Vector3f direction) {
-		this.direction = direction;
+		return getTransform().getRotation().getForward();
 	}
 
 	public float getCutoff() {
