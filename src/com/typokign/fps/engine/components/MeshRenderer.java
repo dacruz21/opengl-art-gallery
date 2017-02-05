@@ -1,6 +1,5 @@
-package com.typokign.fps;
+package com.typokign.fps.engine.components;
 
-import com.typokign.fps.engine.core.GameComponent;
 import com.typokign.fps.engine.core.Transform;
 import com.typokign.fps.engine.rendering.Material;
 import com.typokign.fps.engine.rendering.Mesh;
@@ -9,7 +8,7 @@ import com.typokign.fps.engine.rendering.Shader;
 /**
  * Created by Typo Kign on 1/29/2017.
  */
-public class MeshRenderer implements GameComponent {
+public class MeshRenderer extends GameComponent {
 
 	private Mesh mesh;
 	private Material material;

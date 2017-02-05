@@ -1,5 +1,8 @@
 package com.typokign.fps.engine.rendering;
 
+import com.typokign.fps.engine.components.DirectionalLight;
+import com.typokign.fps.engine.components.PointLight;
+import com.typokign.fps.engine.components.SpotLight;
 import com.typokign.fps.engine.math.Matrix4f;
 import com.typokign.fps.engine.core.Transform;
 import com.typokign.fps.engine.math.Vector3f;

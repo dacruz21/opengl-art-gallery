@@ -1,11 +1,14 @@
-package com.typokign.fps.engine.rendering;
+package com.typokign.fps.engine.components;
 
+import com.typokign.fps.engine.core.RenderingEngine;
 import com.typokign.fps.engine.math.Vector3f;
+import com.typokign.fps.engine.rendering.Attenuation;
+import com.typokign.fps.engine.rendering.BaseLight;
 
 /**
  * Created by Typo Kign on 1/29/2017.
  */
-public class PointLight {
+public class PointLight extends GameComponent {
 	private BaseLight base;
 	private Attenuation atten;
 	private Vector3f position;
@@ -16,6 +19,11 @@ public class PointLight {
 		this.atten = atten;
 		this.position = position;
 		this.range = range;
+	}
+
+	@Override
+	public void addToRenderingEngine(RenderingEngine renderingEngine) {
+		renderingEngine.addPointLight(this);
 	}
 
 	public BaseLight getBase() {

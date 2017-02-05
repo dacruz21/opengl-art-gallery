@@ -1,5 +1,7 @@
 package com.typokign.fps.engine.rendering;
 
+import com.typokign.fps.engine.components.PointLight;
+import com.typokign.fps.engine.components.SpotLight;
 import com.typokign.fps.engine.core.Transform;
 import com.typokign.fps.engine.math.Matrix4f;
 
@@ -59,7 +61,7 @@ public class ForwardSpot extends Shader {
 		setUniformf("specularExponent", material.getSpecularExponent());
 
 		setUniform("cameraPosition", getRenderingEngine().getMainCamera().getPosition());
-		setUniform("spotLight", getRenderingEngine().getSpotLight());
+		setUniform("spotLight", getRenderingEngine().getActiveSpotLight());
 	}
 
 	public void setUniform(String uniformName, BaseLight baseLight) {

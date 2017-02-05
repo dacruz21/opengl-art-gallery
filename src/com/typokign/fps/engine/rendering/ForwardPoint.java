@@ -1,5 +1,6 @@
 package com.typokign.fps.engine.rendering;
 
+import com.typokign.fps.engine.components.PointLight;
 import com.typokign.fps.engine.core.Transform;
 import com.typokign.fps.engine.math.Matrix4f;
 
@@ -57,7 +58,7 @@ public class ForwardPoint extends Shader {
 
 		setUniform("cameraPosition", getRenderingEngine().getMainCamera().getPosition());
 
-		setUniform("pointLight", getRenderingEngine().getPointLight());
+		setUniform("pointLight", getRenderingEngine().getActivePointLight());
 	}
 
 	public void setUniform(String uniformName, BaseLight baseLight) {

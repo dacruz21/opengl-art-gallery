@@ -1,11 +1,12 @@
-package com.typokign.fps.engine.rendering;
+package com.typokign.fps.engine.components;
 
+import com.typokign.fps.engine.core.RenderingEngine;
 import com.typokign.fps.engine.math.Vector3f;
 
 /**
  * Created by Typo Kign on 1/29/2017.
  */
-public class SpotLight {
+public class SpotLight extends GameComponent {
 	private PointLight pointLight;
 	private Vector3f direction;
 	private float cutoff;
@@ -14,6 +15,11 @@ public class SpotLight {
 		this.pointLight = pointLight;
 		this.direction = direction.normalized();
 		this.cutoff = cutoff;
+	}
+
+	@Override
+	public void addToRenderingEngine(RenderingEngine renderingEngine) {
+		renderingEngine.addSpotLight(this);
 	}
 
 	public PointLight getPointLight() {
