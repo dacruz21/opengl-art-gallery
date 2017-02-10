@@ -1,6 +1,7 @@
 package com.typokign.fps.engine.rendering;
 
 import com.typokign.fps.engine.components.BaseLight;
+import com.typokign.fps.engine.components.Camera;
 import com.typokign.fps.engine.core.GameObject;
 import com.typokign.fps.engine.math.Vector3f;
 
@@ -39,17 +40,13 @@ public class RenderingEngine {
 
 		glEnable(GL_TEXTURE_2D);
 
-		mainCamera = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f, 1000.0f);
+		//mainCamera = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f, 1000.0f);
 
 		ambientLight = new Vector3f(0.1f, 0.1f, 0.1f);
 	}
 
 	public Vector3f getAmbientLight() {
 		return ambientLight;
-	}
-
-	public void input(float delta) {
-		mainCamera.input(delta);
 	}
 
 	public void render(GameObject object) {
@@ -81,10 +78,6 @@ public class RenderingEngine {
 		glDisable(GL_BLEND);
 	}
 
-	public void addLight(BaseLight light) {
-		lights.add(light);
-	}
-
 	private static void clearScreen() {
 		// TODO: stencil buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -103,6 +96,14 @@ public class RenderingEngine {
 
 	private static void setClearColor(Vector3f color) {
 		glClearColor(color.getX(), color.getY(), color.getZ(), 1.0f);
+	}
+
+	public void addLight(BaseLight light) {
+		lights.add(light);
+	}
+
+	public void addCamera(Camera camera) {
+		mainCamera = camera;
 	}
 
 	public static String getOpenGLVersion() {

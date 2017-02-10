@@ -3,7 +3,7 @@ package com.typokign.fps.engine.core;
 import com.typokign.fps.engine.math.Matrix4f;
 import com.typokign.fps.engine.math.Quaternion;
 import com.typokign.fps.engine.math.Vector3f;
-import com.typokign.fps.engine.rendering.Camera;
+import com.typokign.fps.engine.components.Camera;
 
 /**
  * Created by Typo Kign on 1/23/2017.
@@ -42,10 +42,6 @@ public class Transform {
 		return transMatrix.mul(rotMatrix.mul(scaleMatrix));
 	}
 
-	public Matrix4f getProjectedTransformation(Camera camera) {
-		return camera.getViewProjection().mul(getTransformation());
-	}
-
 	public Vector3f getPosition() {
 		return position;
 	}
@@ -68,5 +64,14 @@ public class Transform {
 
 	public void setScale(Vector3f scale) {
 		this.scale = scale;
+	}
+
+	@Override
+	public String toString() {
+		return "Transform{" +
+				"position=" + position +
+				", rotation=" + rotation +
+				", scale=" + scale +
+				'}';
 	}
 }

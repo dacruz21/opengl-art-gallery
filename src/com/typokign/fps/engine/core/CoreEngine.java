@@ -76,8 +76,6 @@ public class CoreEngine {
 				}
 
 				game.input((float) frameTime);
-				// TODO: temp
-				renderingEngine.input((float) frameTime);
 				Input.update();
 
 				game.update((float) frameTime);

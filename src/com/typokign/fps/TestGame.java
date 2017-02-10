@@ -69,6 +69,8 @@ public class TestGame extends Game {
 		getRootObject().addChild(sun);
 		getRootObject().addChild(danceFloor);
 		getRootObject().addChild(flashlightObj);
+
+		getRootObject().addChild(new GameObject().addComponent(new Camera((float)Math.toRadians(70.0f), (float)Window.getWidth()/(float)Window.getHeight(), 0.01f, 1000.0f)));
 	}
 
 }

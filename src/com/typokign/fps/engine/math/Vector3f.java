@@ -43,8 +43,7 @@ public class Vector3f {
 		return new Vector3f(x / length(), y / length(), z / length());
 	}
 
-	public Vector3f rotate(float angle, Vector3f axis) {
-		Quaternion rotation = new Quaternion().initRotation(axis, angle);
+	public Vector3f rotate(Quaternion rotation) {
 		Quaternion conjugate = rotation.conjugate();
 
 		Quaternion w = rotation.mul(this).mul(conjugate);
@@ -52,8 +51,16 @@ public class Vector3f {
 		return new Vector3f(w.getX(), w.getY(), w.getZ());
 	}
 
-	// Linear extrapolation
+	public Vector3f rotate(Vector3f axis, float angle) {
+		float sinAngle = (float)Math.sin(-angle);
+		float cosAngle = (float)Math.cos(-angle);
 
+		return this.crossProduct(axis.mul(sinAngle)).add(           //Rotation on local X
+				(this.mul(cosAngle)).add(                     //Rotation on local Z
+						axis.mul(this.dot(axis.mul(1 - cosAngle))))); //Rotation on local Y
+	}
+
+	// Linear interpolation
 	public Vector3f lerp(Vector3f destination, float lerpFactor) {
 		return destination.sub(this).mul(lerpFactor).add(this);
 	}

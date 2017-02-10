@@ -38,15 +38,10 @@ public class Quaternion {
 	}
 
 	// Set length equal to 1 while maintaining proportions
-	public Quaternion normalize() {
+	public Quaternion normalized() {
 		float length = length();
 
-		x /= length;
-		y /= length;
-		z /= length;
-		w /= length;
-
-		return this;
+		return new Quaternion(x / length, y / length, z / length, w / length);
 	}
 
 	// Conjugate: all imaginary parts are *-1, real part is left same
@@ -135,5 +130,15 @@ public class Quaternion {
 
 	public void setW(float w) {
 		this.w = w;
+	}
+
+	@Override
+	public String toString() {
+		return "Quaternion{" +
+				"x=" + x +
+				", y=" + y +
+				", z=" + z +
+				", w=" + w +
+				'}';
 	}
 }

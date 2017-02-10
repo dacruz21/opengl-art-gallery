@@ -23,13 +23,17 @@ public class GameObject {
 		transform = new Transform();
 	}
 
-	public void addChild(GameObject child) {
+	public GameObject addChild(GameObject child) {
 		children.add(child);
+
+		return this;
 	}
 
-	public void addComponent(GameComponent component) {
-		component.setParent(this);
+	public GameObject addComponent(GameComponent component) {
 		components.add(component);
+		component.setParent(this);
+
+		return this;
 	}
 
 	public void input(float delta) {
