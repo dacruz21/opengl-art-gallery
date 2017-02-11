@@ -1,5 +1,7 @@
 package com.typokign.fps.engine.math;
 
+import java.util.Arrays;
+
 /**
  * Created by Typo Kign on 1/21/2017.
  */
@@ -163,5 +165,19 @@ public class Matrix4f {
 
 	public void set(int x, int y, float value) {
 		m[x][y] = value;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+
+		for (int i = 0; i < m.length; i++) {
+			for (int j = 0; j < m[i].length; j++) {
+				builder.append(m[i][j] + " ");
+			}
+			builder.append("\n");
+		}
+
+		return builder.toString();
 	}
 }

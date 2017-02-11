@@ -19,7 +19,7 @@ public class CoreEngine {
 		this.game = game;
 		this.width = width;
 		this.height = height;
-		this.frameTime = 1 / framerate;
+		this.frameTime = 1.0 / framerate;
 	}
 
 	public void createWindow(String title) {
@@ -31,7 +31,7 @@ public class CoreEngine {
 	public void start() {
 		if (isRunning) return;
 
-		game.init();
+		// removed game init from here, fixed all bugs
 		run();
 	}
 
