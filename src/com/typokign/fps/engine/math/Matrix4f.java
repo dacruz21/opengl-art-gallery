@@ -128,6 +128,12 @@ public class Matrix4f {
 		return this;
 	}
 
+	public Vector3f transform(Vector3f other) {
+		return new Vector3f(get(0, 0) * other.getX() + get(0, 1) * other.getY() + get(0, 2) * other.getZ() + get(0, 3),
+							get(1, 0) * other.getX() + get(1, 1) * other.getY() + get(1, 2) * other.getZ() + get(1, 3),
+							get(2, 0) * other.getX() + get(2, 1) * other.getY() + get(2, 2) * other.getZ() + get(2, 3));
+	}
+
 	public Matrix4f mul(Matrix4f other) {
 		Matrix4f result = new Matrix4f();
 

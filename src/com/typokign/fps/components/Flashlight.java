@@ -16,7 +16,6 @@ import org.lwjgl.input.Keyboard;
  */
 public class Flashlight extends GameComponent {
 	private SpotLight spotLight;
-	private RenderingEngine renderingEngine;
 
 	private boolean on;
 	private float onIntensity;
@@ -36,21 +35,11 @@ public class Flashlight extends GameComponent {
 
 	@Override
 	public void update(float delta){
-		if (spotLight.getParent() == null)
-			spotLight.setParent(getParent());
-		if (renderingEngine != null) {
-			Camera camera = renderingEngine.getMainCamera();
-			spotLight.getTransform().setPosition(renderingEngine.getMainCamera().getTransform().getPosition()); // TODO: fix all of this rotation
-			spotLight.getTransform().setRotation(new Quaternion(camera.getTransform().getRotation().getForward(), 0));
-//			spotLight.getTransform().setRotation(renderingEngine.getMainCamera().getTransform().getRotation().getForward());
-		}
-
 		spotLight.setIntensity(on ? onIntensity : 0.0f);
 	}
 
 	@Override
 	public void addToRenderingEngine(RenderingEngine renderingEngine) {
-		this.renderingEngine = renderingEngine;
 		renderingEngine.addLight(spotLight);
 	}
 }

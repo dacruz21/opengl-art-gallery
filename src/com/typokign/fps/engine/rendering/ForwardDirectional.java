@@ -53,7 +53,7 @@ public class ForwardDirectional extends Shader {
 		setUniformf("specularIntensity", material.getSpecularIntensity());
 		setUniformf("specularExponent", material.getSpecularExponent());
 
-		setUniform("cameraPosition", getRenderingEngine().getMainCamera().getTransform().getPosition());
+		setUniform("cameraPosition", getRenderingEngine().getMainCamera().getTransform().getTransformedPosition());
 
 		setUniformDirectionalLight("directionalLight", (DirectionalLight) getRenderingEngine().getActiveLight()); // this uses the overloaded methods below, because structs are a huge pain
 	}

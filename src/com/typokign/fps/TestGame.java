@@ -39,7 +39,7 @@ public class TestGame extends Game {
 		planeObject.getTransform().getPosition().set(0, -1, 5);
 
 		GameObject sun = new GameObject();
-		DirectionalLight sunnyDLight = new DirectionalLight(new Color(0.988f,0.953f,0.851f), 0.2f, new Vector3f(1,1,1)); // http://promo.sunnyd.com/slider_images/bottles/smooth.png
+		DirectionalLight sunnyDLight = new DirectionalLight(new Color(0.988f,0.953f,0.851f), 0.2f); // http://promo.sunnyd.com/slider_images/bottles/smooth.png
 		sun.addComponent(sunnyDLight);
 
 		GameObject danceFloor = new GameObject();
@@ -61,38 +61,18 @@ public class TestGame extends Game {
 			}
 		}
 
-		GameComponent flashlight = new Flashlight(new Color(1f, 1f, 0.902f), 1.0f, 100, 0.7f);
-		GameObject flashlightObj = new GameObject();
-		flashlightObj.addComponent(flashlight);
-		flashlightObj.getTransform().getPosition().set(0, 0, 0);
+		Camera camera = new Camera((float)Math.toRadians(70.0f), (float)Window.getWidth()/(float)Window.getHeight(), 0.01f, 1000.0f);
+//		Flashlight flashlight = new Flashlight(new Color(1f, 1f, 0.902f), 1.0f, 100, 0.7f);
+		GameObject cameraObj = new GameObject();
+		cameraObj.addComponent(camera);
+//		cameraObj.addComponent(flashlight);
 
 		getRootObject().addChild(planeObject);
 		getRootObject().addChild(sun);
 		getRootObject().addChild(danceFloor);
-		getRootObject().addChild(flashlightObj);
+		getRootObject().addChild(cameraObj);
 
-		getRootObject().addChild(new GameObject().addComponent(new Camera((float)Math.toRadians(70.0f), (float)Window.getWidth()/(float)Window.getHeight(), 0.01f, 1000.0f)));
-
-		Vertex[] vertices2 = new Vertex[] { 	new Vertex( new Vector3f(-fieldWidth/ 10, 0.0f, -fieldDepth/ 10), new Vector2f(0.0f, 0.0f)),
-				new Vertex( new Vector3f(-fieldWidth/ 10, 0.0f, fieldDepth/ 10 * 3), new Vector2f(0.0f, 1.0f)),
-				new Vertex( new Vector3f(fieldWidth/ 10 * 3, 0.0f, -fieldDepth/ 10), new Vector2f(1.0f, 0.0f)),
-				new Vertex( new Vector3f(fieldWidth/ 10 * 3, 0.0f, fieldDepth/ 10 * 3), new Vector2f(1.0f, 1.0f))};
-
-		int indices2[] = { 0, 1, 2,
-				2, 1, 3};
-
-		Mesh mesh2 = new Mesh(vertices2, indices2, true);
-
-		GameObject testMesh1 = new GameObject().addComponent(new MeshRenderer(mesh2, material));
-		GameObject testMesh2 = new GameObject().addComponent(new MeshRenderer(mesh2, material));
-
-		testMesh1.getTransform().getPosition().set(0, 2, 0);
-		testMesh1.getTransform().setRotation(new Quaternion(new Vector3f(0,1,0), 0.4f));
-
-		testMesh2.getTransform().getPosition().set(0, 0, 5);
-
-		testMesh1.addChild(testMesh2);
-		getRootObject().addChild(testMesh1);
+		sunnyDLight.getTransform().setRotation(new Quaternion(new Vector3f(1, 0, 0), (float) Math.toRadians(-45)));
 	}
 
 }

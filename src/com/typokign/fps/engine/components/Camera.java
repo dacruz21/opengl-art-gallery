@@ -22,8 +22,10 @@ public class Camera extends GameComponent {
 	}
 
 	public Matrix4f getViewProjection() {
-		Matrix4f cameraRotation = getTransform().getRotation().toRotationMatrix();
-		Matrix4f cameraTranslation = new Matrix4f().initTranslation(-getTransform().getPosition().getX(), -getTransform().getPosition().getY(), - getTransform().getPosition().getZ()); // camera never actually moves, move the world opposite the direction of camera for effect
+		Matrix4f cameraRotation = getTransform().getTransformedRotation().conjugate().toRotationMatrix();
+		Vector3f cameraPosition = getTransform().getTransformedPosition().mul(-1);
+
+		Matrix4f cameraTranslation = new Matrix4f().initTranslation(cameraPosition.getX(), cameraPosition.getY(), cameraPosition.getZ()); // camera never actually moves, move the world opposite the direction of camera for effect
 
 		return projection.mul(cameraRotation.mul(cameraTranslation));
 	}
@@ -38,7 +40,7 @@ public class Camera extends GameComponent {
 
 	@Override
 	public void input(float delta) {
-		float sensitivity = -0.25f;
+		float sensitivity = 0.25f;
 		float movAmt = 10f * delta;
 		//float rotAmt = (float) (100 * Time.getDelta());
 
@@ -80,9 +82,9 @@ public class Camera extends GameComponent {
 			boolean rotX = deltaPos.getY() != 0;
 
 			if(rotY)
-				getTransform().setRotation(getTransform().getRotation().mul(new Quaternion(yAxis, (float) Math.toRadians(deltaPos.getX() * sensitivity))).normalized());
+				getTransform().rotate(yAxis, (float) Math.toRadians(deltaPos.getX() * sensitivity));
 			if(rotX)
-				getTransform().setRotation(getTransform().getRotation().mul(new Quaternion(getTransform().getRotation().getRight(), (float) Math.toRadians(-deltaPos.getY() * sensitivity))).normalized());
+				getTransform().rotate(getTransform().getRotation().getRight(), (float) Math.toRadians(-deltaPos.getY() * sensitivity));
 
 			if (rotY || rotX)
 				Input.setMousePosition(new Vector2f(Window.getWidth() / 2, Window.getHeight() / 2));
