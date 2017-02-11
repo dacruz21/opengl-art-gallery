@@ -3,6 +3,7 @@ package com.typokign.fps;
 import com.typokign.fps.components.Flashlight;
 import com.typokign.fps.engine.components.*;
 import com.typokign.fps.engine.core.*;
+import com.typokign.fps.engine.math.Quaternion;
 import com.typokign.fps.engine.math.Vector2f;
 import com.typokign.fps.engine.math.Vector3f;
 import com.typokign.fps.engine.rendering.*;
@@ -71,6 +72,27 @@ public class TestGame extends Game {
 		getRootObject().addChild(flashlightObj);
 
 		getRootObject().addChild(new GameObject().addComponent(new Camera((float)Math.toRadians(70.0f), (float)Window.getWidth()/(float)Window.getHeight(), 0.01f, 1000.0f)));
+
+		Vertex[] vertices2 = new Vertex[] { 	new Vertex( new Vector3f(-fieldWidth/ 10, 0.0f, -fieldDepth/ 10), new Vector2f(0.0f, 0.0f)),
+				new Vertex( new Vector3f(-fieldWidth/ 10, 0.0f, fieldDepth/ 10 * 3), new Vector2f(0.0f, 1.0f)),
+				new Vertex( new Vector3f(fieldWidth/ 10 * 3, 0.0f, -fieldDepth/ 10), new Vector2f(1.0f, 0.0f)),
+				new Vertex( new Vector3f(fieldWidth/ 10 * 3, 0.0f, fieldDepth/ 10 * 3), new Vector2f(1.0f, 1.0f))};
+
+		int indices2[] = { 0, 1, 2,
+				2, 1, 3};
+
+		Mesh mesh2 = new Mesh(vertices2, indices2, true);
+
+		GameObject testMesh1 = new GameObject().addComponent(new MeshRenderer(mesh2, material));
+		GameObject testMesh2 = new GameObject().addComponent(new MeshRenderer(mesh2, material));
+
+		testMesh1.getTransform().getPosition().set(0, 2, 0);
+		testMesh1.getTransform().setRotation(new Quaternion(new Vector3f(0,1,0), 0.4f));
+
+		testMesh2.getTransform().getPosition().set(0, 0, 5);
+
+		testMesh1.addChild(testMesh2);
+		getRootObject().addChild(testMesh1);
 	}
 
 }

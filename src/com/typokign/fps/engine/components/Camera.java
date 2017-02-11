@@ -80,9 +80,9 @@ public class Camera extends GameComponent {
 			boolean rotX = deltaPos.getY() != 0;
 
 			if(rotY)
-				getTransform().setRotation(getTransform().getRotation().mul(new Quaternion().initRotation(yAxis, (float) Math.toRadians(deltaPos.getX() * sensitivity))).normalized());
+				getTransform().setRotation(getTransform().getRotation().mul(new Quaternion(yAxis, (float) Math.toRadians(deltaPos.getX() * sensitivity))).normalized());
 			if(rotX)
-				getTransform().setRotation(getTransform().getRotation().mul(new Quaternion().initRotation(getTransform().getRotation().getRight(), (float) Math.toRadians(-deltaPos.getY() * sensitivity))).normalized());
+				getTransform().setRotation(getTransform().getRotation().mul(new Quaternion(getTransform().getRotation().getRight(), (float) Math.toRadians(-deltaPos.getY() * sensitivity))).normalized());
 
 			if (rotY || rotX)
 				Input.setMousePosition(new Vector2f(Window.getWidth() / 2, Window.getHeight() / 2));

@@ -9,24 +9,45 @@ import com.typokign.fps.engine.components.Camera;
  * Created by Typo Kign on 1/23/2017.
  */
 public class Transform {
+	private Transform parent;
+	private Matrix4f parentMatrix;
 
 	// dx, dy, dz of the translation
 	private Vector3f position;
 	private Quaternion rotation;
 	private Vector3f scale;
 
-	public Transform() {
-		position = new Vector3f(0,0,0);
-		rotation = new Quaternion(0, 0, 0, 1);
+	private Vector3f oldPosition;
+	private Quaternion oldRotation;
+	private Vector3f oldScale;
 
-		// note to self; don't set this default to 0,0,0. 48 hours of debugging for this
-		scale = new Vector3f(1, 1, 1);
+	public Transform() {
+		this(new Vector3f(0,0,0), new Quaternion(0, 0, 0, 1), new Vector3f(1, 1, 1));
 	}
 
 	public Transform(Vector3f position, Quaternion rotation, Vector3f scale) {
 		this.position = position;
 		this.rotation = rotation;
 		this.scale = scale;
+
+		parentMatrix = new Matrix4f().initIdentity();
+	}
+
+	public boolean hasChanged() {
+		if (oldPosition == null || oldRotation == null || oldScale == null) {
+			oldPosition = new Vector3f().set(position);
+			oldRotation = new Quaternion().set(rotation);
+			oldScale = new Vector3f().set(scale);
+			return true;
+		}
+
+		if (parent != null && parent.hasChanged())
+			return true;
+
+		if (!position.equals(oldPosition) || !rotation.equals(oldRotation) || !scale.equals(oldScale))
+			return true;
+
+		return false;
 	}
 
 	// combine all 3 transformations into a single matrix4f
@@ -35,11 +56,30 @@ public class Transform {
 		Matrix4f rotMatrix = rotation.toRotationMatrix();
 		Matrix4f scaleMatrix = new Matrix4f().initScale(scale.getX(), scale.getY(), scale.getZ());
 
+		if (parent != null && parent.hasChanged()) {
+			parentMatrix = parent.getTransformation();
+		}
+
+		if (oldPosition != null || oldRotation != null || oldScale != null) {
+			oldPosition.set(position);
+			oldRotation.set(rotation);
+			oldScale.set(scale);
+		}
+
 		// order matters :
 		// first scale (does not affect center)
 		// then rotate (in order to rotate on the pre-existing axis)
 		// then translate
-		return transMatrix.mul(rotMatrix.mul(scaleMatrix));
+		// then set relative to parent
+		return parentMatrix.mul(transMatrix.mul(rotMatrix.mul(scaleMatrix)));
+	}
+
+	public Transform getParent() {
+		return parent;
+	}
+
+	public void setParent(Transform parent) {
+		this.parent = parent;
 	}
 
 	public Vector3f getPosition() {

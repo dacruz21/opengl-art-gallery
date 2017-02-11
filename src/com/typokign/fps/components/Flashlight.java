@@ -41,7 +41,7 @@ public class Flashlight extends GameComponent {
 		if (renderingEngine != null) {
 			Camera camera = renderingEngine.getMainCamera();
 			spotLight.getTransform().setPosition(renderingEngine.getMainCamera().getTransform().getPosition()); // TODO: fix all of this rotation
-			spotLight.getTransform().setRotation(new Quaternion().initRotation(new Vector3f(0, 1, 0), (float) Math.toRadians(90.0f)));
+			spotLight.getTransform().setRotation(new Quaternion(camera.getTransform().getRotation().getForward(), 0));
 //			spotLight.getTransform().setRotation(renderingEngine.getMainCamera().getTransform().getRotation().getForward());
 		}
 

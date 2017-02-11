@@ -20,7 +20,7 @@ public class Quaternion {
 		this.w = w;
 	}
 
-	public Quaternion initRotation(Vector3f axis, float angle) {
+	public Quaternion(Vector3f axis, float angle) {
 		float sinHalfAngle = (float) Math.sin(angle / 2);
 		float cosHalfAngle = (float) Math.cos(angle / 2);
 
@@ -28,8 +28,6 @@ public class Quaternion {
 		this.y = axis.getY() * sinHalfAngle;
 		this.z = axis.getZ() * sinHalfAngle;
 		this.w = cosHalfAngle;
-
-		return this;
 	}
 
 	// Pythagorean theorem again
@@ -104,32 +102,49 @@ public class Quaternion {
 		return x;
 	}
 
-	public void setX(float x) {
+	public Quaternion setX(float x) {
 		this.x = x;
+		return this;
 	}
 
 	public float getY() {
 		return y;
 	}
 
-	public void setY(float y) {
+	public Quaternion setY(float y) {
 		this.y = y;
+		return this;
 	}
 
 	public float getZ() {
 		return z;
 	}
 
-	public void setZ(float z) {
+	public Quaternion setZ(float z) {
 		this.z = z;
+		return this;
 	}
 
 	public float getW() {
 		return w;
 	}
 
-	public void setW(float w) {
+	public Quaternion setW(float w) {
 		this.w = w;
+		return this;
+	}
+
+	public Quaternion set(float x, float y, float z, float w) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.w = w;
+		return this;
+	}
+
+	public Quaternion set(Quaternion other) {
+		set(other.getX(), other.getY(), other.getZ(), other.getW());
+		return this;
 	}
 
 	@Override
@@ -140,5 +155,9 @@ public class Quaternion {
 				", z=" + z +
 				", w=" + w +
 				'}';
+	}
+
+	public boolean equals(Quaternion other) {
+		return x == other.getX() && y == other.getY() && z == other.getZ() && w == other.getW();
 	}
 }

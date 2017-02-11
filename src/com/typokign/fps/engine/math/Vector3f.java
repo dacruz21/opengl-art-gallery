@@ -9,6 +9,10 @@ public class Vector3f {
 	private float y;
 	private float z;
 
+	public Vector3f() {
+		this(0, 0, 0);
+	}
+
 	public Vector3f(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
@@ -116,7 +120,7 @@ public class Vector3f {
 		return new Vector2f(y, z);
 	}
 
-	public Vector2f ZX() {
+	public Vector2f getZX() {
 		return new Vector2f(z, x);
 	}
 
@@ -128,14 +132,8 @@ public class Vector3f {
 		return new Vector2f(z, y);
 	}
 
-	public Vector2f XZ() {
+	public Vector2f getXZ() {
 		return new Vector2f(x, z);
-	}
-
-	public void set(float x, float y, float z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
 	}
 
 	// Getters and setters
@@ -144,24 +142,39 @@ public class Vector3f {
 		return x;
 	}
 
-	public void setX(float x) {
+	public Vector3f setX(float x) {
 		this.x = x;
+		return this;
 	}
 
 	public float getY() {
 		return y;
 	}
 
-	public void setY(float y) {
+	public Vector3f setY(float y) {
 		this.y = y;
+		return this;
 	}
 
 	public float getZ() {
 		return z;
 	}
 
-	public void setZ(float z) {
+	public Vector3f setZ(float z) {
 		this.z = z;
+		return this;
+	}
+
+	public Vector3f set(float x, float y, float z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		return this;
+	}
+
+	public Vector3f set(Vector3f other) {
+		set(other.getX(), other.getY(), other.getZ());
+		return this;
 	}
 
 	public String toString() {
