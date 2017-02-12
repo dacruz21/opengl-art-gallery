@@ -1,45 +1,46 @@
 package com.typokign.fps.components;
 
-import com.typokign.fps.engine.components.Camera;
-import com.typokign.fps.engine.components.GameComponent;
 import com.typokign.fps.engine.components.SpotLight;
 import com.typokign.fps.engine.core.Input;
-import com.typokign.fps.engine.math.Quaternion;
 import com.typokign.fps.engine.rendering.Attenuation;
 import com.typokign.fps.engine.rendering.Color;
+import com.typokign.fps.engine.rendering.ForwardSpot;
 import com.typokign.fps.engine.rendering.RenderingEngine;
-import com.typokign.fps.engine.math.Vector3f;
-import org.lwjgl.input.Keyboard;
 
 /**
  * Created by Typo Kign on 2/4/2017.
  */
-public class Flashlight extends GameComponent {
-	private SpotLight spotLight;
-
+public class Flashlight extends SpotLight {
+	private float intensity;
+	private int toggleKeyCode;
 	private boolean on;
-	private float onIntensity;
 
-	public Flashlight(Color color, float onIntensity, float range, float cutoff) {
-		this.spotLight = new SpotLight(color, onIntensity, Attenuation.ACCURATE, cutoff);
-		this.onIntensity = onIntensity;
-		on = false;
+	public Flashlight(Color color, float intensity, Attenuation attenuation, float cutoff, int toggleKeyCode, boolean startOn) {
+		super(color, startOn ? intensity : 0, attenuation, cutoff);
+		this.intensity = intensity;
+		this.toggleKeyCode = toggleKeyCode;
+		this.on = startOn;
+		setShader(ForwardSpot.getInstance());
 	}
 
 	@Override
 	public void input(float delta) {
-		if (Input.getKeyDown(Keyboard.KEY_F)) {
+		super.input(delta);
+
+		if (Input.getKeyDown(toggleKeyCode)) {
 			on = !on;
 		}
 	}
 
 	@Override
-	public void update(float delta){
-		spotLight.setIntensity(on ? onIntensity : 0.0f);
+	public void addToRenderingEngine(RenderingEngine renderingEngine) {
+		renderingEngine.addLight(this);
 	}
 
+
 	@Override
-	public void addToRenderingEngine(RenderingEngine renderingEngine) {
-		renderingEngine.addLight(spotLight);
+	public void update(float delta) {
+		super.update(delta);
+		setIntensity(on ? intensity : 0);
 	}
 }

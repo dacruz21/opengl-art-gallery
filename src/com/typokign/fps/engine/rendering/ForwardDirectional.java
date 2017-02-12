@@ -41,21 +41,21 @@ public class ForwardDirectional extends Shader {
 	}
 
 	@Override
-	public void updateUniforms(Transform transform, Material material) {
+	public void updateUniforms(Transform transform, Material material, RenderingEngine renderingEngine) {
 		Matrix4f worldMatrix = transform.getTransformation();
-		Matrix4f projectedMatrix = getRenderingEngine().getMainCamera().getViewProjection().mul(worldMatrix);
+		Matrix4f projectedMatrix = renderingEngine.getMainCamera().getViewProjection().mul(worldMatrix);
 
-		material.getTexture().bind();
+		material.getTexture("diffuse").bind();
 
 		setUniform("model", worldMatrix);
 		setUniform("MVP", projectedMatrix);
 
-		setUniformf("specularIntensity", material.getSpecularIntensity());
-		setUniformf("specularExponent", material.getSpecularExponent());
+		setUniformf("specularIntensity", material.getFloat("specularIntensity"));
+		setUniformf("specularExponent", material.getFloat("specularExponent"));
 
-		setUniform("cameraPosition", getRenderingEngine().getMainCamera().getTransform().getTransformedPosition());
+		setUniform("cameraPosition", renderingEngine.getMainCamera().getTransform().getTransformedPosition());
 
-		setUniformDirectionalLight("directionalLight", (DirectionalLight) getRenderingEngine().getActiveLight()); // this uses the overloaded methods below, because structs are a huge pain
+		setUniformDirectionalLight("directionalLight", (DirectionalLight) renderingEngine.getActiveLight()); // this uses the overloaded methods below, because structs are a huge pain
 	}
 
 	public void setUniformBaseLight(String uniformName, BaseLight baseLight) {

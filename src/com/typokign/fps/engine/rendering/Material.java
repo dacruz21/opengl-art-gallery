@@ -2,59 +2,56 @@ package com.typokign.fps.engine.rendering;
 
 import com.typokign.fps.engine.math.Vector3f;
 
+import java.util.HashMap;
+
 /**
  * Created by Typo Kign on 1/28/2017.
  */
 public class Material {
-	private Texture texture;
-	private Vector3f color;
-	private float specularIntensity; // intensity of reflections on the object
-	private float specularExponent; // basically radius of specular reflection
+	private HashMap<String, Texture> textureMap;
+	private HashMap<String, Vector3f> vectorMap;
+	private HashMap<String, Float> floatMap;
 
-	public Material(Texture texture) {
-		this(texture, new Vector3f(1,1,1));
+	public Material() {
+		textureMap = new HashMap<String, Texture>();
+		vectorMap = new HashMap<String, Vector3f>();
+		floatMap = new HashMap<String, Float>();
 	}
 
-	public Material(Texture texture, Vector3f color) {
-		this(texture, color, 2, 32);
+	public void addTexture(String name, Texture texture) {
+		textureMap.put(name, texture);
 	}
 
-	public Material(Texture texture, Vector3f color, float specularIntensity, float specularExponent) {
-		this.texture = texture;
-		this.color = color;
-		this.specularIntensity = specularIntensity;
-		this.specularExponent = specularExponent;
+	public Texture getTexture(String name) {
+		Texture result = textureMap.get(name);
+		if (result != null)
+			return result;
+
+//		System.out.println("No texture provided, using error.png");
+		return new Texture("error.png");
 	}
 
-	public Texture getTexture() {
-		return texture;
+	public void addVector(String name, Vector3f vector) {
+		vectorMap.put(name, vector);
 	}
 
-	public void setTexture(Texture texture) {
-		this.texture = texture;
+	public Vector3f getVector(String name) {
+		Vector3f result = vectorMap.get(name);
+		if (result != null)
+			return  result;
+
+		return new Vector3f(0, 0, 0);
 	}
 
-	public Vector3f getColor() {
-		return color;
+	public void addFloat(String name, float floatValue) {
+		floatMap.put(name, floatValue);
 	}
 
-	public void setColor(Vector3f color) {
-		this.color = color;
-	}
+	public float getFloat(String name) {
+		Float result = floatMap.get(name);
+		if (result != null)
+			return result;
 
-	public float getSpecularIntensity() {
-		return specularIntensity;
-	}
-
-	public void setSpecularIntensity(float specularIntensity) {
-		this.specularIntensity = specularIntensity;
-	}
-
-	public float getSpecularExponent() {
-		return specularExponent;
-	}
-
-	public void setSpecularExponent(float specularExponent) {
-		this.specularExponent = specularExponent;
+		return 0;
 	}
 }

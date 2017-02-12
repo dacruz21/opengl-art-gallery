@@ -42,7 +42,7 @@ public class RenderingEngine {
 
 		//mainCamera = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f, 1000.0f);
 
-		ambientLight = new Vector3f(0.1f, 0.1f, 0.1f);
+		ambientLight = new Vector3f(0.4f, 0.4f, 0.4f);
 	}
 
 	public Vector3f getAmbientLight() {
@@ -56,9 +56,8 @@ public class RenderingEngine {
 		object.addToRenderingEngine(this);
 
 		Shader forwardAmbient = ForwardAmbient.getInstance();
-		forwardAmbient.setRenderingEngine(this);
 
-		object.render(forwardAmbient);
+		object.render(forwardAmbient, this);
 
 		glEnable(GL_BLEND); // prepare to blend multiple colors on each pass
 		glBlendFunc(GL_ONE, GL_ONE); // coefficients of a(existing color) * b(new color), we just want the colors multiplied together so a and b should be one
@@ -66,11 +65,9 @@ public class RenderingEngine {
 		glDepthFunc(GL_EQUAL);
 
 		for (BaseLight light : lights) {
-			light.getShader().setRenderingEngine(this);
-
 			activeLight = light;
 
-			object.render(light.getShader());
+			object.render(light.getShader(), this);
 		}
 
 		glDepthFunc(GL_LESS); // revert changes above

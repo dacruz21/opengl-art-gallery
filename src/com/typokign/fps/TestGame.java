@@ -7,6 +7,7 @@ import com.typokign.fps.engine.math.Quaternion;
 import com.typokign.fps.engine.math.Vector2f;
 import com.typokign.fps.engine.math.Vector3f;
 import com.typokign.fps.engine.rendering.*;
+import org.lwjgl.input.Keyboard;
 
 import java.util.Random;
 
@@ -29,8 +30,12 @@ public class TestGame extends Game {
 		int indices[] = { 0, 1, 2,
 				2, 1, 3};
 
-		Material material = new Material(new Texture("test.png"), new Vector3f(1,1,1), 1, 8);
 		Mesh mesh = new Mesh(vertices, indices, true);  //new Mesh("cube.obj");
+
+		Material material = new Material();
+		material.addTexture("diffuse", new Texture("grass.png"));
+		material.addFloat("specularIntensity", 0.5f);
+		material.addFloat("specularExponent", 8);
 
 		MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
 
@@ -62,15 +67,15 @@ public class TestGame extends Game {
 		}
 
 		Camera camera = new Camera((float)Math.toRadians(70.0f), (float)Window.getWidth()/(float)Window.getHeight(), 0.01f, 1000.0f);
-//		Flashlight flashlight = new Flashlight(new Color(1f, 1f, 0.902f), 1.0f, 100, 0.7f);
+		Flashlight flashlight = new Flashlight(new Color(1f, 1f, 0.902f), 1000f, Attenuation.ACCURATE, 1000f, Keyboard.KEY_F, true);
 		GameObject cameraObj = new GameObject();
 		cameraObj.addComponent(camera);
-//		cameraObj.addComponent(flashlight);
+		cameraObj.addComponent(flashlight);
 
-		getRootObject().addChild(planeObject);
-		getRootObject().addChild(sun);
-		getRootObject().addChild(danceFloor);
-		getRootObject().addChild(cameraObj);
+		addObject(planeObject);
+		addObject(sun);
+//		addObject(danceFloor);
+		addObject(cameraObj);
 
 		sunnyDLight.getTransform().setRotation(new Quaternion(new Vector3f(1, 0, 0), (float) Math.toRadians(-45)));
 	}

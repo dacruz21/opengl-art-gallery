@@ -16,8 +16,6 @@ import static org.lwjgl.opengl.GL32.*;
  * Created by Typo Kign on 1/21/2017.
  */
 public class Shader {
-
-	private RenderingEngine renderingEngine;
 	// pointer
 	private int program;
 
@@ -39,7 +37,7 @@ public class Shader {
 		glUseProgram(program);
 	}
 
-	public void updateUniforms(Transform transform, Material material) {}
+	public void updateUniforms(Transform transform, Material material, RenderingEngine renderingEngine) {}
 
 	public void addUniform(String uniform) {
 		int uniformLocation = glGetUniformLocation(program, uniform);
@@ -155,13 +153,5 @@ public class Shader {
 		}
 
 		return shaderSource.toString();
-	}
-
-	public void setRenderingEngine(RenderingEngine renderingEngine) {
-		this.renderingEngine = renderingEngine;
-	}
-
-	public RenderingEngine getRenderingEngine() {
-		return renderingEngine;
 	}
 }
