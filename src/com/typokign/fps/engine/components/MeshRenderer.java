@@ -1,9 +1,8 @@
 package com.typokign.fps.engine.components;
 
 import com.typokign.fps.engine.rendering.RenderingEngine;
-import com.typokign.fps.engine.core.Transform;
 import com.typokign.fps.engine.rendering.Material;
-import com.typokign.fps.engine.rendering.Mesh;
+import com.typokign.fps.engine.rendering.mesh.Mesh;
 import com.typokign.fps.engine.rendering.Shader;
 
 /**

@@ -7,6 +7,8 @@ import com.typokign.fps.engine.math.Quaternion;
 import com.typokign.fps.engine.math.Vector2f;
 import com.typokign.fps.engine.math.Vector3f;
 import com.typokign.fps.engine.rendering.*;
+import com.typokign.fps.engine.rendering.mesh.Mesh;
+import com.typokign.fps.engine.rendering.mesh.Vertex;
 import org.lwjgl.input.Keyboard;
 
 import java.util.Random;
@@ -43,6 +45,22 @@ public class TestGame extends Game {
 		planeObject.addComponent(meshRenderer);
 		planeObject.getTransform().getPosition().set(0, -1, 5);
 
+//		Mesh kachigga = new Mesh("kachigga.obj");
+//		Material kerchoo = new Material();
+//		kerchoo.addTexture("diffuse", new Texture("gray.png"));
+//		kerchoo.addFloat("specularIntensity", 1);
+//		kerchoo.addFloat("specularExponent", 8);
+//
+//		MeshRenderer kachow = new MeshRenderer(kachigga, kerchoo);
+//		GameObject kachowObj = new GameObject();
+//		kachowObj.addComponent(kachow);
+//		kachowObj.getTransform().getPosition().set(0, 2, 0);
+//		kachowObj.getTransform().getScale().set(0.1f, 0.1f, 0.1f);
+//		planeObject.addChild(kachowObj);
+
+		Mesh monkey = new Mesh("monkey.obj");
+		GameObject monkeyObj = new GameObject().addComponent(new MeshRenderer(monkey, material));
+
 		GameObject sun = new GameObject();
 		DirectionalLight sunnyDLight = new DirectionalLight(new Color(0.988f,0.953f,0.851f), 0.2f); // http://promo.sunnyd.com/slider_images/bottles/smooth.png
 		sun.addComponent(sunnyDLight);
@@ -74,8 +92,9 @@ public class TestGame extends Game {
 
 		addObject(planeObject);
 		addObject(sun);
-//		addObject(danceFloor);
+		addObject(danceFloor);
 		addObject(cameraObj);
+		addObject(monkeyObj);
 
 		sunnyDLight.getTransform().setRotation(new Quaternion(new Vector3f(1, 0, 0), (float) Math.toRadians(-45)));
 	}

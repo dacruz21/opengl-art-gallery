@@ -1,7 +1,7 @@
 package com.typokign.fps.engine.core;
 
 import com.typokign.fps.engine.math.Matrix4f;
-import com.typokign.fps.engine.rendering.Vertex;
+import com.typokign.fps.engine.rendering.mesh.Vertex;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
