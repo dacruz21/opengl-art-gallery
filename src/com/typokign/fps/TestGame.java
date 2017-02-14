@@ -39,6 +39,11 @@ public class TestGame extends Game {
 		material.addFloat("specularIntensity", 0.5f);
 		material.addFloat("specularExponent", 8);
 
+		Material grayMat = new Material();
+		grayMat.addTexture("diffuse", new Texture("gray.png"));
+		grayMat.addFloat("specularIntensity", 0.5f);
+		grayMat.addFloat("specularExponent", 8);
+
 		MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
 
 		GameObject planeObject = new GameObject();
@@ -59,7 +64,7 @@ public class TestGame extends Game {
 //		planeObject.addChild(kachowObj);
 
 		Mesh monkey = new Mesh("monkey.obj");
-		GameObject monkeyObj = new GameObject().addComponent(new MeshRenderer(monkey, material));
+		GameObject monkeyObj = new GameObject().addComponent(new MeshRenderer(monkey, grayMat));
 
 		GameObject sun = new GameObject();
 		DirectionalLight sunnyDLight = new DirectionalLight(new Color(0.988f,0.953f,0.851f), 0.2f); // http://promo.sunnyd.com/slider_images/bottles/smooth.png

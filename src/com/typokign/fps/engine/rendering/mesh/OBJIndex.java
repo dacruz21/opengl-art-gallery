@@ -1,5 +1,7 @@
 package com.typokign.fps.engine.rendering.mesh;
 
+import java.util.Objects;
+
 /**
  * Created by Typo Kign on 2/12/2017.
  */
@@ -40,5 +42,20 @@ public class OBJIndex {
 
 	public void setNormalIndex(int normalIndex) {
 		this.normalIndex = normalIndex;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		OBJIndex objIndex = (OBJIndex) o;
+		return vertexIndex == objIndex.vertexIndex &&
+				texCoordIndex == objIndex.texCoordIndex &&
+				normalIndex == objIndex.normalIndex;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(vertexIndex, texCoordIndex, normalIndex);
 	}
 }

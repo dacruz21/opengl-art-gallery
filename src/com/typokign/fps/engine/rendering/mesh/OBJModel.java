@@ -66,11 +66,14 @@ public class OBJModel {
 		}
 	}
 
+	// O(n) where n = number of indices
 	public IndexedModel toIndexedModel() {
 		IndexedModel result = new IndexedModel();
+		IndexedModel normalModel = new IndexedModel();
+		HashMap<OBJIndex, Integer> resultIndexMap = new HashMap<OBJIndex, Integer>();
+		HashMap<Integer, Integer> normalIndexMap = new HashMap<Integer, Integer>();
 		HashMap<Integer, Integer> indexMap = new HashMap<Integer, Integer>();
 
-		int vertexIndex = 0;
 		for (int i = 0; i < indices.size(); i++) {
 			OBJIndex index = indices.get(i);
 			Vector3f position = positions.get(index.getVertexIndex());
@@ -87,29 +90,39 @@ public class OBJModel {
 			else
 				normal = new Vector3f(0 , 0, 0);
 
-			int lastVertexIndex = -1;
+			Integer modelVertexIndex = resultIndexMap.get(index);
 
-			for (int j = 0; j < i; j++) {
-				OBJIndex lastIndex = indices.get(j);
-
-				if (index.getVertexIndex() == lastIndex.getVertexIndex()
-						&& index.getTexCoordIndex() == lastIndex.getTexCoordIndex()
-						&& index.getNormalIndex() == lastIndex.getNormalIndex()) {
-					lastVertexIndex = j;
-					break;
-				}
-			}
-
-			if (lastVertexIndex == -1) {
-				indexMap.put(i,vertexIndex);
+			if (modelVertexIndex == null) {
+				modelVertexIndex = result.getPositions().size();
+				resultIndexMap.put(index, result.getPositions().size());
 
 				result.getPositions().add(position);
 				result.getTexCoords().add(texCoord);
-				result.getNormals().add(normal);
-				result.getIndices().add(vertexIndex);
-				vertexIndex++;
-			} else {
-				result.getIndices().add(indexMap.get(lastVertexIndex));
+				if (hasNormals)
+					result.getNormals().add(normal);
+			}
+
+			Integer normalModelIndex = normalIndexMap.get(index.getVertexIndex());
+
+			if (normalModelIndex == null) {
+				normalIndexMap.put(index.getVertexIndex(), normalModel.getPositions().size());
+				normalModelIndex = normalModel.getPositions().size();
+
+				normalModel.getPositions().add(position);
+				normalModel.getTexCoords().add(texCoord);
+				normalModel.getNormals().add(normal);
+			}
+
+			result.getIndices().add(modelVertexIndex);
+			normalModel.getIndices().add(normalModelIndex);
+			indexMap.put(modelVertexIndex, normalModelIndex);
+		}
+
+		if (!hasNormals) {
+			normalModel.calcNormals();
+
+			for (int i = 0; i < result.getPositions().size(); i++) {
+				result.getNormals().add(normalModel.getNormals().get(indexMap.get(i)));
 			}
 		}
 
