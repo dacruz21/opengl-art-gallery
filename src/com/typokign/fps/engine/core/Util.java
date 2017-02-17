@@ -4,6 +4,7 @@ import com.typokign.fps.engine.math.Matrix4f;
 import com.typokign.fps.engine.rendering.mesh.Vertex;
 import org.lwjgl.BufferUtils;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -30,6 +31,10 @@ public class Util {
 		buffer.flip();
 
 		return buffer;
+	}
+
+	public static ByteBuffer createByteBuffer(int size) {
+		return BufferUtils.createByteBuffer(size);
 	}
 
 	public static FloatBuffer createFlippedBuffer(Vertex[] vertices) {
