@@ -84,8 +84,12 @@ public class TestGame extends Game {
 			for (int j = 0; j < danceFloorDepth; j++) {
 				GameObject lightObject = new GameObject();
 				lightObject.addComponent(new PointLight(new Color(random.nextFloat(), random.nextFloat(), random.nextFloat()), 2.0f, Attenuation.ACCURATE));
-				lightObject.getTransform().getPosition().set(danceFloorStartX + danceFloorStepX * i, 0, danceFloorStartZ + danceFloorStepZ * j);
+				lightObject.getTransform().getPosition().set(danceFloorStartX + danceFloorStepX * i, 2, danceFloorStartZ + danceFloorStepZ * j);
 				danceFloor.addChild(lightObject);
+				GameObject monkeyObject = new GameObject();
+				monkeyObject.addComponent(new MeshRenderer(new Mesh("monkey.obj"), grayMat));
+				monkeyObject.getTransform().getPosition().set(danceFloorStartX + danceFloorStepX * i, 0, danceFloorStartZ + danceFloorStepZ * j);
+				danceFloor.addChild(monkeyObject);
 			}
 		}
 

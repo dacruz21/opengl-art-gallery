@@ -2,11 +2,11 @@ package com.typokign.fps.engine.rendering.mesh;
 
 import com.typokign.fps.engine.core.Util;
 import com.typokign.fps.engine.math.Vector3f;
+import com.typokign.fps.engine.rendering.resourcemanagement.MeshResource;
 import org.lwjgl.opengl.GL15;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -16,16 +16,21 @@ import static org.lwjgl.opengl.GL20.*;
  * Created by Typo Kign on 1/21/2017.
  */
 public class Mesh {
-
-	// vbo = pointer, size = size in bytes
-	// pointers in java :D
-	private int vbo;
-	private int ibo;
-	private int size;
+	private static HashMap<String, MeshResource> loadedMeshes = new HashMap<String, MeshResource>();
+	private MeshResource resource;
+	private String filename;
 
 	public Mesh(String filename) {
-		initMeshData();
-		loadMesh(filename);
+		this.filename = filename;
+		MeshResource existingResource = loadedMeshes.get(filename);
+
+		if (existingResource != null) {
+			resource = existingResource;
+			resource.addReference();
+		} else {
+			loadMesh(filename);
+			loadedMeshes.put(filename, resource);
+		}
 	}
 
 	public Mesh(Vertex[] vertices, int[] indices) {
@@ -33,14 +38,16 @@ public class Mesh {
 	}
 
 	public Mesh(Vertex[] vertices, int[] indices, boolean calcNormals) {
-		initMeshData();
+		filename = "";
+		resource = new MeshResource(0);
 		addVertices(vertices, indices, calcNormals);
 	}
 
-	private void initMeshData() {
-		vbo = glGenBuffers();
-		ibo = glGenBuffers();
-		size = 0;
+	@Override
+	protected void finalize() {
+		if (resource.removeReference() && !filename.isEmpty()) {
+			loadedMeshes.remove(filename);
+		}
 	}
 
 	private void addVertices(Vertex[] vertices, int[] indices, boolean calcNormals) {
@@ -49,15 +56,15 @@ public class Mesh {
 			calcNormals(vertices, indices);
 		}
 
-		size = indices.length; // the size constant in Vertex is the number of bytes each object takes in memory, all Vertices have the same SIZE regardless of pos value
+		resource = new MeshResource(indices.length);
 
-		// treat vbo as a buffer
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		// treat vbo as a resource
+		glBindBuffer(GL_ARRAY_BUFFER, resource.getVbo());
 
-		// buffer all of our vertices, but we need to do some wacky stuff to flip the buffer
+		// resource all of our vertices, but we need to do some wacky stuff to flip the resource
 		GL15.glBufferData(GL_ARRAY_BUFFER, Util.createFlippedBuffer(vertices), GL_STATIC_DRAW);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, resource.getIbo());
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, Util.createFlippedBuffer(indices), GL_STATIC_DRAW);
 	}
 
@@ -66,13 +73,13 @@ public class Mesh {
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
 
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, resource.getVbo());
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, Vertex.SIZE * 4, 0);
 		glVertexAttribPointer(1, 2, GL_FLOAT, false, Vertex.SIZE * 4, 12); // 4 bytes per float * 3 floats for position = 12 bytes offset to get texture
 		glVertexAttribPointer(2, 3, GL_FLOAT, false, Vertex.SIZE * 4, 20); // 4 bytes per float * 2 floats for texCoord = 8 more byte offset
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-		glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, resource.getIbo());
+		glDrawElements(GL_TRIANGLES, resource.getSize(), GL_UNSIGNED_INT, 0);
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
@@ -129,50 +136,6 @@ public class Mesh {
 		model.getIndices().toArray(indexData);
 
 		addVertices(vertexData, Util.toIntArray(indexData), false);
-
-//		ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-//		ArrayList<Integer> indices = new ArrayList<Integer>();
-//
-//		try {
-//			BufferedReader meshReader = new BufferedReader(new FileReader("./res/models/" + fileName));
-//
-//			String line;
-//			while ((line  = meshReader.readLine()) != null) {
-//				String[] tokens = line.split(" "); // see a sample obj from the models directory, each line in obj is a v(ertex) or f(ace), followed by x,y,z or triangular indexes
-//				tokens = Util.removeEmptyStrings(tokens);
-//
-//				if (tokens.length == 0 || tokens[0].equals("#")) { // blank line or comment
-//					continue;
-//				} else if (tokens[0].equals("v")) { // vertex
-//					vertices.add(new Vertex(new Vector3f(Float.valueOf(tokens[1]),
-//							Float.valueOf(tokens[2]),
-//							Float.valueOf(tokens[3])))); // quite the complicated nest, but really just create a vertex with the x,y,z separated by spaces
-//				} else if (tokens[0].equals("f")) { // face
-//					indices.add(Integer.parseInt(tokens[1].split("/")[0]) - 1); // obj indices are 1-indexed, our system is 0-indexed, so subtract 1
-//					indices.add(Integer.parseInt(tokens[2].split("/")[0]) - 1); // obj indices are 1-indexed, our system is 0-indexed, so subtract 1
-//					indices.add(Integer.parseInt(tokens[3].split("/")[0]) - 1); // obj indices are 1-indexed, our system is 0-indexed, so subtract 1
-//
-//					if (tokens.length > 4) {
-//						indices.add(Integer.parseInt(tokens[1].split("/")[0]) - 1); // triangulate quadrilaterals
-//						indices.add(Integer.parseInt(tokens[3].split("/")[0]) - 1);
-//						indices.add(Integer.parseInt(tokens[4].split("/")[0]) - 1);
-//					}
-//				}
-//			}
-//
-//			meshReader.close();
-//
-//			Vertex[] vertexData = vertices.toArray(new Vertex[vertices.size()]);
-//			vertices.toArray(vertexData);
-//
-//			Integer[] indexData = indices.toArray(new Integer[indices.size()]);
-//			indices.toArray(indexData);
-//
-//			addVertices(vertexData, Util.toIntArray(indexData), true);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			System.exit(1);
-//		}
 
 		return null;
 	}
