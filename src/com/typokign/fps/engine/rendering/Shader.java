@@ -137,13 +137,19 @@ public class Shader {
 
 	private static String loadShader(String fileName) {
 		StringBuilder shaderSource = new StringBuilder();
+		BufferedReader shaderReader;
+		final String INCLUDE_DIRECTIVE = "#include";
 
 		try {
-			BufferedReader shaderReader = new BufferedReader(new FileReader("./res/shaders/" + fileName));
-
+			shaderReader = new BufferedReader(new FileReader("./res/shaders/" + fileName));
 			String line;
+
 			while ((line  = shaderReader.readLine()) != null) {
-				shaderSource.append(line).append("\n");
+				if (line.startsWith(INCLUDE_DIRECTIVE)) {
+					shaderSource.append(loadShader(line.substring(INCLUDE_DIRECTIVE.length() + 2, line.length() - 1)));
+				} else {
+					shaderSource.append(line).append("\n");
+				}
 			}
 
 			shaderReader.close();

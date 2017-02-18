@@ -7,7 +7,7 @@ import com.typokign.fps.engine.core.CoreEngine;
  */
 public class Main {
 	public static void main(String[] args) {
-		CoreEngine engine = new CoreEngine(800, 600, 300, new TestGame());
+		CoreEngine engine = new CoreEngine(800, 600, 300, new TestGame(args));
 		engine.createWindow("Spring Final");
 		engine.start();
 	}
