@@ -17,7 +17,14 @@ import java.util.Random;
  * Created by Typo Kign on 1/29/2017.
  */
 public class TestGame extends Game {
-	Random random = new Random(); // omg RNG game is unbalanced plz fix
+	Random random;
+	String[] args;
+
+	public TestGame(String[] args) {
+		super();
+		this.random = new Random();
+		this.args = args;
+	}
 
 	public void init() {
 
