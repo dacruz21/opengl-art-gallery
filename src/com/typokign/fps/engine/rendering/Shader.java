@@ -17,6 +17,8 @@ import static org.lwjgl.opengl.GL32.*;
  */
 public class Shader {
 	private final static String INCLUDE_DIRECTIVE = "#include";
+	private final static String UNIFORM_KEYWORD = "uniform";
+	private final static String ATTRIBUTE_KEYWORD = "attribute";
 
 	// pointer
 	private int program;
@@ -40,6 +42,44 @@ public class Shader {
 	}
 
 	public void updateUniforms(Transform transform, Material material, RenderingEngine renderingEngine) {}
+
+	public void addAllAttributes(String attributeSource) {
+		int attributeStartLocation = attributeSource.indexOf(ATTRIBUTE_KEYWORD);
+		int attributeNumber = 0;
+		while (attributeStartLocation != -1) {
+			int begin = attributeStartLocation + ATTRIBUTE_KEYWORD.length() + 1;
+			int end = attributeSource.indexOf(";", begin);
+
+			String attributeParams = attributeSource.substring(begin, end);
+			int separatorPosition = attributeParams.indexOf(" ");
+
+			String attributeType = attributeParams.substring(0, separatorPosition);
+			String attributeName = attributeParams.substring(separatorPosition + 1, attributeParams.length());
+
+			setAttribLocation(attributeName, attributeNumber);
+			attributeNumber++;
+
+			attributeStartLocation = attributeSource.indexOf(ATTRIBUTE_KEYWORD, attributeStartLocation + ATTRIBUTE_KEYWORD.length());
+		}
+	}
+
+	public void addAllUniforms(String shaderSource) {
+		int uniformStartLocation = shaderSource.indexOf(UNIFORM_KEYWORD);
+		while (uniformStartLocation != -1) {
+			int begin = uniformStartLocation + UNIFORM_KEYWORD.length() + 1;
+			int end = shaderSource.indexOf(";", begin);
+
+			String uniformParams = shaderSource.substring(begin, end);
+			int separatorPosition = uniformParams.indexOf(" ");
+
+			String uniformType = uniformParams.substring(0, separatorPosition);
+			String uniformName = uniformParams.substring(separatorPosition + 1, uniformParams.length());
+
+			addUniform(uniformName);
+
+			uniformStartLocation = shaderSource.indexOf(UNIFORM_KEYWORD, uniformStartLocation + UNIFORM_KEYWORD.length());
+		}
+	}
 
 	public void addUniform(String uniform) {
 		int uniformLocation = glGetUniformLocation(program, uniform);
@@ -137,7 +177,7 @@ public class Shader {
 		glAttachShader(program, shader);
 	}
 
-	private static String loadShader(String fileName) {
+	public static String loadShader(String fileName) {
 		StringBuilder shaderSource = new StringBuilder();
 		BufferedReader shaderReader;
 
