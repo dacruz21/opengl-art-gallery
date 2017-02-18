@@ -28,7 +28,7 @@ public class OBJModel {
 		this.hasTexCoords = false;
 		this.hasNormals = false;
 
-		BufferedReader meshReader = null;
+		BufferedReader meshReader;
 		try {
 			meshReader = new BufferedReader(new FileReader(filename));
 
@@ -74,8 +74,7 @@ public class OBJModel {
 		HashMap<Integer, Integer> normalIndexMap = new HashMap<Integer, Integer>();
 		HashMap<Integer, Integer> indexMap = new HashMap<Integer, Integer>();
 
-		for (int i = 0; i < indices.size(); i++) {
-			OBJIndex index = indices.get(i);
+		for (OBJIndex index : indices) {
 			Vector3f position = positions.get(index.getVertexIndex());
 			Vector2f texCoord;
 			Vector3f normal;
@@ -88,7 +87,7 @@ public class OBJModel {
 			if (hasNormals)
 				normal = normals.get(index.getNormalIndex());
 			else
-				normal = new Vector3f(0 , 0, 0);
+				normal = new Vector3f(0, 0, 0);
 
 			Integer modelVertexIndex = resultIndexMap.get(index);
 

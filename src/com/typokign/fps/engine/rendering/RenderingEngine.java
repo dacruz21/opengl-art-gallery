@@ -27,7 +27,7 @@ public class RenderingEngine {
 
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-		// face culling = unrendering faces not facing towards the camera
+		// face culling = not rendering faces not facing towards the camera
 		glFrontFace(GL_CW);
 		glCullFace(GL_BACK);
 		glEnable(GL_CULL_FACE);

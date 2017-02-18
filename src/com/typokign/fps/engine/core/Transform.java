@@ -3,7 +3,6 @@ package com.typokign.fps.engine.core;
 import com.typokign.fps.engine.math.Matrix4f;
 import com.typokign.fps.engine.math.Quaternion;
 import com.typokign.fps.engine.math.Vector3f;
-import com.typokign.fps.engine.components.Camera;
 
 /**
  * Created by Typo Kign on 1/23/2017.
@@ -54,10 +53,8 @@ public class Transform {
 		if (parent != null && parent.hasChanged())
 			return true;
 
-		if (!position.equals(oldPosition) || !rotation.equals(oldRotation) || !scale.equals(oldScale))
-			return true;
+		return !position.equals(oldPosition) || !rotation.equals(oldRotation) || !scale.equals(oldScale);
 
-		return false;
 	}
 
 	// combine all 3 transformations into a single matrix4f

@@ -102,8 +102,8 @@ public class Mesh {
 			vertices[i2].setNormal(vertices[i2].getNormal().add(normal)); // add the normal to every vertex
 		}
 
-		for (int i = 0; i < vertices.length; i++) {
-			vertices[i].setNormal(vertices[i].getNormal().normalized()); // normalize each vector
+		for (Vertex vertex : vertices) {
+			vertex.setNormal(vertex.getNormal().normalized()); // normalize each vector
 		}
 	}
 

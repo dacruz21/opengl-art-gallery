@@ -6,7 +6,6 @@ import com.typokign.fps.engine.rendering.resourcemanagement.TextureResource;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 

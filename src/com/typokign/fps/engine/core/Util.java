@@ -85,7 +85,7 @@ public class Util {
 		int[] result = new int[integers.length];
 
 		for (int i = 0; i < integers.length; i++) {
-			result[i] = integers[i].intValue();
+			result[i] = integers[i];
 		}
 
 		return result;

@@ -2,7 +2,6 @@ package com.typokign.fps.engine.components;
 
 import com.typokign.fps.engine.core.Input;
 import com.typokign.fps.engine.math.Matrix4f;
-import com.typokign.fps.engine.math.Quaternion;
 import com.typokign.fps.engine.math.Vector2f;
 import com.typokign.fps.engine.math.Vector3f;
 import com.typokign.fps.engine.rendering.RenderingEngine;
@@ -36,7 +35,7 @@ public class Camera extends GameComponent {
 	}
 
 	boolean mouseLocked = false;
-	Vector2f centerPosition = new Vector2f(Window.getWidth() / 2, Window.getHeight() / 2);
+	final Vector2f centerPosition = new Vector2f(Window.getWidth() / 2, Window.getHeight() / 2);
 
 	@Override
 	public void input(float delta) {
@@ -55,7 +54,7 @@ public class Camera extends GameComponent {
 			mouseLocked = true;
 		}
 
-		int factor = 1;
+		int factor;
 
 		if (Input.getKey(Keyboard.KEY_LSHIFT) || Input.getKey(Keyboard.KEY_RSHIFT))
 			factor = 2;
