@@ -17,27 +17,7 @@ public class ForwardDirectional extends Shader {
 	}
 
 	private ForwardDirectional() {
-		super();
-
-		addVertexShaderFromFile("forwardDirectional.vs");
-		addFragmentShaderFromFile("forwardDirectional.fs");
-
-		setAttribLocation("position", 0);
-		setAttribLocation("texCoord", 1);
-		setAttribLocation("normal", 2);
-
-		compileShader();
-
-		addUniform("model");
-		addUniform("MVP");
-
-		addUniform("specularIntensity");
-		addUniform("specularExponent");
-		addUniform("cameraPosition");
-
-		addUniform("directionalLight.base.color"); // directionalLight is a struct, and Java doesn't have structs. thus we access the components of the struct as separate uniforms
-		addUniform("directionalLight.base.intensity");
-		addUniform("directionalLight.direction");
+		super("forwardDirectional");
 	}
 
 	@Override

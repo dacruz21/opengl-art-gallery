@@ -1,5 +1,7 @@
 package com.typokign.fps.engine.math;
 
+import java.util.Objects;
+
 /**
  * Created by Typo Kign on 1/21/2017.
  */
@@ -181,7 +183,13 @@ public class Vector3f {
 		return "(" + x + ", " + y + ", " + z + ")";
 	}
 
-	public boolean equals(Vector3f other) {
-		return x == other.getX() && y == other.getY() && z == other.getZ();
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Vector3f vector3f = (Vector3f) o;
+		return Float.compare(vector3f.x, x) == 0 &&
+				Float.compare(vector3f.y, y) == 0 &&
+				Float.compare(vector3f.z, z) == 0;
 	}
 }
