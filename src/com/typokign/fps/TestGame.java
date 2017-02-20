@@ -108,7 +108,7 @@ public class TestGame extends Game {
 
 		addObject(planeObject);
 		addObject(sun);
-		addObject(danceFloor);
+//		addObject(danceFloor);
 		addObject(cameraObj);
 		addObject(monkeyObj);
 
