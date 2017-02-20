@@ -4,8 +4,10 @@ import com.typokign.fps.engine.components.BaseLight;
 import com.typokign.fps.engine.components.Camera;
 import com.typokign.fps.engine.core.GameObject;
 import com.typokign.fps.engine.math.Vector3f;
+import com.typokign.fps.engine.rendering.resourcemanagement.MappedValues;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL32.*;
@@ -13,7 +15,7 @@ import static org.lwjgl.opengl.GL32.*;
 /**
  * Created by Typo Kign on 1/30/2017.
  */
-public class RenderingEngine {
+public class RenderingEngine extends MappedValues {
 	private Camera mainCamera;
 	private Vector3f ambientLight;
 
@@ -22,8 +24,18 @@ public class RenderingEngine {
 
 	private BaseLight activeLight;
 
+	private HashMap<String, Integer> samplerMap;
+
 	public RenderingEngine() {
+		super();
+		ambientLight = new Vector3f(0.2f, 0.2f, 0.2f);
+
 		lights = new ArrayList<BaseLight>();
+		samplerMap = new HashMap<String, Integer>();
+
+		samplerMap.put("diffuse", 0);
+
+		addVector3f("ambientIntensity", ambientLight);
 
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -39,10 +51,6 @@ public class RenderingEngine {
 		glEnable(GL_DEPTH_CLAMP);
 
 		glEnable(GL_TEXTURE_2D);
-
-		//mainCamera = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f, 1000.0f);
-
-		ambientLight = new Vector3f(0.4f, 0.4f, 0.4f);
 	}
 
 	public Vector3f getAmbientLight() {
@@ -50,7 +58,8 @@ public class RenderingEngine {
 	}
 
 	public void render(GameObject object) {
-		clearScreen();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		lights.clear();
 
 		object.addToRenderingEngine(this);
@@ -75,26 +84,6 @@ public class RenderingEngine {
 		glDisable(GL_BLEND);
 	}
 
-	private static void clearScreen() {
-		// TODO: stencil buffer
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	}
-
-	private static void setTextures(boolean enabled) {
-		if (enabled)
-			glEnable(GL_TEXTURE_2D);
-		else
-			glDisable(GL_TEXTURE_2D);
-	}
-
-	private static void unbindTextures() {
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}
-
-	private static void setClearColor(Vector3f color) {
-		glClearColor(color.getX(), color.getY(), color.getZ(), 1.0f);
-	}
-
 	public void addLight(BaseLight light) {
 		lights.add(light);
 	}
@@ -105,6 +94,10 @@ public class RenderingEngine {
 
 	public static String getOpenGLVersion() {
 		return glGetString(GL_VERSION);
+	}
+
+	public int getSamplerSlot(String samplerName) {
+		return samplerMap.get(samplerName);
 	}
 
 	public BaseLight getActiveLight() {

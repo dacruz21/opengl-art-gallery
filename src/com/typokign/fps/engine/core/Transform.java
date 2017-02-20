@@ -50,11 +50,7 @@ public class Transform {
 	}
 
 	public boolean hasChanged() {
-		if (parent != null && parent.hasChanged())
-			return true;
-
-		return !position.equals(oldPosition) || !rotation.equals(oldRotation) || !scale.equals(oldScale);
-
+		return parent != null && parent.hasChanged() || !position.equals(oldPosition) || !rotation.equals(oldRotation) || !scale.equals(oldScale);
 	}
 
 	// combine all 3 transformations into a single matrix4f

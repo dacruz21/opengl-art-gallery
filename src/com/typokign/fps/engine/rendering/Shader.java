@@ -24,6 +24,16 @@ public class Shader {
 	private final static String ATTRIBUTE_KEYWORD = "attribute";
 	private final static String STRUCT_KEYWORD = "struct";
 
+	private class GLSLStruct {
+		public String type;
+		public String name;
+
+		public GLSLStruct(String type, String name) {
+			this.type = type;
+			this.name = name;
+		}
+	}
+
 	// pointer
 	private int program;
 
@@ -31,9 +41,15 @@ public class Shader {
 	// collection of String name to Integer pointer location
 	private HashMap<String, Integer> uniforms;
 
+	private ArrayList<String> uniformNames;
+	private ArrayList<String> uniformTypes;
+
 	public Shader(String filename) {
-		program = glCreateProgram();
 		uniforms = new HashMap<String, Integer>();
+		uniformNames = new ArrayList<String>();
+		uniformTypes = new ArrayList<String>();
+
+		program = glCreateProgram();
 
 		if (program == 0) {
 			System.err.println("Shader creation failed. Could not find valid memory location in constructor.");
@@ -58,7 +74,57 @@ public class Shader {
 		glUseProgram(program);
 	}
 
-	public void updateUniforms(Transform transform, Material material, RenderingEngine renderingEngine) {}
+	public void updateUniforms(Transform transform, Material material, RenderingEngine renderingEngine) {
+		Matrix4f worldMatrix = transform.getTransformation();
+		Matrix4f MVPMatrix = renderingEngine.getMainCamera().getViewProjection().mul(worldMatrix);
+
+		for (int i = 0; i < uniformNames.size(); i++) {
+			String uniformType = uniformTypes.get(i);
+			String uniformName = uniformNames.get(i);
+			String unprefixedUniformName = uniformName.substring(2);
+
+			if (uniformName.startsWith("T_")) {
+				switch (uniformName) {
+					case "T_MVP":
+						setUniform(uniformName, MVPMatrix);
+						break;
+					case "T_world":
+						setUniform(uniformName, worldMatrix);
+						break;
+					default:
+						throw new IllegalArgumentException(uniformName + " is not a valid component of Transform");
+				}
+			} else if (uniformName.startsWith("R_")) {
+				switch(uniformType) {
+					case "sampler2D":
+						int samplerSlot = renderingEngine.getSamplerSlot(unprefixedUniformName);
+						material.getTexture(unprefixedUniformName).bind(samplerSlot);
+						setUniformi(uniformName, samplerSlot);
+						break;
+					case "vec3":
+						setUniform(uniformName, renderingEngine.getVector3f(unprefixedUniformName));
+						break;
+					case "float":
+						setUniformf(uniformName, renderingEngine.getFloat(unprefixedUniformName));
+						break;
+					default:
+						throw new IllegalArgumentException("Unhandled RenderingEngine type \"" + uniformType +"\" of uniform " + uniformName);
+				}
+			} else if (uniformName.startsWith("M_")) {
+				switch(uniformType) {
+					case "vec3":
+						setUniform(uniformName, material.getVector3f(unprefixedUniformName));
+						break;
+					case "float":
+						setUniformf(uniformName, material.getFloat(unprefixedUniformName));
+					default:
+						throw new IllegalArgumentException("Unhandled Material type \"" + uniformType +"\" of uniform " + uniformName);
+				}
+			} else {
+				throw new IllegalArgumentException("Unhandled or non-existent uniform prefix in uniform " + uniformName);
+			}
+		}
+	}
 
 	public void addAllAttributes(String shaderSource) {
 		int attributeStartLocation = shaderSource.indexOf(ATTRIBUTE_KEYWORD);
@@ -70,7 +136,7 @@ public class Shader {
 			String attributeParams = shaderSource.substring(begin, end);
 			int separatorPosition = attributeParams.indexOf(" ");
 
-			String attributeType = attributeParams.substring(0, separatorPosition);
+//			String attributeType = attributeParams.substring(0, separatorPosition);
 			String attributeName = attributeParams.substring(separatorPosition + 1, attributeParams.length());
 
 			setAttribLocation(attributeName, attributeNumber);
@@ -80,18 +146,8 @@ public class Shader {
 		}
 	}
 
-	private class GLSLStruct {
-		public String type;
-		public String name;
-
-		public GLSLStruct(String type, String name) {
-			this.type = type;
-			this.name = name;
-		}
-	}
-
 	private HashMap<String, ArrayList<GLSLStruct>> findUniformStructs(String shaderSource) {
-		String structPattern = "\\s*struct\\s+([a-zA-Z0-9]+)\\s*\\{([^\\}]*)\\s*\\}\\s*";
+		String structPattern = "\\s*" + STRUCT_KEYWORD + "\\s+([a-zA-Z0-9]+)\\s*\\{([^\\}]*)\\s*\\}\\s*";
 		String structDataPattern = "([a-zA-Z0-9-_]+)\\s*([a-zA-Z0-9-_]+)\\s*;";
 
 		HashMap<String, ArrayList<GLSLStruct>> result = new HashMap<String, ArrayList<GLSLStruct>>();
@@ -134,13 +190,13 @@ public class Shader {
 			String uniformType = uniformParams.substring(0, separatorPosition);
 			String uniformName = uniformParams.substring(separatorPosition + 1, uniformParams.length());
 
-			addUniformWithStructCheck(uniformName, uniformType, structs);
+			addUniform(uniformName, uniformType, structs);
 
 			uniformStartLocation = shaderSource.indexOf(UNIFORM_KEYWORD, uniformStartLocation + UNIFORM_KEYWORD.length());
 		}
 	}
 
-	private void addUniformWithStructCheck(String uniformName, String uniformType, HashMap<String, ArrayList<GLSLStruct>> structs) {
+	private void addUniform(String uniformName, String uniformType, HashMap<String, ArrayList<GLSLStruct>> structs) {
 		boolean addThis = true;
 		ArrayList<GLSLStruct> structComponents = structs.get(uniformType);
 
@@ -148,25 +204,25 @@ public class Shader {
 			addThis = false;
 
 			for (GLSLStruct struct : structComponents) {
-				addUniformWithStructCheck(uniformName + "." + struct.name, struct.type, structs);
+				addUniform(uniformName + "." + struct.name, struct.type, structs);
 			}
 		}
 
-		if (addThis)
-			addUniform(uniformName);
-	}
+		if (!addThis)
+			return;
 
-	public void addUniform(String uniform) {
-		int uniformLocation = glGetUniformLocation(program, uniform);
+		int uniformLocation = glGetUniformLocation(program, uniformName);
 
 		// validity test
 		if (uniformLocation == 0xffffffff) {
-			System.err.println("Error: Could not find uniform: " + uniform);
+			System.err.println("Error: Could not find uniform: " + uniformName);
 			new Exception().printStackTrace();
 			System.exit(1);
 		}
 
-		uniforms.put(uniform, uniformLocation);
+		uniforms.put(uniformName, uniformLocation);
+		uniformNames.add(uniformName);
+		uniformTypes.add(uniformType);
 	}
 
 	// We refer to the uniform by its string name in the hashmap
