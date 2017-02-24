@@ -3,6 +3,7 @@ package com.typokign.fps.engine.rendering;
 import com.typokign.fps.engine.components.BaseLight;
 import com.typokign.fps.engine.components.Camera;
 import com.typokign.fps.engine.core.GameObject;
+import com.typokign.fps.engine.core.Transform;
 import com.typokign.fps.engine.math.Vector3f;
 import com.typokign.fps.engine.rendering.resourcemanagement.MappedValues;
 
@@ -55,6 +56,10 @@ public class RenderingEngine extends MappedValues {
 
 	public Vector3f getAmbientLight() {
 		return ambientLight;
+	}
+
+	public void updateUniformStruct(Transform transform, Material material, Shader shader, String uniformName, String uniformType) {
+		throw new IllegalArgumentException("Unhandled RenderingEngine type \"" + uniformType +"\" of uniform " + uniformName);
 	}
 
 	public void render(GameObject object) {

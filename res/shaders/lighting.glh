@@ -1,7 +1,7 @@
-uniform vec3 cameraPosition;
+uniform vec3 C_cameraPosition;
 
-uniform float specularIntensity;
-uniform float specularExponent;
+uniform float M_specularIntensity;
+uniform float M_specularExponent;
 
 struct BaseLight {
 	vec3 color;
@@ -41,16 +41,16 @@ vec4 calcLight(BaseLight base, vec3 direction, vec3 normal, vec3 worldPosition) 
 	if (diffuseFactor > 0) {
 		diffuseColor = vec4(base.color, 1.0) * base.intensity * diffuseFactor;
 
-		vec3 directionToCamera = normalize(cameraPosition - worldPosition);
+		vec3 directionToCamera = normalize(C_cameraPosition - worldPosition);
 //		vec3 reflectDirection = normalize(reflect(direction, normal)); // phong
 		vec3 halfDirection = normalize(directionToCamera - direction); // blend-phong
 
 		float specularFactor = dot(halfDirection, normal); // blend-phong
 //		float specularFactor = dot(directionToCamera, reflectDirection); // phong
-		specularFactor = pow(specularFactor, specularExponent);
+		specularFactor = pow(specularFactor, M_specularExponent);
 
 		if (specularFactor > 0 && base.intensity > 0) {
-			specularColor = vec4(base.color, 1.0) * specularIntensity * specularFactor;
+			specularColor = vec4(base.color, 1.0) * M_specularIntensity * specularFactor;
 		}
 	}
 
