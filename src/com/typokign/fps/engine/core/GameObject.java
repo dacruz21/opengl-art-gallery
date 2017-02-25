@@ -1,6 +1,8 @@
 package com.typokign.fps.engine.core;
 
 import com.typokign.fps.engine.components.GameComponent;
+import com.typokign.fps.engine.math.Quaternion;
+import com.typokign.fps.engine.math.Vector3f;
 import com.typokign.fps.engine.rendering.RenderingEngine;
 import com.typokign.fps.engine.rendering.Shader;
 
@@ -91,6 +93,38 @@ public class GameObject {
 
 	public Transform getTransform() {
 		return transform;
+	}
+
+	public Vector3f getPosition() {
+		return transform.getPosition();
+	}
+
+	public void setPosition(Vector3f position) {
+		getPosition().set(position);
+	}
+
+	public void setPosition(float x, float y, float z) {
+		getPosition().set(x, y, z);
+	}
+
+	public Quaternion getRotation() {
+		return transform.getRotation();
+	}
+
+	public void setRotation(Quaternion rotation) {
+		getRotation().set(rotation);
+	}
+
+	public Vector3f getScale() {
+		return transform.getScale();
+	}
+
+	public void setScale(Vector3f scale) {
+		getScale().set(scale);
+	}
+
+	public void setScale(float x, float y, float z) {
+		getScale().set(x, y, z);
 	}
 
 	public void setEngine(CoreEngine engine) {

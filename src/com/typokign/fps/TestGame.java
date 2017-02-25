@@ -57,7 +57,7 @@ public class TestGame extends Game {
 
 		GameObject planeObject = new GameObject();
 		planeObject.addComponent(meshRenderer);
-		planeObject.getTransform().getPosition().set(0, -1, 5);
+		planeObject.setPosition(0, -1, 5);
 
 //		Mesh kachigga = new Mesh("kachigga.obj");
 //		Material kerchoo = new Material();
@@ -93,12 +93,12 @@ public class TestGame extends Game {
 			for (int j = 0; j < danceFloorDepth; j++) {
 				GameObject lightObject = new GameObject();
 				lightObject.addComponent(new PointLight(new Color(random.nextFloat(), random.nextFloat(), random.nextFloat()), 2.0f, Attenuation.ACCURATE));
-				lightObject.getTransform().getPosition().set(danceFloorStartX + danceFloorStepX * i, 2, danceFloorStartZ + danceFloorStepZ * j);
+				lightObject.setPosition(danceFloorStartX + danceFloorStepX * i, 2, danceFloorStartZ + danceFloorStepZ * j);
 				danceFloor.addChild(lightObject);
 				GameObject monkeyObject = new GameObject();
 				monkeyObject.addComponent(new MeshRenderer(new Mesh("bee.obj"), grayMat));
 				monkeyObject.addComponent(new FollowCameraComponent());
-				monkeyObject.getTransform().getPosition().set(danceFloorStartX + danceFloorStepX * i, 0, danceFloorStartZ + danceFloorStepZ * j);
+				monkeyObject.setPosition(danceFloorStartX + danceFloorStepX * i, 0, danceFloorStartZ + danceFloorStepZ * j);
 				danceFloor.addChild(monkeyObject);
 			}
 		}
@@ -115,7 +115,7 @@ public class TestGame extends Game {
 		addObject(cameraObj);
 		addObject(monkeyObj);
 
-		sunnyDLight.getTransform().setRotation(new Quaternion(new Vector3f(1, 0, 0), (float) Math.toRadians(-45)));
+		sun.setRotation(new Quaternion(new Vector3f(1, 0, 0), (float) Math.toRadians(-45)));
 	}
 
 }
