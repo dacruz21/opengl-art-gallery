@@ -2,7 +2,7 @@ package com.typokign.fps.engine.components;
 
 import com.typokign.fps.engine.rendering.Attenuation;
 import com.typokign.fps.engine.rendering.Color;
-import com.typokign.fps.engine.rendering.ForwardPoint;
+import com.typokign.fps.engine.rendering.Shader;
 
 /**
  * Created by Typo Kign on 1/29/2017.
@@ -23,7 +23,7 @@ public class PointLight extends BaseLight {
 
 		this.range = (float) ((-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a)); // only do the + component of the quadratic equation, due to nature of our system, a and b are never negative
 
-		setShader(ForwardPoint.getInstance());
+		setShader(new Shader("forwardPoint"));
 	}
 
 	public Attenuation getAttenuation() {

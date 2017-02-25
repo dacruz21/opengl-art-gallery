@@ -4,8 +4,8 @@ import com.typokign.fps.engine.components.SpotLight;
 import com.typokign.fps.engine.core.Input;
 import com.typokign.fps.engine.rendering.Attenuation;
 import com.typokign.fps.engine.rendering.Color;
-import com.typokign.fps.engine.rendering.ForwardSpot;
 import com.typokign.fps.engine.rendering.RenderingEngine;
+import com.typokign.fps.engine.rendering.Shader;
 
 /**
  * Created by Typo Kign on 2/4/2017.
@@ -20,7 +20,7 @@ public class Flashlight extends SpotLight {
 		this.intensity = intensity;
 		this.toggleKeyCode = toggleKeyCode;
 		this.on = startOn;
-		setShader(ForwardSpot.getInstance());
+		setShader(new Shader("forwardSpot"));
 	}
 
 	@Override

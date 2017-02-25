@@ -26,17 +26,18 @@ public class RenderingEngine extends MappedValues {
 	private BaseLight activeLight;
 
 	private HashMap<String, Integer> samplerMap;
+	private Shader ambientShader;
 
 	public RenderingEngine() {
 		super();
-		ambientLight = new Vector3f(0.2f, 0.2f, 0.2f);
-
 		lights = new ArrayList<BaseLight>();
 		samplerMap = new HashMap<String, Integer>();
-
 		samplerMap.put("diffuse", 0);
 
+		ambientLight = new Vector3f(0.2f, 0.2f, 0.2f);
 		addVector3f("ambientIntensity", ambientLight);
+
+		ambientShader = new Shader("forwardAmbient");
 
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -69,9 +70,7 @@ public class RenderingEngine extends MappedValues {
 
 		object.addToRenderingEngine(this);
 
-		Shader forwardAmbient = ForwardAmbient.getInstance();
-
-		object.render(forwardAmbient, this);
+		object.render(ambientShader, this);
 
 		glEnable(GL_BLEND); // prepare to blend multiple colors on each pass
 		glBlendFunc(GL_ONE, GL_ONE); // coefficients of a(existing color) * b(new color), we just want the colors multiplied together so a and b should be one

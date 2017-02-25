@@ -1,6 +1,7 @@
 package com.typokign.fps.engine.rendering.resourcemanagement;
 
 import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Created by Typo Kign on 2/17/2017.
@@ -9,8 +10,8 @@ public class TextureResource {
 	private int id;
 	private int refCount;
 
-	public TextureResource(int id) {
-		this.id = id;
+	public TextureResource() {
+		this.id = glGenTextures();
 		this.refCount = 1;
 	}
 
