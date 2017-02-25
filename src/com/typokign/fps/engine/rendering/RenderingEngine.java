@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL32.*;
+import static org.lwjgl.opengl.GL32.GL_DEPTH_CLAMP;
 
 /**
  * Created by Typo Kign on 1/30/2017.
@@ -46,7 +46,7 @@ public class RenderingEngine extends MappedValues {
 		glCullFace(GL_BACK);
 		glEnable(GL_CULL_FACE);
 
-		// don't render a face if it is behind another face
+		// don't renderAll a face if it is behind another face
 		glEnable(GL_DEPTH_TEST);
 
 		// fixes issues if a camera is right on the border of a face
@@ -66,11 +66,7 @@ public class RenderingEngine extends MappedValues {
 	public void render(GameObject object) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		lights.clear();
-
-		object.addToRenderingEngine(this);
-
-		object.render(ambientShader, this);
+		object.renderAll(ambientShader, this);
 
 		glEnable(GL_BLEND); // prepare to blend multiple colors on each pass
 		glBlendFunc(GL_ONE, GL_ONE); // coefficients of a(existing color) * b(new color), we just want the colors multiplied together so a and b should be one
@@ -80,7 +76,7 @@ public class RenderingEngine extends MappedValues {
 		for (BaseLight light : lights) {
 			activeLight = light;
 
-			object.render(light.getShader(), this);
+			object.renderAll(light.getShader(), this);
 		}
 
 		glDepthFunc(GL_LESS); // revert changes above

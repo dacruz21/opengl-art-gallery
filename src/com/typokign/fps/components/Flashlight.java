@@ -4,7 +4,6 @@ import com.typokign.fps.engine.components.SpotLight;
 import com.typokign.fps.engine.core.Input;
 import com.typokign.fps.engine.rendering.Attenuation;
 import com.typokign.fps.engine.rendering.Color;
-import com.typokign.fps.engine.rendering.RenderingEngine;
 import com.typokign.fps.engine.rendering.Shader;
 
 /**
@@ -32,10 +31,10 @@ public class Flashlight extends SpotLight {
 		}
 	}
 
-	@Override
-	public void addToRenderingEngine(RenderingEngine renderingEngine) {
-		renderingEngine.addLight(this);
-	}
+//	@Override
+//	public void addToRenderingEngine(RenderingEngine renderingEngine) {
+//		renderingEngine.addLight(this);
+//	}
 
 
 	@Override

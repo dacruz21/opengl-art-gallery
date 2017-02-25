@@ -1,7 +1,5 @@
 package com.typokign.fps.engine.math;
 
-import java.util.Objects;
-
 /**
  * Created by Typo Kign on 1/21/2017.
  */

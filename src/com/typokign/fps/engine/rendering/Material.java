@@ -1,6 +1,5 @@
 package com.typokign.fps.engine.rendering;
 
-import com.typokign.fps.engine.math.Vector3f;
 import com.typokign.fps.engine.rendering.resourcemanagement.MappedValues;
 
 import java.util.HashMap;

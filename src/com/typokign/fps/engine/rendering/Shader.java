@@ -5,11 +5,10 @@ import com.typokign.fps.engine.components.DirectionalLight;
 import com.typokign.fps.engine.components.PointLight;
 import com.typokign.fps.engine.components.SpotLight;
 import com.typokign.fps.engine.core.Transform;
-import com.typokign.fps.engine.math.Matrix4f;
 import com.typokign.fps.engine.core.Util;
+import com.typokign.fps.engine.math.Matrix4f;
 import com.typokign.fps.engine.math.Vector3f;
 import com.typokign.fps.engine.rendering.resourcemanagement.ShaderResource;
-import com.typokign.fps.engine.rendering.resourcemanagement.TextureResource;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -19,7 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL32.*;
+import static org.lwjgl.opengl.GL32.GL_GEOMETRY_SHADER;
 
 /**
  * Created by Typo Kign on 1/21/2017.

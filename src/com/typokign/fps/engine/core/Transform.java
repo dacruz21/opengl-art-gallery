@@ -46,7 +46,14 @@ public class Transform {
 
 	public void rotate(Vector3f axis, float angle) {
 		rotation = new Quaternion(axis, angle).mul(rotation).normalized();
+	}
 
+	public void pointTowards(Vector3f point, Vector3f up) {
+		rotation = getPointTowardsDirection(point, up);
+	}
+
+	public Quaternion getPointTowardsDirection(Vector3f point, Vector3f up) {
+		return new Quaternion(new Matrix4f().initRotation(point.sub(position).normalized(), up));
 	}
 
 	public boolean hasChanged() {

@@ -1,8 +1,10 @@
 package com.typokign.fps;
 
 import com.typokign.fps.components.Flashlight;
+import com.typokign.fps.components.FollowCameraComponent;
 import com.typokign.fps.engine.components.*;
-import com.typokign.fps.engine.core.*;
+import com.typokign.fps.engine.core.Game;
+import com.typokign.fps.engine.core.GameObject;
 import com.typokign.fps.engine.math.Quaternion;
 import com.typokign.fps.engine.math.Vector2f;
 import com.typokign.fps.engine.math.Vector3f;
@@ -94,17 +96,18 @@ public class TestGame extends Game {
 				lightObject.getTransform().getPosition().set(danceFloorStartX + danceFloorStepX * i, 2, danceFloorStartZ + danceFloorStepZ * j);
 				danceFloor.addChild(lightObject);
 				GameObject monkeyObject = new GameObject();
-				monkeyObject.addComponent(new MeshRenderer(new Mesh("monkey.obj"), grayMat));
+				monkeyObject.addComponent(new MeshRenderer(new Mesh("bee.obj"), grayMat));
+				monkeyObject.addComponent(new FollowCameraComponent());
 				monkeyObject.getTransform().getPosition().set(danceFloorStartX + danceFloorStepX * i, 0, danceFloorStartZ + danceFloorStepZ * j);
 				danceFloor.addChild(monkeyObject);
 			}
 		}
 
 		Camera camera = new Camera((float)Math.toRadians(70.0f), (float)Window.getWidth()/(float)Window.getHeight(), 0.01f, 1000.0f);
-		Flashlight flashlight = new Flashlight(new Color(1f, 1f, 0.902f), 1000f, Attenuation.ACCURATE, 1000f, Keyboard.KEY_F, true);
+		FreeLook freeLook = new FreeLook();
 		GameObject cameraObj = new GameObject();
 		cameraObj.addComponent(camera);
-		cameraObj.addComponent(flashlight);
+		cameraObj.addComponent(freeLook);
 
 		addObject(planeObject);
 		addObject(sun);

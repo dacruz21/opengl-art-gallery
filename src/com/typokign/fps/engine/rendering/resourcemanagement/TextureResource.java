@@ -1,7 +1,7 @@
 package com.typokign.fps.engine.rendering.resourcemanagement;
 
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glGenTextures;
+import static org.lwjgl.opengl.GL15.glDeleteBuffers;
 
 /**
  * Created by Typo Kign on 2/17/2017.

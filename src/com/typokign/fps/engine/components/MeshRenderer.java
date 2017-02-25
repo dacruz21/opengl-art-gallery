@@ -1,9 +1,9 @@
 package com.typokign.fps.engine.components;
 
-import com.typokign.fps.engine.rendering.RenderingEngine;
 import com.typokign.fps.engine.rendering.Material;
-import com.typokign.fps.engine.rendering.mesh.Mesh;
+import com.typokign.fps.engine.rendering.RenderingEngine;
 import com.typokign.fps.engine.rendering.Shader;
+import com.typokign.fps.engine.rendering.mesh.Mesh;
 
 /**
  * Created by Typo Kign on 1/29/2017.

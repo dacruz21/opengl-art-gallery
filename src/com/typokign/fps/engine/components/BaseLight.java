@@ -1,7 +1,7 @@
 package com.typokign.fps.engine.components;
 
+import com.typokign.fps.engine.core.CoreEngine;
 import com.typokign.fps.engine.rendering.Color;
-import com.typokign.fps.engine.rendering.RenderingEngine;
 import com.typokign.fps.engine.rendering.Shader;
 
 /**
@@ -42,7 +42,7 @@ public class BaseLight extends GameComponent {
 	}
 
 	@Override
-	public void addToRenderingEngine(RenderingEngine renderingEngine) {
-		renderingEngine.addLight(this);
+	public void addToEngine(CoreEngine engine) {
+		engine.getRenderingEngine().addLight(this);
 	}
 }
