@@ -99,12 +99,14 @@ public class GameObject {
 		return transform.getPosition();
 	}
 
-	public void setPosition(Vector3f position) {
+	public GameObject setPosition(Vector3f position) {
 		getPosition().set(position);
+		return this;
 	}
 
-	public void setPosition(float x, float y, float z) {
+	public GameObject setPosition(float x, float y, float z) {
 		getPosition().set(x, y, z);
+		return this;
 	}
 
 	public Quaternion getRotation() {

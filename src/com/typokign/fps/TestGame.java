@@ -44,6 +44,9 @@ public class TestGame extends Game {
 
 		MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
 
+		Mesh sphere = Primitives.createSphere(new Vector3f(5, 5, 5), 4, 128);
+		MeshRenderer sphereObj = new MeshRenderer(sphere, grayMat);
+
 		GameObject planeObject = new GameObject();
 		planeObject.addComponent(meshRenderer);
 		planeObject.setPosition(0, -1, 5);
@@ -100,9 +103,10 @@ public class TestGame extends Game {
 
 		addObject(planeObject);
 		addObject(sun);
-		addObject(danceFloor);
+//		addObject(danceFloor);
 		addObject(cameraObj);
 		addObject(monkeyObj);
+		addObject(new GameObject().addComponent(sphereObj).setPosition(10, 10, 10));
 
 		sun.setRotation(new Quaternion(new Vector3f(1, 0, 0), (float) Math.toRadians(-45)));
 	}
