@@ -7,7 +7,7 @@ import com.typokign.fps.engine.math.Vector3f;
  * Created by Typo Kign on 1/21/2017.
  */
 public class Vertex {
-	// PLEASE: if you add fields to this class, updateAll SIZE and updateAll createFlippedBuffer in Util.java
+	// PLEASE: if you add fields to this class, update SIZE and update createFlippedBuffer in Util.java
 	public static final int SIZE = 8;
 
 	private Vector3f position;

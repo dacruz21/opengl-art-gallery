@@ -10,6 +10,7 @@ import com.typokign.fps.engine.math.Vector2f;
 import com.typokign.fps.engine.math.Vector3f;
 import com.typokign.fps.engine.rendering.*;
 import com.typokign.fps.engine.rendering.mesh.Mesh;
+import com.typokign.fps.engine.rendering.mesh.Primitives;
 import com.typokign.fps.engine.rendering.mesh.Vertex;
 import org.lwjgl.input.Keyboard;
 
@@ -29,22 +30,10 @@ public class TestGame extends Game {
 	}
 
 	public void init() {
-
-		float fieldDepth = 10.0f;
-		float fieldWidth = 10.0f;
-
-		Vertex[] vertices = new Vertex[] { 	new Vertex( new Vector3f(-fieldWidth, 0.0f, -fieldDepth), new Vector2f(0.0f, 0.0f)),
-				new Vertex( new Vector3f(-fieldWidth, 0.0f, fieldDepth * 3), new Vector2f(0.0f, 1.0f)),
-				new Vertex( new Vector3f(fieldWidth * 3, 0.0f, -fieldDepth), new Vector2f(1.0f, 0.0f)),
-				new Vertex( new Vector3f(fieldWidth * 3, 0.0f, fieldDepth * 3), new Vector2f(1.0f, 1.0f))};
-
-		int indices[] = { 0, 1, 2,
-				2, 1, 3};
-
-		Mesh mesh = new Mesh(vertices, indices, true);  //new Mesh("cube.obj");
+		Mesh mesh = Primitives.createCuboid(new Vector3f(-10, -1, -10),new Vector3f(10, 0, 10));
 
 		Material material = new Material();
-		material.addTexture("diffuse", new Texture("grass.png"));
+		material.addTexture("diffuse", new Texture("text.png"));
 		material.addFloat("specularIntensity", 0.5f);
 		material.addFloat("specularExponent", 8);
 
@@ -117,5 +106,4 @@ public class TestGame extends Game {
 
 		sun.setRotation(new Quaternion(new Vector3f(1, 0, 0), (float) Math.toRadians(-45)));
 	}
-
 }
