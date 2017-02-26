@@ -33,7 +33,7 @@ public class TestGame extends Game {
 		Mesh mesh = Primitives.createCuboid(new Vector3f(-10, -1, -10),new Vector3f(10, 0, 10));
 
 		Material material = new Material();
-		material.addTexture("diffuse", new Texture("text.png"));
+		material.addTexture("diffuse", new Texture("grass.png"));
 		material.addFloat("specularIntensity", 0.5f);
 		material.addFloat("specularExponent", 8);
 
@@ -45,7 +45,7 @@ public class TestGame extends Game {
 		MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
 
 		Mesh sphere = Primitives.createSphere(new Vector3f(5, 5, 5), 4, 128);
-		MeshRenderer sphereObj = new MeshRenderer(sphere, grayMat);
+		MeshRenderer sphereObj = new MeshRenderer(sphere, material);
 
 		GameObject planeObject = new GameObject();
 		planeObject.addComponent(meshRenderer);

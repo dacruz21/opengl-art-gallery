@@ -67,7 +67,8 @@ public class Primitives {
 	}
 
 	/**
-	 * Creates a sphere with a given radius that surrounds a point
+	 * Creates a sphere with a given radius that surrounds a point.
+	 * Runs in O(n^2) time, where n is the level of detail
 	 * @param center The center point of the sphere in the world
 	 * @param radius The radius of the sphere
 	 * @param lod The level of detail of the sphere. Higher values will produce more vertices and a smoother surface but at the cost of performance
@@ -77,6 +78,7 @@ public class Primitives {
 		ArrayList<Vertex> vertices = new ArrayList<Vertex>();
 		ArrayList<Integer> indices = new ArrayList<Integer>();
 
+		// Start and end polar coordinates, with the number of latitude/longitude lines determined by the LoD
 		float startLongitude = 0;
 		float startLatitude = 0;
 		float endLongitude = (float) Math.PI * 2;
@@ -84,19 +86,23 @@ public class Primitives {
 		float stepLongitude = (endLongitude - startLongitude) / lod;
 		float stepLatitude = (endLatitude - startLatitude) / lod;
 
+		// Iterate through all intersections of latitude/longitude lines
 		for (int i = 0; i < lod; i++) {
 			for (int j = 0; j < lod; j++) {
 				float longitude = i * stepLongitude + startLongitude;
 				float latitude = j * stepLatitude + startLatitude;
 
+				// Get the next lat/long lines
 				float nextLongitude = i+1 == lod ? endLongitude : (i+1) * stepLongitude + startLongitude;
 				float nextLatitude = j+1 == lod ? endLatitude : (j+1) * stepLatitude + startLatitude;
 
+				// Get points on the sphere for all combinations of current and next lat/long lines
 				Vector3f point0 = getSphereCoords(longitude, latitude, radius).add(center);
 				Vector3f point1 = getSphereCoords(longitude, nextLatitude, radius).add(center);
 				Vector3f point2 = getSphereCoords(nextLongitude, latitude, radius).add(center);
 				Vector3f point3 = getSphereCoords(nextLongitude, nextLatitude, radius).add(center);
 
+				// Add vertices for triangles between the lat/long lines
 				vertices.add(new Vertex(point0));
 				vertices.add(new Vertex(point2));
 				vertices.add(new Vertex(point1));
@@ -120,7 +126,17 @@ public class Primitives {
 		for (int i = 0; i < indices.size(); i++)
 			indexArray[i] = indices.get(i);
 
-		return new Mesh(vertArray, indexArray, true);
+		// Calculate normals of the unbaked mesh
+		calcNormals(vertArray, indexArray);
+
+		// Use the normals to generate texCoords
+		for (Vertex vertex : vertArray) {
+			float texCoordU = vertex.getNormal().getX() / 2 + 0.5f;
+			float texCoordV = vertex.getNormal().getY() / 2 + 0.5f;
+			vertex.setTexCoord(new Vector2f(texCoordU, texCoordV));
+		}
+
+		return new Mesh(vertArray, indexArray, false);
 	}
 
 	/**
@@ -132,5 +148,26 @@ public class Primitives {
 	 */
 	private static Vector3f getSphereCoords(float longitude, float latitude, float radius) {
 		return new Vector3f((float) (Math.cos(longitude) * Math.sin(latitude) * radius), (float) (Math.cos(latitude) * radius), (float) (Math.sin(longitude) * Math.sin(latitude) * radius));
+	}
+
+	private static void calcNormals(Vertex[] vertices, int[] indices) {
+		for (int i = 0; i < indices.length; i+= 3) { // count by triangles
+			int i0 = indices[i];
+			int i1 = indices[i+1]; // ^ v vertices for triangles
+			int i2 = indices[i+2];
+
+			Vector3f v1 = vertices[i1].getPos().sub(vertices[i0].getPos()); // first face
+			Vector3f v2 = vertices[i2].getPos().sub(vertices[i0].getPos()); // second face
+
+			Vector3f normal = v1.crossProduct(v2).normalized();
+
+			vertices[i0].setNormal(vertices[i0].getNormal().add(normal)); // add the normal to every vertex
+			vertices[i1].setNormal(vertices[i1].getNormal().add(normal)); // add the normal to every vertex
+			vertices[i2].setNormal(vertices[i2].getNormal().add(normal)); // add the normal to every vertex
+		}
+
+		for (Vertex vertex : vertices) {
+			vertex.setNormal(vertex.getNormal().normalized()); // normalize each vector
+		}
 	}
 }
