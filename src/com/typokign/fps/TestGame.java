@@ -30,7 +30,7 @@ public class TestGame extends Game {
 	}
 
 	public void init() {
-		Mesh mesh = Primitives.createCuboid(new Vector3f(-10, -1, -10),new Vector3f(10, 0, 10));
+		Mesh mesh = Primitives.createCuboid(new Vector3f(-10, -1, -10), new Vector3f(10, 0, 10), 8);
 
 		Material material = new Material();
 		material.addTexture("diffuse", new Texture("grass.png"));
@@ -44,7 +44,7 @@ public class TestGame extends Game {
 
 		MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
 
-		Mesh sphere = Primitives.createSphere(new Vector3f(5, 5, 5), 4, 128);
+		Mesh sphere = Primitives.createSphere(4, 128, 10);
 		MeshRenderer sphereObj = new MeshRenderer(sphere, material);
 
 		GameObject planeObject = new GameObject();
@@ -107,6 +107,7 @@ public class TestGame extends Game {
 		addObject(cameraObj);
 		addObject(monkeyObj);
 		addObject(new GameObject().addComponent(sphereObj).setPosition(10, 10, 10));
+		addObject(new GameObject().addComponent(new MeshRenderer(Primitives.createCylinder(2.5f, 5f, 128), material)).setPosition(-5, 5, -5));
 
 		sun.setRotation(new Quaternion(new Vector3f(1, 0, 0), (float) Math.toRadians(-45)));
 	}

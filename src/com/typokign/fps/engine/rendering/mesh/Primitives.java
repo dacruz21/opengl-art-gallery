@@ -16,7 +16,7 @@ public class Primitives {
 	 * @param corner2 Another position
 	 * @return A mesh occupying the region between both points
 	 */
-	public static Mesh createCuboid(Vector3f corner, Vector3f corner2) {
+	public static Mesh createCuboid(Vector3f corner, Vector3f corner2, float texLOD) {
 		if (corner.getX() == corner2.getX() || corner.getY() == corner2.getY() || corner.getZ() == corner2.getZ()) {
 			throw new IllegalArgumentException("Cannot create cuboid for two vectors on the same plane. Aborting.");
 		}
@@ -38,14 +38,14 @@ public class Primitives {
 		Vector3f rub = new Vector3f(right, up, back);
 
 		Vertex[] vertices = new Vertex[] {
-				new Vertex(rdf, new Vector2f(1, 0)),
-				new Vertex(rdb, new Vector2f(1, 1)),
-				new Vertex(ldb, new Vector2f(0, 1)),
+				new Vertex(rdf, new Vector2f(texLOD, 0)),
+				new Vertex(rdb, new Vector2f(texLOD, texLOD)),
+				new Vertex(ldb, new Vector2f(0, texLOD)),
 				new Vertex(ldf, new Vector2f(0, 0)),
-				new Vertex(ruf, new Vector2f(1, 1)),
-				new Vertex(rub, new Vector2f(1, 0)),
+				new Vertex(ruf, new Vector2f(texLOD, texLOD)),
+				new Vertex(rub, new Vector2f(texLOD, 0)),
 				new Vertex(lub, new Vector2f(0, 0)),
-				new Vertex(luf, new Vector2f(0, 1))
+				new Vertex(luf, new Vector2f(0, texLOD))
 		};
 
 		int[] indices = new int[] {
@@ -68,13 +68,12 @@ public class Primitives {
 
 	/**
 	 * Creates a sphere with a given radius that surrounds a point.
-	 * Runs in O(n^2) time, where n is the level of detail
-	 * @param center The center point of the sphere in the world
+	 * Runs in O(n^2) time, where n is vertLOD
 	 * @param radius The radius of the sphere
-	 * @param lod The level of detail of the sphere. Higher values will produce more vertices and a smoother surface but at the cost of performance
+	 * @param vertLOD The level of detail of the sphere. Higher values will produce more vertices and a smoother surface but at the cost of performance
 	 * @return A spherical mesh centered around the center point with provided radius and lod
 	 */
-	public static Mesh createSphere(Vector3f center, float radius, int lod) {
+	public static Mesh createSphere(float radius, int vertLOD, float texLOD) {
 		ArrayList<Vertex> vertices = new ArrayList<Vertex>();
 		ArrayList<Integer> indices = new ArrayList<Integer>();
 
@@ -83,36 +82,49 @@ public class Primitives {
 		float startLatitude = 0;
 		float endLongitude = (float) Math.PI * 2;
 		float endLatitude = (float) Math.PI;
-		float stepLongitude = (endLongitude - startLongitude) / lod;
-		float stepLatitude = (endLatitude - startLatitude) / lod;
+		float stepLongitude = (endLongitude - startLongitude) / vertLOD;
+		float stepLatitude = (endLatitude - startLatitude) / vertLOD;
 
 		// Iterate through all intersections of latitude/longitude lines
-		for (int i = 0; i < lod; i++) {
-			for (int j = 0; j < lod; j++) {
+		for (int i = 0; i < vertLOD; i++) {
+			for (int j = 0; j < vertLOD; j++) {
 				float longitude = i * stepLongitude + startLongitude;
 				float latitude = j * stepLatitude + startLatitude;
 
 				// Get the next lat/long lines
-				float nextLongitude = i+1 == lod ? endLongitude : (i+1) * stepLongitude + startLongitude;
-				float nextLatitude = j+1 == lod ? endLatitude : (j+1) * stepLatitude + startLatitude;
+				float nextLongitude = i+1 == vertLOD ? endLongitude : (i+1) * stepLongitude + startLongitude;
+				float nextLatitude = j+1 == vertLOD ? endLatitude : (j+1) * stepLatitude + startLatitude;
 
 				// Get points on the sphere for all combinations of current and next lat/long lines
-				Vector3f point0 = getSphereCoords(longitude, latitude, radius).add(center);
-				Vector3f point1 = getSphereCoords(longitude, nextLatitude, radius).add(center);
-				Vector3f point2 = getSphereCoords(nextLongitude, latitude, radius).add(center);
-				Vector3f point3 = getSphereCoords(nextLongitude, nextLatitude, radius).add(center);
+				// Also, generate texture coordinates as ratios of the lat/long lines to the end lat/long lines
+				Vertex point0 = new Vertex(
+						getSphereCoords(longitude, latitude, radius),
+						new Vector2f(longitude * texLOD / endLongitude, latitude * texLOD / endLatitude)
+				);
+				Vertex point1 = new Vertex(
+						getSphereCoords(longitude, nextLatitude, radius),
+						new Vector2f(longitude * texLOD / endLongitude, nextLatitude * texLOD / endLatitude)
+				);
+				Vertex point2 = new Vertex(
+						getSphereCoords(nextLongitude, latitude, radius),
+						new Vector2f(nextLongitude * texLOD / endLongitude, latitude * texLOD / endLatitude)
+				);
+				Vertex point3 = new Vertex(
+						getSphereCoords(nextLongitude, nextLatitude, radius),
+						new Vector2f(nextLongitude * texLOD / endLongitude, nextLatitude * texLOD / endLatitude)
+				);
 
 				// Add vertices for triangles between the lat/long lines
-				vertices.add(new Vertex(point0));
-				vertices.add(new Vertex(point2));
-				vertices.add(new Vertex(point1));
+				vertices.add(point0);
+				vertices.add(point2);
+				vertices.add(point1);
 				indices.add(vertices.size() - 3);
 				indices.add(vertices.size() - 2);
 				indices.add(vertices.size() - 1);
 
-				vertices.add(new Vertex(point3));
-				vertices.add(new Vertex(point1));
-				vertices.add(new Vertex(point2));
+				vertices.add(point3);
+				vertices.add(point1);
+				vertices.add(point2);
 				indices.add(vertices.size() - 3);
 				indices.add(vertices.size() - 2);
 				indices.add(vertices.size() - 1);
@@ -126,17 +138,73 @@ public class Primitives {
 		for (int i = 0; i < indices.size(); i++)
 			indexArray[i] = indices.get(i);
 
-		// Calculate normals of the unbaked mesh
-		calcNormals(vertArray, indexArray);
+		return new Mesh(vertArray, indexArray, true);
+	}
 
-		// Use the normals to generate texCoords
-		for (Vertex vertex : vertArray) {
-			float texCoordU = vertex.getNormal().getX() / 2 + 0.5f;
-			float texCoordV = vertex.getNormal().getY() / 2 + 0.5f;
-			vertex.setTexCoord(new Vector2f(texCoordU, texCoordV));
+	/**
+	 * Creates a cylinder with a given radius and height
+	 * Runs in O(n) time where n is vertLOD
+	 * @param radius The radius of the cylinder
+	 * @param height The height of the cylinder
+	 * @param vertLOD The amount of vertices used when constructing the base circle
+	 * @return A cylindrical mesh with the given parameters
+	 */
+	public static Mesh createCylinder(float radius, float height, int vertLOD) {
+		ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+		ArrayList<Integer> indices = new ArrayList<Integer>();
+
+		float startTheta = 0;
+		float endTheta = (float) Math.PI * 2;
+		float stepTheta = (endTheta - startTheta) / vertLOD;
+
+		// Centers of the base circles, 0 = bottom, 1 = top
+		vertices.add(0, new Vertex(new Vector3f(0, 0, 0), new Vector2f(0.5f, 0.5f)));
+		vertices.add(1, new Vertex(new Vector3f(0, height, 0), new Vector2f(0.5f, 0.5f)));
+
+		for (int i = 0; i < vertLOD; i++) {
+			float theta = i * stepTheta + startTheta;
+
+			float nextTheta = i+1 == vertLOD ? endTheta : (i+1) * stepTheta + startTheta;
+
+			Vertex point0 = new Vertex(getCylinderCoords(theta, radius, 0));
+			Vertex point1 = new Vertex(getCylinderCoords(nextTheta, radius, 0));
+			Vertex point2 = new Vertex(getCylinderCoords(theta, radius, height));
+			Vertex point3 = new Vertex(getCylinderCoords(nextTheta, radius, height));
+
+			vertices.add(point0);
+			vertices.add(point1);
+			vertices.add(point2);
+			indices.add(vertices.size() - 1);
+			indices.add(vertices.size() - 2);
+			indices.add(vertices.size() - 3);
+
+			// Fill in the bottom circle by drawing triangles between the current theta, next theta, and bottom center
+			indices.add(0);
+			indices.add(vertices.size() - 3);
+			indices.add(vertices.size() - 2);
+
+			vertices.add(point3);
+			vertices.add(point2);
+			vertices.add(point1);
+			indices.add(vertices.size() - 1);
+			indices.add(vertices.size() - 2);
+			indices.add(vertices.size() - 3);
+
+			// Fill in the top circle between current theta, next theta, top center
+			indices.add(1);
+			indices.add(vertices.size() - 3);
+			indices.add(vertices.size() - 4);
 		}
 
-		return new Mesh(vertArray, indexArray, false);
+		Vertex[] vertArray = new Vertex[vertices.size()];
+		vertArray = vertices.toArray(vertArray);
+
+		int[] indexArray = new int[indices.size()];
+		for (int i = 0; i < indices.size(); i++) {
+			indexArray[i] = indices.get(i);
+		}
+
+		return new Mesh(vertArray, indexArray, true);
 	}
 
 	/**
@@ -150,24 +218,14 @@ public class Primitives {
 		return new Vector3f((float) (Math.cos(longitude) * Math.sin(latitude) * radius), (float) (Math.cos(latitude) * radius), (float) (Math.sin(longitude) * Math.sin(latitude) * radius));
 	}
 
-	private static void calcNormals(Vertex[] vertices, int[] indices) {
-		for (int i = 0; i < indices.length; i+= 3) { // count by triangles
-			int i0 = indices[i];
-			int i1 = indices[i+1]; // ^ v vertices for triangles
-			int i2 = indices[i+2];
-
-			Vector3f v1 = vertices[i1].getPos().sub(vertices[i0].getPos()); // first face
-			Vector3f v2 = vertices[i2].getPos().sub(vertices[i0].getPos()); // second face
-
-			Vector3f normal = v1.crossProduct(v2).normalized();
-
-			vertices[i0].setNormal(vertices[i0].getNormal().add(normal)); // add the normal to every vertex
-			vertices[i1].setNormal(vertices[i1].getNormal().add(normal)); // add the normal to every vertex
-			vertices[i2].setNormal(vertices[i2].getNormal().add(normal)); // add the normal to every vertex
-		}
-
-		for (Vertex vertex : vertices) {
-			vertex.setNormal(vertex.getNormal().normalized()); // normalize each vector
-		}
+	/**
+	 * The parametric equation for a cylinder. Used for generating triangles between each angle on the cylinder
+	 * @param theta The current angle
+	 * @param radius The radius of the base circle
+	 * @param height The height of the cylinder
+	 * @return The position of the vertex
+	 */
+	private static Vector3f getCylinderCoords(float theta, float radius, float height) {
+		return new Vector3f(radius * (float) Math.cos(theta), height, radius * (float) Math.sin(theta));
 	}
 }
