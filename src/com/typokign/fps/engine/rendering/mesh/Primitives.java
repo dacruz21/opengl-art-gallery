@@ -68,12 +68,13 @@ public class Primitives {
 
 	/**
 	 * Creates a sphere with a given radius that surrounds a point.
-	 * Runs in O(n^2) time, where n is vertLOD
+	 * Runs in O(n^2) time, where n is numVertices
 	 * @param radius The radius of the sphere
-	 * @param vertLOD The level of detail of the sphere. Higher values will produce more vertices and a smoother surface but at the cost of performance
+	 * @param numVertices The level of detail of the sphere. Higher values will produce more vertices and a smoother surface but at the cost of performance
+	 * @param textureDetail The level of detail in the texture map
 	 * @return A spherical mesh centered around the center point with provided radius and lod
 	 */
-	public static Mesh createSphere(float radius, int vertLOD, float texLOD) {
+	public static Mesh createSphere(float radius, int numVertices, float textureDetail) {
 		ArrayList<Vertex> vertices = new ArrayList<Vertex>();
 		ArrayList<Integer> indices = new ArrayList<Integer>();
 
@@ -82,36 +83,36 @@ public class Primitives {
 		float startLatitude = 0;
 		float endLongitude = (float) Math.PI * 2;
 		float endLatitude = (float) Math.PI;
-		float stepLongitude = (endLongitude - startLongitude) / vertLOD;
-		float stepLatitude = (endLatitude - startLatitude) / vertLOD;
+		float stepLongitude = (endLongitude - startLongitude) / numVertices;
+		float stepLatitude = (endLatitude - startLatitude) / numVertices;
 
 		// Iterate through all intersections of latitude/longitude lines
-		for (int i = 0; i < vertLOD; i++) {
-			for (int j = 0; j < vertLOD; j++) {
+		for (int i = 0; i < numVertices; i++) {
+			for (int j = 0; j < numVertices; j++) {
 				float longitude = i * stepLongitude + startLongitude;
 				float latitude = j * stepLatitude + startLatitude;
 
 				// Get the next lat/long lines
-				float nextLongitude = i+1 == vertLOD ? endLongitude : (i+1) * stepLongitude + startLongitude;
-				float nextLatitude = j+1 == vertLOD ? endLatitude : (j+1) * stepLatitude + startLatitude;
+				float nextLongitude = i+1 == numVertices ? endLongitude : (i+1) * stepLongitude + startLongitude;
+				float nextLatitude = j+1 == numVertices ? endLatitude : (j+1) * stepLatitude + startLatitude;
 
 				// Get points on the sphere for all combinations of current and next lat/long lines
 				// Also, generate texture coordinates as ratios of the lat/long lines to the end lat/long lines
 				Vertex point0 = new Vertex(
-						getSphereCoords(longitude, latitude, radius),
-						new Vector2f(longitude * texLOD / endLongitude, latitude * texLOD / endLatitude)
+						sphereParam(longitude, latitude, radius),
+						new Vector2f(longitude * textureDetail / endLongitude, latitude * textureDetail / endLatitude)
 				);
 				Vertex point1 = new Vertex(
-						getSphereCoords(longitude, nextLatitude, radius),
-						new Vector2f(longitude * texLOD / endLongitude, nextLatitude * texLOD / endLatitude)
+						sphereParam(longitude, nextLatitude, radius),
+						new Vector2f(longitude * textureDetail / endLongitude, nextLatitude * textureDetail / endLatitude)
 				);
 				Vertex point2 = new Vertex(
-						getSphereCoords(nextLongitude, latitude, radius),
-						new Vector2f(nextLongitude * texLOD / endLongitude, latitude * texLOD / endLatitude)
+						sphereParam(nextLongitude, latitude, radius),
+						new Vector2f(nextLongitude * textureDetail / endLongitude, latitude * textureDetail / endLatitude)
 				);
 				Vertex point3 = new Vertex(
-						getSphereCoords(nextLongitude, nextLatitude, radius),
-						new Vector2f(nextLongitude * texLOD / endLongitude, nextLatitude * texLOD / endLatitude)
+						sphereParam(nextLongitude, nextLatitude, radius),
+						new Vector2f(nextLongitude * textureDetail / endLongitude, nextLatitude * textureDetail / endLatitude)
 				);
 
 				// Add vertices for triangles between the lat/long lines
@@ -141,59 +142,54 @@ public class Primitives {
 		return new Mesh(vertArray, indexArray, true);
 	}
 
-	/**
-	 * Creates a cylinder with a given radius and height
-	 * Runs in O(n) time where n is vertLOD
-	 * @param radius The radius of the cylinder
-	 * @param height The height of the cylinder
-	 * @param vertLOD The amount of vertices used when constructing the base circle
-	 * @return A cylindrical mesh with the given parameters
-	 */
-	public static Mesh createCylinder(float radius, float height, int vertLOD) {
+	public static Mesh createCylinder(float radius, float height, int numVertices) {
 		ArrayList<Vertex> vertices = new ArrayList<Vertex>();
 		ArrayList<Integer> indices = new ArrayList<Integer>();
 
-		float startTheta = 0;
-		float endTheta = (float) Math.PI * 2;
-		float stepTheta = (endTheta - startTheta) / vertLOD;
+		float startAngle = 0;
+		float endAngle = (float) Math.PI * 2;
+		float stepAngle = (endAngle - startAngle) / numVertices;
 
-		// Centers of the base circles, 0 = bottom, 1 = top
-		vertices.add(0, new Vertex(new Vector3f(0, 0, 0), new Vector2f(0.5f, 0.5f)));
-		vertices.add(1, new Vertex(new Vector3f(0, height, 0), new Vector2f(0.5f, 0.5f)));
+		Vertex topCenter = new Vertex(new Vector3f(0, height, 0), new Vector2f(0.5f, 0.5f));
+		vertices.add(0, topCenter);
+		Vertex bottomCenter = new Vertex(new Vector3f(0, 0, 0), new Vector2f(0.5f, 0.5f));
+		vertices.add(1, bottomCenter);
 
-		for (int i = 0; i < vertLOD; i++) {
-			float theta = i * stepTheta + startTheta;
+		for (int i = 0; i < numVertices; i++) {
+			float angle = i * stepAngle + startAngle;
+			float nextAngle = (i+1 == numVertices) ? endAngle : (i+1) * stepAngle + startAngle;
 
-			float nextTheta = i+1 == vertLOD ? endTheta : (i+1) * stepTheta + startTheta;
-
-			Vertex point0 = new Vertex(getCylinderCoords(theta, radius, 0));
-			Vertex point1 = new Vertex(getCylinderCoords(nextTheta, radius, 0));
-			Vertex point2 = new Vertex(getCylinderCoords(theta, radius, height));
-			Vertex point3 = new Vertex(getCylinderCoords(nextTheta, radius, height));
+			// Top circle
+			Vertex point0 = new Vertex(cylinderParam(angle, radius, height), new Vector2f(((float) (0.5f * Math.cos(angle) + 0.5f)), ((float) (0.5f * Math.sin(angle) + 0.5f))));
+			Vertex point1 = new Vertex(cylinderParam(nextAngle, radius, height), new Vector2f(((float) (0.5f * Math.cos(nextAngle) + 0.5f)), ((float) (0.5f * Math.sin(nextAngle) + 0.5f))));
 
 			vertices.add(point0);
 			vertices.add(point1);
-			vertices.add(point2);
-			indices.add(vertices.size() - 1);
-			indices.add(vertices.size() - 2);
-			indices.add(vertices.size() - 3);
 
-			// Fill in the bottom circle by drawing triangles between the current theta, next theta, and bottom center
 			indices.add(0);
-			indices.add(vertices.size() - 3);
-			indices.add(vertices.size() - 2);
-
-			vertices.add(point3);
-			vertices.add(point2);
-			vertices.add(point1);
 			indices.add(vertices.size() - 1);
 			indices.add(vertices.size() - 2);
-			indices.add(vertices.size() - 3);
 
-			// Fill in the top circle between current theta, next theta, top center
+			// Bottom circle
+			Vertex point2 = new Vertex(cylinderParam(angle, radius, 0), new Vector2f(((float) (0.5f * Math.cos(angle) + 0.5f)), ((float) (0.5f * Math.sin(angle) + 0.5f))));
+			Vertex point3 = new Vertex(cylinderParam(nextAngle, radius, 0), new Vector2f(((float) (0.5f * Math.cos(nextAngle) + 0.5f)), ((float) (0.5f * Math.sin(nextAngle) + 0.5f))));
+
+			vertices.add(point2);
+			vertices.add(point3);
+
 			indices.add(1);
-			indices.add(vertices.size() - 3);
+			indices.add(vertices.size() - 2);
+			indices.add(vertices.size() - 1);
+
+			// Center rectangle
 			indices.add(vertices.size() - 4);
+			indices.add(vertices.size() - 3);
+			indices.add(vertices.size() - 1);
+
+			indices.add(vertices.size() - 4);
+			indices.add(vertices.size() - 1);
+			indices.add(vertices.size() - 2);
+
 		}
 
 		Vertex[] vertArray = new Vertex[vertices.size()];
@@ -214,18 +210,18 @@ public class Primitives {
 	 * @param radius The radius of the sphere
 	 * @return The position of the vertex
 	 */
-	private static Vector3f getSphereCoords(float longitude, float latitude, float radius) {
+	private static Vector3f sphereParam(float longitude, float latitude, float radius) {
 		return new Vector3f((float) (Math.cos(longitude) * Math.sin(latitude) * radius), (float) (Math.cos(latitude) * radius), (float) (Math.sin(longitude) * Math.sin(latitude) * radius));
 	}
 
 	/**
 	 * The parametric equation for a cylinder. Used for generating triangles between each angle on the cylinder
-	 * @param theta The current angle
+	 * @param angle The current angle
 	 * @param radius The radius of the base circle
 	 * @param height The height of the cylinder
 	 * @return The position of the vertex
 	 */
-	private static Vector3f getCylinderCoords(float theta, float radius, float height) {
-		return new Vector3f(radius * (float) Math.cos(theta), height, radius * (float) Math.sin(theta));
+	private static Vector3f cylinderParam(float angle, float radius, float height) {
+		return new Vector3f(radius * (float) Math.cos(angle), height, radius * (float) Math.sin(angle));
 	}
 }

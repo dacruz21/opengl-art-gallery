@@ -1,18 +1,14 @@
 package com.typokign.fps;
 
-import com.typokign.fps.components.Flashlight;
 import com.typokign.fps.components.FollowCameraComponent;
 import com.typokign.fps.engine.components.*;
 import com.typokign.fps.engine.core.Game;
 import com.typokign.fps.engine.core.GameObject;
 import com.typokign.fps.engine.math.Quaternion;
-import com.typokign.fps.engine.math.Vector2f;
 import com.typokign.fps.engine.math.Vector3f;
 import com.typokign.fps.engine.rendering.*;
 import com.typokign.fps.engine.rendering.mesh.Mesh;
 import com.typokign.fps.engine.rendering.mesh.Primitives;
-import com.typokign.fps.engine.rendering.mesh.Vertex;
-import org.lwjgl.input.Keyboard;
 
 import java.util.Random;
 
