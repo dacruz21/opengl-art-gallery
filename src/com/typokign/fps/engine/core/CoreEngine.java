@@ -1,5 +1,6 @@
 package com.typokign.fps.engine.core;
 
+import com.typokign.fps.engine.audio.AudioEngine;
 import com.typokign.fps.engine.rendering.RenderingEngine;
 import com.typokign.fps.engine.rendering.Window;
 
@@ -8,8 +9,11 @@ import com.typokign.fps.engine.rendering.Window;
  */
 public class CoreEngine {
 	private boolean isRunning;
+
 	private Game game;
 	private RenderingEngine renderingEngine;
+	private AudioEngine audioEngine;
+
 	private int width;
 	private int height;
 	private double frameTime; // not framerate, but the amount of time allowed to each frame
@@ -33,6 +37,7 @@ public class CoreEngine {
 		if (isRunning) return;
 
 		// removed game init from here, fixed all bugs
+		this.audioEngine = new AudioEngine();
 		run();
 	}
 
@@ -81,6 +86,8 @@ public class CoreEngine {
 
 				game.update((float) frameTime);
 
+				audioEngine.update(this);
+
 				// FPS counter
 				if (frameCounter >= 1) {
 					System.out.println(frames + " FPS");
@@ -108,9 +115,14 @@ public class CoreEngine {
 	// Garbage collection
 	private void cleanUp() {
 		Window.dispose();
+		audioEngine.destroy();
 	}
 
 	public RenderingEngine getRenderingEngine() {
 		return renderingEngine;
+	}
+
+	public AudioEngine getAudioEngine() {
+		return audioEngine;
 	}
 }

@@ -3,6 +3,7 @@ package com.typokign.fps.engine.components;
 import com.typokign.fps.engine.core.CoreEngine;
 import com.typokign.fps.engine.core.GameObject;
 import com.typokign.fps.engine.core.Transform;
+import com.typokign.fps.engine.math.Vector3f;
 import com.typokign.fps.engine.rendering.RenderingEngine;
 import com.typokign.fps.engine.rendering.Shader;
 

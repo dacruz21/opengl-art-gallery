@@ -107,7 +107,7 @@ public class Mesh {
 		}
 	}
 
-	private Mesh loadMesh(String fileName) {
+	private void loadMesh(String fileName) {
 		String[] splitArray = fileName.split("\\."); // get the file extension via regex splitting
 		String fileExtension = splitArray[splitArray.length - 1]; // last element will be extension
 
@@ -136,7 +136,5 @@ public class Mesh {
 		model.getIndices().toArray(indexData);
 
 		addVertices(vertexData, Util.toIntArray(indexData), false);
-
-		return null;
 	}
 }

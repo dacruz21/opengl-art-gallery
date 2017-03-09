@@ -1,0 +1,76 @@
+package com.typokign.fps.engine.components;
+
+import com.typokign.fps.engine.audio.Sound;
+import com.typokign.fps.engine.core.Input;
+import com.typokign.fps.engine.core.Util;
+import org.lwjgl.input.Keyboard;
+
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+
+import static org.lwjgl.openal.AL10.*;
+
+/**
+ * Created by Typo Kign on 3/8/2017.
+ */
+public class SoundPlayer extends GameComponent {
+	private Sound sound;
+	private IntBuffer source;
+
+	public SoundPlayer(Sound sound, boolean loop, boolean startAutomatically) {
+		this.sound = sound;
+
+		IntBuffer source = Util.createIntBuffer(1);
+		int buffer = sound.getBuffer();
+
+		alGenSources(source);
+
+		if (alGetError() != AL_NO_ERROR) {
+			System.err.println("Failed to play file");
+			System.exit(1);
+		}
+
+		alSourcei(source.get(0), AL_BUFFER, buffer);
+		alSourcef(source.get(0), AL_PITCH, 1.0f);
+		alSourcef(source.get(0), AL_GAIN, 1.0f);
+		alSourcei(source.get(0), AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
+
+		this.source = source;
+
+//		if (startAutomatically)
+//			play();
+	}
+
+	@Override
+	protected void finalize() {
+		alDeleteSources(source);
+	}
+
+	public void play() {
+		FloatBuffer sourcePosition = Util.createFloatBuffer(3);
+		sourcePosition.put(getTransform().getPosition().getX());
+		sourcePosition.put(getTransform().getPosition().getY());
+		sourcePosition.put(getTransform().getPosition().getZ());
+
+		sourcePosition.flip();
+
+		FloatBuffer sourceVelocity = Util.createFloatBuffer(3); //TODO: get values from physics engine
+		sourceVelocity.put(0);
+		sourceVelocity.put(0);
+		sourceVelocity.put(0);
+
+		sourceVelocity.flip();
+
+		alSource(source.get(0), AL_POSITION, sourcePosition);
+		alSource(source.get(0), AL_VELOCITY, sourceVelocity);
+		alSourcePlay(source.get(0));
+	}
+
+	@Override
+	public void update(float delta) {
+		if (Input.getKey(Keyboard.KEY_R)) {
+			System.out.println("PLAYING AT " + getTransform().getPosition());
+			play();
+		}
+	}
+}

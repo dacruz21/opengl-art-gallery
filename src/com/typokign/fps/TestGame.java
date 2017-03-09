@@ -1,6 +1,7 @@
 package com.typokign.fps;
 
 import com.typokign.fps.components.FollowCameraComponent;
+import com.typokign.fps.engine.audio.Sound;
 import com.typokign.fps.engine.components.*;
 import com.typokign.fps.engine.core.Game;
 import com.typokign.fps.engine.core.GameObject;
@@ -62,12 +63,13 @@ public class TestGame extends Game {
 
 		Mesh monkey = new Mesh("monkey.obj");
 		GameObject monkeyObj = new GameObject().addComponent(new MeshRenderer(monkey, grayMat));
+		monkeyObj.addComponent(new SoundPlayer(new Sound("bee.wav"), true, true));
 
 		GameObject sun = new GameObject();
 		DirectionalLight sunnyDLight = new DirectionalLight(new Color(0.988f,0.953f,0.851f), 0.2f); // http://promo.sunnyd.com/slider_images/bottles/smooth.png
 		sun.addComponent(sunnyDLight);
 
-		GameObject danceFloor = new GameObject();
+		GameObject beeSwarm = new GameObject();
 
 		int danceFloorWidth = 6;
 		int danceFloorDepth = 6;
@@ -82,12 +84,12 @@ public class TestGame extends Game {
 				GameObject lightObject = new GameObject();
 				lightObject.addComponent(new PointLight(new Color(random.nextFloat(), random.nextFloat(), random.nextFloat()), 2.0f, Attenuation.ACCURATE));
 				lightObject.setPosition(danceFloorStartX + danceFloorStepX * i, 2, danceFloorStartZ + danceFloorStepZ * j);
-				danceFloor.addChild(lightObject);
-				GameObject monkeyObject = new GameObject();
-				monkeyObject.addComponent(new MeshRenderer(new Mesh("bee.obj"), grayMat));
-				monkeyObject.addComponent(new FollowCameraComponent());
-				monkeyObject.setPosition(danceFloorStartX + danceFloorStepX * i, 0, danceFloorStartZ + danceFloorStepZ * j);
-				danceFloor.addChild(monkeyObject);
+				beeSwarm.addChild(lightObject);
+				GameObject beeObject = new GameObject();
+				beeObject.setPosition(danceFloorStartX + danceFloorStepX * i, 0, danceFloorStartZ + danceFloorStepZ * j);
+				beeObject.addComponent(new MeshRenderer(new Mesh("bee.obj"), grayMat));
+				beeObject.addComponent(new FollowCameraComponent());
+				beeSwarm.addChild(beeObject);
 			}
 		}
 
@@ -99,7 +101,7 @@ public class TestGame extends Game {
 
 		addObject(planeObject);
 		addObject(sun);
-//		addObject(danceFloor);
+		addObject(beeSwarm);
 		addObject(cameraObj);
 		addObject(monkeyObj);
 		addObject(new GameObject().addComponent(sphereObj).setPosition(10, 10, 10));
