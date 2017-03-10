@@ -22,6 +22,7 @@ public class AudioEngine {
 	public AudioEngine() {
 		try {
 			AL.create();
+			alDistanceModel(AL_INVERSE_DISTANCE);
 		} catch (LWJGLException e) {
 			System.err.println(e);
 			System.exit(1);
@@ -31,32 +32,23 @@ public class AudioEngine {
 	public void update(CoreEngine engine) {
 		Camera camera = engine.getRenderingEngine().getMainCamera();
 
-		FloatBuffer listenerPosition = Util.createFloatBuffer(3);
-		listenerPosition.put(camera.getTransform().getPosition().getX());
-		listenerPosition.put(camera.getTransform().getPosition().getY());
-		listenerPosition.put(camera.getTransform().getPosition().getZ());
-		listenerPosition.flip();
-
-		FloatBuffer listenerVelocity = Util.createFloatBuffer(3);
-		listenerVelocity.put(0);
-		listenerVelocity.put(0);
-		listenerVelocity.put(0);
-		listenerVelocity.flip();
-
-		FloatBuffer listenerRotation = Util.createFloatBuffer(6);
+		Vector3f position = camera.getTransform().getPosition();
+		Vector3f velocity = new Vector3f(0, 0, 0);
 
 		Vector3f up = camera.getTransform().getRotation().getUp();
+		Vector3f forward = camera.getTransform().getRotation().getForward();
 
-		listenerRotation.put(camera.getTransform().getPosition().getX());
-		listenerRotation.put(camera.getTransform().getPosition().getY());
-		listenerRotation.put(camera.getTransform().getPosition().getZ());
+		FloatBuffer listenerRotation = Util.createFloatBuffer(6);
+		listenerRotation.put(forward.getX());
+		listenerRotation.put(forward.getY());
+		listenerRotation.put(forward.getZ());
 		listenerRotation.put(up.getX());
 		listenerRotation.put(up.getY());
 		listenerRotation.put(up.getZ());
 		listenerRotation.flip();
 
-		alListener(AL_POSITION, listenerPosition);
-		alListener(AL_VELOCITY, listenerVelocity);
+		alListener3f(AL_POSITION, position.getX(), position.getY(), position.getZ());
+		alListener3f(AL_VELOCITY, velocity.getX(), velocity.getY(), velocity.getZ());
 		alListener(AL_ORIENTATION, listenerRotation);
 	}
 

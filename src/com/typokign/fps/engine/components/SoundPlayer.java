@@ -3,6 +3,7 @@ package com.typokign.fps.engine.components;
 import com.typokign.fps.engine.audio.Sound;
 import com.typokign.fps.engine.core.Input;
 import com.typokign.fps.engine.core.Util;
+import com.typokign.fps.engine.math.Vector3f;
 import org.lwjgl.input.Keyboard;
 
 import java.nio.FloatBuffer;
@@ -37,8 +38,8 @@ public class SoundPlayer extends GameComponent {
 
 		this.source = source;
 
-//		if (startAutomatically)
-//			play();
+		if (startAutomatically)
+			play();
 	}
 
 	@Override
@@ -47,30 +48,11 @@ public class SoundPlayer extends GameComponent {
 	}
 
 	public void play() {
-		FloatBuffer sourcePosition = Util.createFloatBuffer(3);
-		sourcePosition.put(getTransform().getPosition().getX());
-		sourcePosition.put(getTransform().getPosition().getY());
-		sourcePosition.put(getTransform().getPosition().getZ());
+		Vector3f position = getTransform().getPosition();
+		Vector3f velocity = new Vector3f(0, 0, 0);
 
-		sourcePosition.flip();
-
-		FloatBuffer sourceVelocity = Util.createFloatBuffer(3); //TODO: get values from physics engine
-		sourceVelocity.put(0);
-		sourceVelocity.put(0);
-		sourceVelocity.put(0);
-
-		sourceVelocity.flip();
-
-		alSource(source.get(0), AL_POSITION, sourcePosition);
-		alSource(source.get(0), AL_VELOCITY, sourceVelocity);
+		alSource3f(source.get(0), AL_POSITION, position.getX(), position.getY(), position.getZ());
+		alSource3f(source.get(0), AL_VELOCITY, velocity.getX(), velocity.getY(), velocity.getZ());
 		alSourcePlay(source.get(0));
-	}
-
-	@Override
-	public void update(float delta) {
-		if (Input.getKey(Keyboard.KEY_R)) {
-			System.out.println("PLAYING AT " + getTransform().getPosition());
-			play();
-		}
 	}
 }

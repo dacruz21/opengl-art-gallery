@@ -63,7 +63,6 @@ public class TestGame extends Game {
 
 		Mesh monkey = new Mesh("monkey.obj");
 		GameObject monkeyObj = new GameObject().addComponent(new MeshRenderer(monkey, grayMat));
-		monkeyObj.addComponent(new SoundPlayer(new Sound("bee.wav"), true, true));
 
 		GameObject sun = new GameObject();
 		DirectionalLight sunnyDLight = new DirectionalLight(new Color(0.988f,0.953f,0.851f), 0.2f); // http://promo.sunnyd.com/slider_images/bottles/smooth.png
@@ -88,6 +87,7 @@ public class TestGame extends Game {
 				GameObject beeObject = new GameObject();
 				beeObject.setPosition(danceFloorStartX + danceFloorStepX * i, 0, danceFloorStartZ + danceFloorStepZ * j);
 				beeObject.addComponent(new MeshRenderer(new Mesh("bee.obj"), grayMat));
+				beeObject.addComponent(new SoundPlayer(new Sound("bee.wav"), true, true));
 				beeObject.addComponent(new FollowCameraComponent());
 				beeSwarm.addChild(beeObject);
 			}
