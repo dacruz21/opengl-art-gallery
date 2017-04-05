@@ -1,12 +1,9 @@
 package com.typokign.fps.engine.components;
 
 import com.typokign.fps.engine.audio.Sound;
-import com.typokign.fps.engine.core.Input;
 import com.typokign.fps.engine.core.Util;
 import com.typokign.fps.engine.math.Vector3f;
-import org.lwjgl.input.Keyboard;
 
-import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.openal.AL10.*;
@@ -14,11 +11,11 @@ import static org.lwjgl.openal.AL10.*;
 /**
  * Created by Typo Kign on 3/8/2017.
  */
-public class SoundPlayer extends GameComponent {
-	private Sound sound;
-	private IntBuffer source;
+public class PointSound extends GameComponent {
+	protected Sound sound;
+	protected IntBuffer source;
 
-	public SoundPlayer(Sound sound, boolean loop, boolean startAutomatically) {
+	public PointSound(Sound sound, boolean loop, boolean startAutomatically) {
 		this.sound = sound;
 
 		IntBuffer source = Util.createIntBuffer(1);
@@ -48,7 +45,7 @@ public class SoundPlayer extends GameComponent {
 	}
 
 	public void play() {
-		Vector3f position = getTransform().getPosition();
+		Vector3f position = getPosition();
 		Vector3f velocity = new Vector3f(0, 0, 0);
 
 		alSource3f(source.get(0), AL_POSITION, position.getX(), position.getY(), position.getZ());

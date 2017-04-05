@@ -87,7 +87,7 @@ public class TestGame extends Game {
 				GameObject beeObject = new GameObject();
 				beeObject.setPosition(danceFloorStartX + danceFloorStepX * i, 0, danceFloorStartZ + danceFloorStepZ * j);
 				beeObject.addComponent(new MeshRenderer(new Mesh("bee.obj"), grayMat));
-				beeObject.addComponent(new SoundPlayer(new Sound("bee.wav"), true, true));
+//				beeObject.addComponent(new PointSound(new Sound("bee.wav"), true, true));
 				beeObject.addComponent(new FollowCameraComponent());
 				beeSwarm.addChild(beeObject);
 			}
@@ -106,6 +106,7 @@ public class TestGame extends Game {
 		addObject(monkeyObj);
 		addObject(new GameObject().addComponent(sphereObj).setPosition(10, 10, 10));
 		addObject(new GameObject().addComponent(new MeshRenderer(Primitives.createCylinder(2.5f, 5f, 128), material)).setPosition(-5, 5, -5));
+		addObject(new GameObject().addComponent(new EnvironmentSound(new Sound("ambience.wav"), true, true)));
 
 		sun.setRotation(new Quaternion(new Vector3f(1, 0, 0), (float) Math.toRadians(-45)));
 	}
