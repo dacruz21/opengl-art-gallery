@@ -3,6 +3,7 @@ package com.typokign.fps.engine.audio;
 import com.typokign.fps.engine.components.Camera;
 import com.typokign.fps.engine.core.CoreEngine;
 import com.typokign.fps.engine.core.Util;
+import com.typokign.fps.engine.math.Quaternion;
 import com.typokign.fps.engine.math.Vector3f;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.openal.AL;
@@ -29,27 +30,19 @@ public class AudioEngine {
 		}
 	}
 
-	public void update(CoreEngine engine) {
-		Camera camera = engine.getRenderingEngine().getMainCamera();
-
-		Vector3f position = camera.getTransform().getPosition();
-		Vector3f velocity = new Vector3f(0, 0, 0);
-
-		Vector3f up = camera.getTransform().getRotation().getUp();
-		Vector3f forward = camera.getTransform().getRotation().getForward();
-
-		FloatBuffer listenerRotation = Util.createFloatBuffer(6);
-		listenerRotation.put(forward.getX());
-		listenerRotation.put(forward.getY());
-		listenerRotation.put(forward.getZ());
-		listenerRotation.put(up.getX());
-		listenerRotation.put(up.getY());
-		listenerRotation.put(up.getZ());
-		listenerRotation.flip();
+	public void updateListener(Vector3f position, Vector3f velocity, Quaternion rotation) {
+		FloatBuffer orientationBuffer = Util.createFloatBuffer(6);
+		orientationBuffer.put(rotation.getForward().getX());
+		orientationBuffer.put(rotation.getForward().getY());
+		orientationBuffer.put(rotation.getForward().getZ());
+		orientationBuffer.put(rotation.getUp().getX());
+		orientationBuffer.put(rotation.getUp().getY());
+		orientationBuffer.put(rotation.getUp().getZ());
+		orientationBuffer.flip();
 
 		alListener3f(AL_POSITION, position.getX(), position.getY(), position.getZ());
 		alListener3f(AL_VELOCITY, velocity.getX(), velocity.getY(), velocity.getZ());
-		alListener(AL_ORIENTATION, listenerRotation);
+		alListener(AL_ORIENTATION, orientationBuffer);
 	}
 
 	public void destroy() {

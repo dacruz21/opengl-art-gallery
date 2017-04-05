@@ -86,8 +86,6 @@ public class CoreEngine {
 
 				game.update((float) frameTime);
 
-				audioEngine.update(this);
-
 				// FPS counter
 				if (frameCounter >= 1) {
 					System.out.println(frames + " FPS");

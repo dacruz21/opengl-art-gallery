@@ -3,6 +3,7 @@ package com.typokign.fps.engine.components;
 import com.typokign.fps.engine.core.CoreEngine;
 import com.typokign.fps.engine.core.GameObject;
 import com.typokign.fps.engine.core.Transform;
+import com.typokign.fps.engine.math.Quaternion;
 import com.typokign.fps.engine.math.Vector3f;
 import com.typokign.fps.engine.rendering.RenderingEngine;
 import com.typokign.fps.engine.rendering.Shader;
@@ -30,6 +31,18 @@ public abstract class GameComponent {
 			return parent.getTransform();
 
 		return new Transform();
+	}
+
+	public Vector3f getPosition() {
+		return getTransform().getPosition();
+	}
+
+	public Quaternion getRotation() {
+		return getTransform().getRotation();
+	}
+
+	public Vector3f getScale() {
+		return getTransform().getScale();
 	}
 
 	public void addToEngine(CoreEngine engine) {}

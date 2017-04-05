@@ -29,6 +29,13 @@ public class Camera extends GameComponent {
 	}
 
 	@Override
+	public void update(float delta) {
+		super.update(delta);
+
+		getParent().getEngine().getAudioEngine().updateListener(getPosition(), new Vector3f(0, 0, 0) /*TODO: velocity*/, getRotation());
+	}
+
+	@Override
 	public void addToEngine(CoreEngine engine) {
 		engine.getRenderingEngine().addCamera(this);
 	}
