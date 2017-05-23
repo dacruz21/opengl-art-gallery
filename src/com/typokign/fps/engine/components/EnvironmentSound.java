@@ -14,8 +14,8 @@ public class EnvironmentSound extends PointSound {
 
 	@Override
 	public void play() {
-		alSourcei(source.get(0), AL_SOURCE_RELATIVE, AL_TRUE);
-		alSource3f(source.get(0), AL_POSITION, 0, 0, 0);
+		alSourcei(source.get(0), AL_SOURCE_RELATIVE, AL_TRUE); // position and velocity values below are relative to the listener
+		alSource3f(source.get(0), AL_POSITION, 0, 0, 0); // 0 = same position and velocity
 		alSource3f(source.get(0), AL_VELOCITY, 0, 0, 0);
 		alSourcePlay(source.get(0));
 	}

@@ -87,7 +87,7 @@ public class TestGame extends Game {
 				GameObject beeObject = new GameObject();
 				beeObject.setPosition(danceFloorStartX + danceFloorStepX * i, 0, danceFloorStartZ + danceFloorStepZ * j);
 				beeObject.addComponent(new MeshRenderer(new Mesh("bee.obj"), grayMat));
-//				beeObject.addComponent(new PointSound(new Sound("bee.wav"), true, true));
+				beeObject.addComponent(new PointSound(new Sound("bee.wav"), true, true));
 				beeObject.addComponent(new FollowCameraComponent());
 				beeSwarm.addChild(beeObject);
 			}

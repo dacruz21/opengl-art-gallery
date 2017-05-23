@@ -15,8 +15,9 @@ public class Material extends MappedValues {
 		textureMap = new HashMap<String, Texture>();
 	}
 
-	public void addTexture(String name, Texture texture) {
+	public Material addTexture(String name, Texture texture) {
 		textureMap.put(name, texture);
+		return this;
 	}
 
 	public Texture getTexture(String name) {

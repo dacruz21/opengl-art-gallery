@@ -3,6 +3,8 @@ package com.typokign.fps.engine.core;
 import com.typokign.fps.engine.audio.AudioEngine;
 import com.typokign.fps.engine.rendering.RenderingEngine;
 import com.typokign.fps.engine.rendering.Window;
+import org.dyn4j.collision.AxisAlignedBounds;
+import org.dyn4j.dynamics.World;
 
 /**
  * Created by Typo Kign on 1/21/2017.
@@ -93,6 +95,9 @@ public class CoreEngine {
 					frameCounter = 0;
 				}
 			}
+
+			// Physics
+
 
 			if (render) {
 				game.render(renderingEngine);
