@@ -1,11 +1,14 @@
 package com.typokign.fps;
 
+import com.bulletphysics.collision.shapes.BoxShape;
+import com.bulletphysics.collision.shapes.SphereShape;
 import com.typokign.fps.engine.audio.Sound;
 import com.typokign.fps.engine.components.*;
 import com.typokign.fps.engine.core.Game;
 import com.typokign.fps.engine.core.GameObject;
 import com.typokign.fps.engine.math.Quaternion;
 import com.typokign.fps.engine.math.Vector3f;
+import com.typokign.fps.engine.physics.PhysicsObject;
 import com.typokign.fps.engine.rendering.Color;
 import com.typokign.fps.engine.rendering.Material;
 import com.typokign.fps.engine.rendering.Texture;
@@ -54,8 +57,9 @@ public class NewGame extends Game {
 
 		MeshRenderer plane = new MeshRenderer(cuboid, material);
 
-		GameObject planeObj = new GameObject();
+		PhysicsObject planeObj = new PhysicsObject(new BoxShape(new Vector3f(5f, 0.5f, 5f).asJavaX()), 0f);
 		planeObj.addComponent(plane);
+		planeObj.setPosition(0, 0, 0);
 		addObject(planeObj);
 
 		// Bee statue + sound
@@ -67,5 +71,13 @@ public class NewGame extends Game {
 		beeObj.addComponent(beeSound);
 		beeObj.setPosition(5, 2, 0);
 		addObject(beeObj);
+
+		// Physical monkey
+		MeshRenderer monkey = new MeshRenderer(new Mesh("monkey.obj"), grayMaterial);
+
+		PhysicsObject monkeyObj = new PhysicsObject(new SphereShape(2.0f), 10f);
+		monkeyObj.addComponent(monkey);
+		monkeyObj.setPosition(0, 50, 0);
+		addObject(monkeyObj);
 	}
 }

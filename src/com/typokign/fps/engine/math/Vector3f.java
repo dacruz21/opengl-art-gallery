@@ -181,6 +181,10 @@ public class Vector3f {
 		return "(" + x + ", " + y + ", " + z + ")";
 	}
 
+	public javax.vecmath.Vector3f asJavaX() {
+		return new javax.vecmath.Vector3f(x, y, z);
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

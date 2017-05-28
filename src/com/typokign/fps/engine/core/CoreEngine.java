@@ -1,10 +1,9 @@
 package com.typokign.fps.engine.core;
 
 import com.typokign.fps.engine.audio.AudioEngine;
+import com.typokign.fps.engine.physics.PhysicsEngine;
 import com.typokign.fps.engine.rendering.RenderingEngine;
 import com.typokign.fps.engine.rendering.Window;
-import org.dyn4j.collision.AxisAlignedBounds;
-import org.dyn4j.dynamics.World;
 
 /**
  * Created by Typo Kign on 1/21/2017.
@@ -15,6 +14,7 @@ public class CoreEngine {
 	private Game game;
 	private RenderingEngine renderingEngine;
 	private AudioEngine audioEngine;
+	private PhysicsEngine physicsEngine;
 
 	private int width;
 	private int height;
@@ -40,6 +40,12 @@ public class CoreEngine {
 
 		// removed game init from here, fixed all bugs
 		this.audioEngine = new AudioEngine();
+		this.physicsEngine = new PhysicsEngine();
+
+		game.init();
+
+		game.getRootObject().setEngine(this);
+
 		run();
 	}
 
@@ -57,8 +63,6 @@ public class CoreEngine {
 		long frames = 0;
 		double frameCounter = 0;
 
-		game.init();
-
 		double lastTime = Time.getTime();
 		double unprocessedTime = 0;
 
@@ -70,7 +74,7 @@ public class CoreEngine {
 			double passedTime = startTime - lastTime;
 			lastTime = startTime;
 
-			// Calculate how often to tick the game engine
+			// Calculate how often to tick the game instance
 			unprocessedTime += passedTime;
 			frameCounter+=passedTime;
 
@@ -85,6 +89,8 @@ public class CoreEngine {
 
 				game.input((float) frameTime);
 				Input.update();
+
+				physicsEngine.tick((float) frameTime);
 
 				game.update((float) frameTime);
 
@@ -127,5 +133,9 @@ public class CoreEngine {
 
 	public AudioEngine getAudioEngine() {
 		return audioEngine;
+	}
+
+	public PhysicsEngine getPhysicsEngine() {
+		return physicsEngine;
 	}
 }

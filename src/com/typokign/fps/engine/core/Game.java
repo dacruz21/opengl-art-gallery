@@ -1,5 +1,6 @@
 package com.typokign.fps.engine.core;
 
+import com.typokign.fps.engine.physics.PhysicsObject;
 import com.typokign.fps.engine.rendering.RenderingEngine;
 
 /**
@@ -26,6 +27,11 @@ public abstract class Game {
 
 	public void addObject(GameObject object) {
 		getRootObject().addChild(object);
+	}
+
+	public void addObject(PhysicsObject object) {
+		getEngine().getPhysicsEngine().addRigidBody(object.getRigidBody());
+		addObject((GameObject) object);
 	}
 
 	public void setEngine(CoreEngine engine) {

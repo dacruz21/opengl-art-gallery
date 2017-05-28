@@ -107,8 +107,4 @@ public class RenderingEngine extends MappedValues {
 	public Camera getMainCamera() {
 		return mainCamera;
 	}
-
-	public void setMainCamera(Camera mainCamera) {
-		this.mainCamera = mainCamera;
-	}
 }
