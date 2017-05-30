@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+  <title>Art Gallery</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-red.min.css">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .art-list {
+      width: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-layout mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+    <div class="demo-ribbon"></div>
+    <main class="demo-main mdl-layout__content">
+      <div class="demo-container mdl-grid">
+        <div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+        <div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
+          <h3>Art Gallery</h3>
+          <h5>By David Cruz</h5>
+          <img src="screenshot.png" width="100%" />
+          <p>Explore a small art gallery with three famous paintings and a statue. Gaze upon such works as:</p>
+          <ul class="mdl-list art-list">
+            <li class="mdl-list__item mdl-list__item--two-line">
+              <span class="mdl-list__item-primary-content">Mona Lisa</span>
+              <span class="mdl-list__item-sub-title">Leonarda da Vinci</span>
+            </li>
+            <li class="mdl-list__item mdl-list__item--two-line">
+              <span class="mdl-list__item-primary-content">The Scream</span>
+              <span class="mdl-list__item-sub-title">Edvard Munch</span>
+            </li>
+            <li class="mdl-list__item mdl-list__item--two-line">
+              <span class="mdl-list__item-primary-content">The Persistence of Memory</span>
+              <span class="mdl-list__item-sub-title">Salvador Dali</span>
+            </li>
+            <li class="mdl-list__item mdl-list__item--two-line">
+              <span class="mdl-list__item-primary-content">Monkey Mesh</span>
+              <span class="mdl-list__item-sub-title">Blender Foundation</span>
+            </li>
+          </ul>
+
+          <a href="art-gallery.zip">
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+              Download
+            </button></a>
+            <a href="https://www.gitlab.com/TypoKign/art-gallery/">
+              <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                Source Code
+              </button>
+            </a>
+            <h4>Credits</h4>
+            <p>This project would not have been possible without the following resources and external libraries:</p>
+            <ul class="mdl-list">
+              <li class="mdl-list__item">Lightweight Java Game Library (LWJGL) - Open-source port of OpenGL to Java</li>
+              <li class="mdl-list__item">TheBennyBox - Tutorial series on the basics of OpenGL Development</li>
+              <li class="mdl-list__item">Blender Foundation - Monkey model</li>
+            </ul>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  </body>
+  </html>
