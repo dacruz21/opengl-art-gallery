@@ -1,3 +1,2 @@
-### 0.0.1a
-
-Pre-alpha, see commit history for more details
+### 1.0 (5/30/17)
+Released as Art Gallery project for AP Computer Science
