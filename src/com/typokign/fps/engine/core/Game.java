@@ -29,9 +29,9 @@ public abstract class Game {
 		getRootObject().addChild(object);
 	}
 
-	public void addObject(PhysicsObject object) {
-		getEngine().getPhysicsEngine().addRigidBody(object.getRigidBody());
-		addObject((GameObject) object);
+	public void addObject(PhysicsObject object, short collisionGroup, short collisionMask) {
+		getEngine().getPhysicsEngine().addRigidBody(object.getRigidBody(), collisionGroup, collisionMask);
+		getRootObject().addChild(object);
 	}
 
 	public void setEngine(CoreEngine engine) {

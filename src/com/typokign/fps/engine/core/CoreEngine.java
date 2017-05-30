@@ -4,6 +4,7 @@ import com.typokign.fps.engine.audio.AudioEngine;
 import com.typokign.fps.engine.physics.PhysicsEngine;
 import com.typokign.fps.engine.rendering.RenderingEngine;
 import com.typokign.fps.engine.rendering.Window;
+import com.typokign.fps.engine.ui.UIEngine;
 
 /**
  * Created by Typo Kign on 1/21/2017.
@@ -15,6 +16,7 @@ public class CoreEngine {
 	private RenderingEngine renderingEngine;
 	private AudioEngine audioEngine;
 	private PhysicsEngine physicsEngine;
+	private UIEngine uiEngine;
 
 	private int width;
 	private int height;
@@ -32,6 +34,7 @@ public class CoreEngine {
 	public void createWindow(String title) {
 		Window.createWindow(width, height, title);
 		this.renderingEngine = new RenderingEngine();
+		this.uiEngine = new UIEngine();
 	}
 
 	// Initialization code
@@ -94,6 +97,9 @@ public class CoreEngine {
 
 				game.update((float) frameTime);
 
+				uiEngine.update();
+				uiEngine.render();
+
 				// FPS counter
 				if (frameCounter >= 1) {
 					System.out.println(frames + " FPS");
@@ -137,5 +143,9 @@ public class CoreEngine {
 
 	public PhysicsEngine getPhysicsEngine() {
 		return physicsEngine;
+	}
+
+	public UIEngine getUiEngine() {
+		return uiEngine;
 	}
 }

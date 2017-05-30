@@ -14,6 +14,12 @@ import com.typokign.fps.engine.math.Vector3f;
  */
 public class PhysicsEngine {
 
+	// Collision groups
+	public static short COL_NONE = 0;
+	public static short COL_WORLD = 1;
+	public static short COL_PLAYER = 2;
+	public static short COL_OTHER = 4;
+
 	private DiscreteDynamicsWorld world;
 
 	public PhysicsEngine() {
@@ -23,15 +29,15 @@ public class PhysicsEngine {
 		SequentialImpulseConstraintSolver solver = new SequentialImpulseConstraintSolver();
 
 		world = new DiscreteDynamicsWorld(collisionDispatcher, broadphase, solver, collisionConfiguration);
-		world.setGravity(new Vector3f(0, -9.81f, 0).asJavaX());
+		world.setGravity(new Vector3f(0, -9.80665f, 0).asJavaX());
 	}
 
 	public void tick(float delta) {
-		world.stepSimulation(delta, 10);
+		world.stepSimulation(delta, 100);
 		world.applyGravity();
 	}
 
-	public void addRigidBody(RigidBody body) {
-		world.addRigidBody(body);
+	public void addRigidBody(RigidBody body, short collisionGroup, short collisionMask) {
+		world.addRigidBody(body, collisionGroup, collisionMask);
 	}
 }

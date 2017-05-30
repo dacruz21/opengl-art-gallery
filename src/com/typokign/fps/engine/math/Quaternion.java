@@ -1,5 +1,7 @@
 package com.typokign.fps.engine.math;
 
+import javax.vecmath.Quat4f;
+
 /**
  * Created by Typo Kign on 1/21/2017.
  */
@@ -257,5 +259,9 @@ public class Quaternion {
 
 	public boolean equals(Quaternion other) {
 		return x == other.getX() && y == other.getY() && z == other.getZ() && w == other.getW();
+	}
+
+	public Quat4f asJavaX() {
+		return new Quat4f(x, y, z, w);
 	}
 }
