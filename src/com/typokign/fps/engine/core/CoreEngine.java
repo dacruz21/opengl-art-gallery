@@ -8,6 +8,7 @@ import com.typokign.fps.engine.rendering.Window;
 /**
  * Created by Typo Kign on 1/21/2017.
  */
+
 public class CoreEngine {
 	private boolean isRunning;
 
